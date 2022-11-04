@@ -17,14 +17,14 @@ public class UserService {
 
     private final UserDao userDao;
     private final UserProvider userProvider;
-    //private final JwtService jwtService;
+    private final JwtService jwtService;
 
     @Autowired //readme 참고
-    public UserService(UserDao userDao, UserProvider userProvider) {
-    //public UserService(UserDao userDao, UserProvider userProvider, JwtService jwtService) {
+    //public UserService(UserDao userDao, UserProvider userProvider) {
+    public UserService(UserDao userDao, UserProvider userProvider, JwtService jwtService) {
         this.userDao = userDao;
         this.userProvider = userProvider;
-        //this.jwtService = jwtService;
+        this.jwtService = jwtService;
     }
 
     // 회원가입(POST)
@@ -58,10 +58,10 @@ public class UserService {
             System.out.println("넌 뭐가 문제니1");
             int userIdx = userDao.createUser(postUserReq);
             System.out.println("넌 뭐가 문제니2");
-            //String jwt = jwtService.createJwt(userIdx);
+            String jwt = jwtService.createJwt(userIdx);
             System.out.println("넌 뭐가 문제니3");
-            return new PostUserRes(userIdx);
-            //return new PostUserRes(userIdx, jwt);
+            //return new PostUserRes(userIdx);
+            return new PostUserRes(userIdx, jwt);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

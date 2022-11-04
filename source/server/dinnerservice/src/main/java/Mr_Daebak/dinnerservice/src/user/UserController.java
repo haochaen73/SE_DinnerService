@@ -24,14 +24,14 @@ public class UserController {
     private final UserProvider userProvider;
     @Autowired
     private final UserService userService;
-    //@Autowired
-    //private final JwtService jwtService;
+    @Autowired
+    private final JwtService jwtService;
 
-    public UserController(UserProvider userProvider, UserService userService) {
-    //public UserController(UserProvider userProvider, UserService userService, JwtService jwtService) {
+    //public UserController(UserProvider userProvider, UserService userService) {
+    public UserController(UserProvider userProvider, UserService userService, JwtService jwtService) {
         this.userProvider = userProvider;
         this.userService = userService;
-        //this.jwtService = jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
+        this.jwtService = jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
     }
 
     /**
@@ -60,14 +60,14 @@ public class UserController {
         if (postUserReq.getEmail() == null) {
             return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
         }
+        if (postUserReq.getPhoneNum() == null) {
+            return new BaseResponse<>(POST_USERS_EMPTY_PHONENUM);
+        }
         if (postUserReq.getAddress() == null) {
             return new BaseResponse<>(POST_USERS_EMPTY_ADDRESS);
         }
         if (postUserReq.getBirthDate() == null) {
             return new BaseResponse<>(POST_USERS_EMPTY_BIRTHDATE);
-        }
-        if (postUserReq.getPhoneNum() == null) {
-            return new BaseResponse<>(POST_USERS_EMPTY_PHONENUM);
         }
         //이메일 정규표현: 입력받은 이메일이 email@domain.xxx와 같은 형식인지 검사합니다. 형식이 올바르지 않다면 에러 메시지를 보냅니다.
 
@@ -93,6 +93,21 @@ public class UserController {
             return new BaseResponse<>(postUserRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 로그인 API
+     * [POST] /users/logIn
+     */
+    @ResponseBody
+    @PostMapping("/logIn")
+    public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq) {
+        try {
+            PostLoginRes postLoginRes = userProvider.logIn(postLoginReq);
+            return new BaseResponse<>(postLoginRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
         }
     }
 }
