@@ -11,16 +11,6 @@ const MainDiv = styled.div`
   align-items: center;
 `
 
-const StyledButton = styled.button`
-  padding: 6px 20px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  line-height: 1.5;
-  border: 1px solid black;
-  color: white;
-  background: black;
-`;
-
 const StyledLink = styled(Link)`
   padding: 6px 20px;
   border-radius: 20px;
