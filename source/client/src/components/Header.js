@@ -1,12 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled, {css} from 'styled-components';
 
 const HeaderDiv = styled.div`
   background-color: black;
   width: 100%;
   height: 50px;
-  top: 0;
-  position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -28,14 +27,25 @@ const MemberDiv = styled.div`
   padding: 20px;
 `
 
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: white;
+`
+
 
 const Header = () => {
   return (
     <HeaderDiv>
-      <Logo src='images/logo.svg' alt='logo'/>
+      <StyledLink to='/'>
+        <Logo src='images/logo.svg' alt='logo'/>
+      </StyledLink>
       <LeftContentDiv>
-        <MemberDiv>로그인</MemberDiv>
-        <MemberDiv>회원가입</MemberDiv>
+        <MemberDiv>
+          <StyledLink to='/login'>로그인</StyledLink>
+        </MemberDiv>
+        <MemberDiv>
+          <StyledLink to='/signup'>회원가입</StyledLink>
+        </MemberDiv>
       </LeftContentDiv>
     </HeaderDiv>
   );
