@@ -18,16 +18,16 @@ import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.*;
 @Service
 public class UserProvider {
     private final UserDao userDao;
-    //private final JwtService jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
+    private final JwtService jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
 
 
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired //readme 참고
-    public UserProvider(UserDao userDao) {
-    //public UserProvider(UserDao userDao, JwtService jwtService) {
+    //public UserProvider(UserDao userDao) {
+    public UserProvider(UserDao userDao, JwtService jwtService) {
         this.userDao = userDao;
-        //this.jwtService = jwtService; // JWT부분은 7주차에 다루므로 모르셔도 됩니다!
+        this.jwtService = jwtService;
     }
 
     // 해당 아이디가 이미 User Table에 존재하는지 확인
