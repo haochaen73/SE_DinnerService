@@ -66,9 +66,6 @@ public class UserController {
         if (postUserReq.getAddress() == null) {
             return new BaseResponse<>(POST_USERS_EMPTY_ADDRESS);
         }
-        if (postUserReq.getBirthDate() == null) {
-            return new BaseResponse<>(POST_USERS_EMPTY_BIRTHDATE);
-        }
         //이메일 정규표현: 입력받은 이메일이 email@domain.xxx와 같은 형식인지 검사합니다. 형식이 올바르지 않다면 에러 메시지를 보냅니다.
 
         // 유효성 검사
@@ -77,9 +74,6 @@ public class UserController {
         }
         if (!isRegexEmail(postUserReq.getEmail())) {
             return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
-        }
-        if (!isRegexBirthDate(postUserReq.getBirthDate())) {
-            return new BaseResponse<>(POST_USERS_INVALID_BIRTHDAY);
         }
         if (!isRegexPhoneNum(postUserReq.getPhoneNum())) {
             return new BaseResponse<>(POST_USERS_INVALID_PHONENUM);

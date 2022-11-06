@@ -1,16 +1,16 @@
-package Mr_Daebak.dinnerservice.src.user.model;
+package Mr_Daebak.dinnerservice.src.employee.model;
+
 import lombok.*;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostUserReq {
+public class PostEmployeeReq {
     private String name;
     private String id;
     private String password1;
     private String password2;
-    private String email;
-    private String phoneNum;
-    private String address;
+    private String code;
 }

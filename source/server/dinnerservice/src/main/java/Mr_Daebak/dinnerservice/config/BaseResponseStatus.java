@@ -31,8 +31,7 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_PASSWORD(false, 2013, "유저 비밀번호를 입력해주세요."),
     POST_USERS_EMPTY_EMAIL(false, 2014, "유저 이메일을 입력해주세요."),
     POST_USERS_EMPTY_ADDRESS(false, 2015, "유저 주소를 입력해주세요."),
-    POST_USERS_EMPTY_BIRTHDATE(false, 2016, "유저 생일을 입력해주세요."),
-    POST_USERS_EMPTY_PHONENUM(false, 2017, "유저 핸드폰번호를 입력해주세요."),
+    POST_USERS_EMPTY_PHONENUM(false, 2016, "유저 핸드폰번호를 입력해주세요."),
 
     POST_USERS_INVALID_PASSWORD(false, 2018, "비밀번호 형식을 확인해주세요."),
     POST_USERS_INVALID_EMAIL(false, 2019, "이메일 형식을 확인해주세요."),
@@ -44,12 +43,18 @@ public enum BaseResponseStatus {
     POST_USERS_EXISTS_ID(false,2023,"중복된 아이디입니다."),
     POST_USERS_EXISTS_EMAIL(false,2024,"중복된 이메일입니다."),
     POST_USERS_EXISTS_PHONENUM(false,2025,"중복된 번호입니다."),
-    POST_PRODUCTS_EMPTY_PRODUCTNAME(false, 2018, "상품이름을 입력해주세요."),
-    POST_PRODUCTS_EXISTS_PRODUCTNAME(false,2019,"중복된 상품 이름입니다."),
-    POST_CATEGORYS_EMPTY_CATEGORY(false, 2020, "카테고리명을 입력해주세요."),
-    POST_CATEGORYS_EXISTS_CATEGORY(false, 2021, "카테고리명이 존재합니다."),
-    POST_VIEWCOUNTS_EMPTY_USDERIDX(false, 2022, "등록된 유저가 존재합니다."),
-    POST_VIEWCOUNTS_EXISTS_USERIDX(false, 2023, "등록된 유저가 존재합니다."),
+
+
+    // [POST] /employees
+    POST_EMPLOYEES_EMPTY_NAME(false, 2030, "직원 이름을 입력해주세요."),
+    POST_EMPLOYEES_EMPTY_ID(false, 2031, "직원 아이디를 입력해주세요."),
+    POST_EMPLOYEES_EMPTY_PASSWORD(false, 2032, "직원 비밀번호를 입력해주세요."),
+    POST_EMPLOYEES_EMPTY_CODE(false, 2033, "직원 코드를 입력해주세요."),
+    POST_EMPLOYEES_INVALID_PASSWORD(false, 2034, "유효하지 않은 비밀번호입니다."),
+    POST_EMPLOYEES_INVALID_CODE(false, 2035, "유효하지 않은 직원 코드입니다."),
+    POST_EMPLOYEES_NOT_MATCH(false, 2036, "비밀번호가 일치하지 않습니다."),
+
+    POST_EMPLOYEES_EXISTS_ID(false, 2037, "중복된 아이디입니다"),
 
     /**
      * 3000 : Response 오류

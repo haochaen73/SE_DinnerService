@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-    // 로그 남기기
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -26,7 +25,7 @@ public class OrderController {
     }
 
     //@ResponseBody
-    //@PostMapping("/create")    // POST 방식의 요청을 매핑하기 위한 어노테이션
+    //@PostMapping("/create")
     //@Transactional
     //public BaseResponse<PostOrderRes> createOrder(@RequestBody PostOrderReq postOrderReq) {
         //if (postOrderReq.)

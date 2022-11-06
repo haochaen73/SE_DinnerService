@@ -2,9 +2,6 @@ package Mr_Daebak.dinnerservice.src.user.model;
 
 import lombok.*;
 
-import java.util.Date;
-
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,5 +14,4 @@ public class User {
     private String phoneNum;
     private String address;
     private String cardNum;
-    private String birthDate;
 }
