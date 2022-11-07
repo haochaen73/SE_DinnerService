@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Header from './components/Header';
 import styled, {css} from 'styled-components';
+import SignupEmp from './pages/SignupEmp';
+import SignupCus from './pages/SignupCus';
 
 const Container = styled.div`
   margin: 0px 200px;
@@ -23,6 +25,8 @@ function App() {
           <Route path="/order" index element={<Order/>}></Route>
           <Route path="/login" index element={<Login/>}></Route>
           <Route path="/signup" index element={<Signup/>}></Route>
+          <Route path="/signup-employee" index element={<SignupEmp/>}></Route>
+          <Route path="/signup-customer" index element={<SignupCus/>}></Route>
           <Route path="*" index element={<NotFound/>}></Route>
 				</Routes>
 			</BrowserRouter>

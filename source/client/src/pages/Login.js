@@ -44,7 +44,6 @@ const Login = (props) => {
   return (
     <MainDiv>
       <img src='/images/logo_black.svg' alt='logo' width={200}/>
-      <div class=""></div>
       <Container>
         <Input placeholder=' 아이디'/>
         <Input placeholder=' 비밀번호'/>
