@@ -20,7 +20,7 @@ const LeftContentDiv = styled.div`
   display: flex;
   color: white;
   font-size: 10px;
-  font-weight: bold;
+  font-weight: 400;
   margin-right: 70px;
 `
 const MemberDiv = styled.div`
@@ -39,12 +39,14 @@ const Header = () => {
       <StyledLink to='/'>
         <Logo src='images/logo.svg' alt='logo'/>
       </StyledLink>
+      {/* 로그인 여부로 나타낼지 안나타낼지 결정*/}
       <LeftContentDiv>
+        <div style={{padding: '20px', fontWeight: 'bold'}}>이수빈님</div>
         <MemberDiv>
-          <StyledLink to='/login'>로그인</StyledLink>
+          <StyledLink to='/mypage'>마이페이지</StyledLink>
         </MemberDiv>
         <MemberDiv>
-          <StyledLink to='/signup'>회원가입</StyledLink>
+          <StyledLink to='/orderlist'>장바구니</StyledLink>
         </MemberDiv>
       </LeftContentDiv>
     </HeaderDiv>
