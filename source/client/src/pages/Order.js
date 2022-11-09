@@ -1,7 +1,7 @@
 import Button from '../components/Button';
 import React from 'react';
 import styled, {css} from 'styled-components';
-import MenuItem from '../components/MenuItem';
+import MenuItem from '../components/Order/MenuItem';
 
 const menulist = [
   {

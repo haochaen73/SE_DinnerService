@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Button from './Button';
+import Button from '../Button';
 import Modal from 'react-modal';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -149,7 +149,6 @@ const MenuItem = ({menu}) => {
   }
 
   const onChangeProps = (id, key, value) => {
-    //console.log(id);
     setExtraMenu(prevState => {
       return prevState.map(obj => {
         if (obj.extraNo === id) {
