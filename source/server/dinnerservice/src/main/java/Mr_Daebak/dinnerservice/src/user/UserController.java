@@ -104,4 +104,27 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+    /**
+     * 회원 조회 API
+     * [GET] /users/{userIdx}
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
+    public BaseResponse<GetUserRes> getUserByUserIdx(@PathVariable("userIdx") Integer userIdx) {
+        // @PathVariable RESTful(URL)에서 명시된 파라미터({})를 받는 어노테이션, 이 경우 userId값을 받아옴.
+        //  null값 or 공백값이 들어가는 경우는 적용하지 말 것
+        //  .(dot)이 포함된 경우, .을 포함한 그 뒤가 잘려서 들어감
+        // Get Users
+        if (userIdx == null)
+            return new BaseResponse<>(GET_USERS_USERIDX_IS_NULL);
+        try {
+            GetUserRes getUserRes = userProvider.getUserByUserIdx(userIdx);
+            return new BaseResponse<>(getUserRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
 }

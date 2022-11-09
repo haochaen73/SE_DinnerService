@@ -1,8 +1,10 @@
 package Mr_Daebak.dinnerservice.src.order;
 
+import Mr_Daebak.dinnerservice.config.BaseException;
 import Mr_Daebak.dinnerservice.config.BaseResponse;
 import Mr_Daebak.dinnerservice.src.order.*;
 import Mr_Daebak.dinnerservice.src.order.model.*;
+import Mr_Daebak.dinnerservice.src.user.model.PostUserRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,17 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    //@ResponseBody
-    //@PostMapping("/create")
-    //@Transactional
-    //public BaseResponse<PostOrderRes> createOrder(@RequestBody PostOrderReq postOrderReq) {
-        //if (postOrderReq.)
+//    @ResponseBody
+//    @PostMapping("/order")
+//    @Transactional
+//    public BaseResponse<PostOrderRes> createOrder(@RequestBody PostOrderReq postOrderReq) {
+//        try {
+//            PostOrderRes postOrderRes = orderService.createOrder(postOrderRes);
+//            return new BaseResponse<>(postOrderRes);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
 
-    //}
+
 }

@@ -1,11 +1,10 @@
 package Mr_Daebak.dinnerservice.src.user.model;
-
 import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class User {
+public class GetUserRes {
     private int userIdx;
     private String name;
     private String id;

@@ -4,6 +4,7 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PostOrderRes {
-    private int orderIdx;
+public class GetOrderReq {
+    private int userIdx;
+
 }

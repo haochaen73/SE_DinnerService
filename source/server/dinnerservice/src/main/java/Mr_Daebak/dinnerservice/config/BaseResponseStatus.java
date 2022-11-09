@@ -43,6 +43,7 @@ public enum BaseResponseStatus {
     POST_USERS_EXISTS_ID(false,2023,"중복된 아이디입니다."),
     POST_USERS_EXISTS_EMAIL(false,2024,"중복된 이메일입니다."),
     POST_USERS_EXISTS_PHONENUM(false,2025,"중복된 번호입니다."),
+    GET_USERS_USERIDX_IS_NULL(false, 2026, "user 인덱스 값이 널입니다."),
 
 
     // [POST] /employees

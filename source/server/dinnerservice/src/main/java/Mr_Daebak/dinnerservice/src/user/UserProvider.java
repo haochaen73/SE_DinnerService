@@ -3,9 +3,7 @@ package Mr_Daebak.dinnerservice.src.user;
 import Mr_Daebak.dinnerservice.config.BaseException;
 import Mr_Daebak.dinnerservice.config.BaseResponseStatus;
 import Mr_Daebak.dinnerservice.config.secret.Secret;
-import Mr_Daebak.dinnerservice.src.user.model.PostLoginReq;
-import Mr_Daebak.dinnerservice.src.user.model.PostLoginRes;
-import Mr_Daebak.dinnerservice.src.user.model.User;
+import Mr_Daebak.dinnerservice.src.user.model.*;
 import Mr_Daebak.dinnerservice.utils.AES128;
 import Mr_Daebak.dinnerservice.utils.JwtService;
 import org.slf4j.Logger;
@@ -82,6 +80,16 @@ public class UserProvider {
             return new PostLoginRes(userIdx, jwt);
         } else { // 비밀번호가 다르다면 에러메세지를 출력한다.
             throw new BaseException(FAILED_TO_LOGIN);
+        }
+    }
+
+    // getUserByUserIdx
+    public GetUserRes getUserByUserIdx(Integer userIdx) throws BaseException {
+        try {
+            GetUserRes getUserRes = userDao.getUserByUserIdx(userIdx);
+            return getUserRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 }
