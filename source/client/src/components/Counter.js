@@ -5,7 +5,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 const StyledDiv = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   width: 200px;
   padding: 10px 0px;
@@ -28,17 +28,27 @@ const CountDiv = styled.div`
   color: white;
 `
 
-const Counter = ({count}) => {
+const Counter = ({extra, onChangeProps}) => {
+  const amountIncreaseHandler = event => {
+    event.preventDefault();
+    onChangeProps(extra.extraNo, 'amount', extra.amount + 1);
+
+  };
+
+  const amountDecreaseHandler = event => {
+    event.preventDefault();
+    onChangeProps(extra.extraNo, 'amount', extra.amount - 1);
+  };
   return (
     <StyledDiv>
       <div>
-        <div style={{margin: '5px 0px', fontSize: '12px', fontWeight: '400'}}>와인 한 병</div>
-        <div style={{fontSize: '8px', color: 'gray'}}>22,000원</div>
+        <div style={{margin: '5px 0px', fontSize: '12px', fontWeight: '400'}}>{extra.name}</div>
+        <div style={{fontSize: '8px', color: 'gray'}}>{extra.price}원</div>
       </div>
       <CountDiv>
-        <RemoveIcon sx={{ fontSize: 12 }} />
-        {count}
-        <AddIcon sx={{ fontSize: 12 }}/>
+        <RemoveIcon sx={{ fontSize: 12, cursor: 'pointer' }} onClick={amountDecreaseHandler}/>
+        {extra.amount}
+        <AddIcon sx={{ fontSize: 12, cursor: 'pointer' }} onClick={amountIncreaseHandler}/>
       </CountDiv>
     </StyledDiv>
   );

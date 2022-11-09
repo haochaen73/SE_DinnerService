@@ -29,6 +29,69 @@ const menustyle = [
   },
 ]
 
+const extramenu = [
+  {
+    extraNo : 1,
+    name : '와인 한 병',
+    price : 22000,
+    amount : 0
+  },
+  {
+    extraNo : 2,
+    name : '와인 한 잔',
+    price : 7000,
+    amount : 0
+  },
+  {
+    extraNo : 3,
+    name : '스테이크',
+    price : 30000,
+    amount : 0
+  },
+  {
+    extraNo : 4,
+    name : '커피 한 잔',
+    price : 4000,
+    amount : 0
+  },
+  {
+    extraNo : 5,
+    name : '커피 한 포트',
+    price : 9000,
+    amount : 0
+  },
+  {
+    extraNo : 6,
+    name : '샐러드',
+    price : 10000,
+    amount : 0
+  },
+  {
+    extraNo : 7,
+    name : '에그 스크램블',
+    price : 2000,
+    amount : 0
+  },
+  {
+    extraNo : 8,
+    name : '베이컨',
+    price : 1000,
+    amount : 0
+  },
+  {
+    extraNo : 9,
+    name : '샴페인',
+    price : 22000,
+    amount : 0
+  },
+  {
+    extraNo : 10,
+    name : '바게트 빵',
+    price : 2000,
+    amount : 0
+  }
+]
+
 const MenuBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -78,11 +141,25 @@ const MenuItem = ({menu}) => {
 
   const [checkedStyle, setCheckedStyle] = useState(style);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [extraMenu, setExtraMenu] = useState(extramenu);
 
   const styleHandler = (e) => {
     setCheckedStyle(e.target.value);
     console.log(checkedStyle);
   }
+
+  const onChangeProps = (id, key, value) => {
+    //console.log(id);
+    setExtraMenu(prevState => {
+      return prevState.map(obj => {
+        if (obj.extraNo === id) {
+          return { ...obj, [key]: value };
+        } else {
+          return { ...obj };
+        }
+      });
+    });
+  };
 
   return (
     <MenuBox>
@@ -114,15 +191,11 @@ const MenuItem = ({menu}) => {
               <MidDiv>
                 <div style={{fontWeight: 'bold', fontSize: '14px', paddingBottom: '25px'}}>추가 선택</div>
                 <ExtraDiv>
+                  {extraMenu.map((extra) => {
+                    return (<Counter key={extra.extraNo} extra={extra} onChangeProps={onChangeProps}/>);
+                  })
+                  }
                   {/* 임의로.. */}
-                  <Counter count={0} />
-                  <Counter count={0} />
-                  <Counter count={0} />
-                  <Counter count={0} />
-                  <Counter count={0} />
-                  <Counter count={0} />
-                  <Counter count={0} />
-                  <Counter count={0} />
                 </ExtraDiv>
                 <div style={{fontWeight: 'bold', fontSize: '14px', paddingBottom: '25px'}}>스타일 선택</div>
                 <StyleDiv>
@@ -148,7 +221,6 @@ const MenuItem = ({menu}) => {
               <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
                 <Button text="장바구니 담기" onClick={()=> setModalIsOpen(false)}/>
               </div>
-
             </ModalContainer>
         </Modal>
       </div>
