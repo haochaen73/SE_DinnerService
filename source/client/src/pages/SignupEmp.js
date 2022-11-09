@@ -4,7 +4,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 
 const MainDiv = styled.div`
-  padding: 50px;
+  padding: 80px;
   height: 300px;
   display: flex;
   flex-direction: column;
@@ -14,7 +14,7 @@ const MainDiv = styled.div`
 const InputLayer = styled.div`
 	position: relative;
 	width: 100%;
-	margin-top: 30px;
+	margin-top: 20px;
 	margin-bottom: 20px;
 	display: flex;
 	flex-direction: column;
