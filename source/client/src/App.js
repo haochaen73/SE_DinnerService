@@ -12,7 +12,8 @@ import SignupCus from './pages/SignupCus';
 import Cart from './pages/Cart';
 
 const Container = styled.div`
-  margin: 0px 200px;
+  width: 1000px;
+  margin: 0 auto;
   height: 100vh;
 `
 function App() {
