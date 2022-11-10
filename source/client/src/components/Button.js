@@ -13,12 +13,13 @@ const StyledButton = styled.button`
   color: white;
   :hover{
     background: #262626;
+    cursor: pointer;
   }
 `;
 
-const Button = ({text}) => {
+const Button = ({text, onClick}) => {
   return (
-    <StyledButton>
+    <StyledButton onClick={onClick}>
       {text}
     </StyledButton>
   );
