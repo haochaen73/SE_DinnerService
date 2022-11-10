@@ -22,12 +22,14 @@ public class OrderService {
         this.orderProvider = orderProvider;
     }
 
-//    public PostOrderRes createOrder(PostOrderReq postOrderReq) throws BaseException {
-//        try {
-//            int orderIdx = OrderDao.createOrder(postOrderReq);
-//            return new PostOrderRes(orderIdx);
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+    public PostOrderRes createOrder(PostOrderReq postOrderReq) throws BaseException {
+        try {
+            System.out.println("service 시작");
+            int orderIdx = orderDao.createOrder(postOrderReq);
+            System.out.println("dao 끝");
+            return new PostOrderRes(orderIdx);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

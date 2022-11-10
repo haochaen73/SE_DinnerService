@@ -26,17 +26,19 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-//    @ResponseBody
-//    @PostMapping("/order")
-//    @Transactional
-//    public BaseResponse<PostOrderRes> createOrder(@RequestBody PostOrderReq postOrderReq) {
-//        try {
-//            PostOrderRes postOrderRes = orderService.createOrder(postOrderRes);
-//            return new BaseResponse<>(postOrderRes);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
+    @ResponseBody
+    @PostMapping("/order")
+    @Transactional
+    public BaseResponse<PostOrderRes> createOrder(@RequestBody PostOrderReq postOrderReq) {
+        try {
+            System.out.println("controller 시작");
+            PostOrderRes postOrderRes = orderService.createOrder(postOrderReq);
+            System.out.println("orderService 끝");
+            return new BaseResponse<>(postOrderRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 
 }

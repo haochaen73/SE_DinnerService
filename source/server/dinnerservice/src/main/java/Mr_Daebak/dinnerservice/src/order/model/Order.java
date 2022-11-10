@@ -1,6 +1,8 @@
 package Mr_Daebak.dinnerservice.src.order.model;
 
 import lombok.*;
+
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
