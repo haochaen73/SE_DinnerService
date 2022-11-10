@@ -10,6 +10,7 @@ import styled, {css} from 'styled-components';
 import SignupEmp from './pages/SignupEmp';
 import SignupCus from './pages/SignupCus';
 import Cart from './pages/Cart';
+import MyPage from './pages/MyPage';
 
 const Container = styled.div`
   margin: 0px 200px;
@@ -29,6 +30,7 @@ function App() {
           <Route path="/orderlist" index element={<Cart/>}></Route>
           <Route path="/signup-employee" index element={<SignupEmp/>}></Route>
           <Route path="/signup-customer" index element={<SignupCus/>}></Route>
+          <Route path="/mypage" index element={<MyPage/>}></Route>
           <Route path="*" index element={<NotFound/>}></Route>
 				</Routes>
 			</BrowserRouter>
