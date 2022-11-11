@@ -29,30 +29,29 @@ public class OrderService {
         try {
             System.out.println("service 시작");
             int orderIdx = orderDao.createOrder(postOrderReq);
-
-            ArrayList<ArrayList> dinnerIdxList = orderDao.createDinner(postOrderReq, orderIdx);
+            orderDao.createDinnerExtra(postOrderReq, orderIdx);
             System.out.println("dao 끝");
             return orderIdx;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
-    public void createDinner(PostOrderReq postOrderReq) throws BaseException {
-        try {
-
-        } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    public void createExtra(PostOrderReq postOrderReq) throws BaseException {
-        try {
-
-        } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
+//
+//    public void createDinner(PostOrderReq postOrderReq) throws BaseException {
+//        try {
+//
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
+//
+//    public void createExtra(PostOrderReq postOrderReq) throws BaseException {
+//        try {
+//
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 
 //    public PostDinnerRes createDinner(PostDinnerReq postDinnerReq) throws BaseException {
 //        try {

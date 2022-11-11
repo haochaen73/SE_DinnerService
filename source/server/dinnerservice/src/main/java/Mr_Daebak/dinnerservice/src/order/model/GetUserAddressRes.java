@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetUserAddressCardNumRes {
+public class GetUserAddressRes {
     private String address;
-    private String cardNum;
 }

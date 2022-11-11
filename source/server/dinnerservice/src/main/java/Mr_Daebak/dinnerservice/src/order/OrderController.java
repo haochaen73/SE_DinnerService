@@ -35,7 +35,6 @@ public class OrderController {
         try {
             System.out.println("controller 시작");
             int orderIdx = orderService.createOrder(postOrderReq);
-            orderService.createDinner(postOrderReq);
 
             PostOrderRes postOrderRes = new PostOrderRes(orderIdx);
             System.out.println("orderService 끝");
