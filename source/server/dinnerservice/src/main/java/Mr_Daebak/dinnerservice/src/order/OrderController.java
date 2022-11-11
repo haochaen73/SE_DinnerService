@@ -66,17 +66,17 @@ public class OrderController {
         }
     }
 
-//    @ResponseBody
-//    @PatchMapping("/{orderIdx}/start")
-//    public BaseResponse<String> changeStateStart(@PathVariable("orderIdx") int orderIdx) {
-//        try {
-//            orderService.changeStateStart(orderIdx);
-//            String result = "조리가 시작 되었습니다";
-//            return new BaseResponse<>(result);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>(exception.getStatus());
-//        }
-//    }
+    @ResponseBody
+    @PatchMapping("/{orderIdx}/start")
+    public BaseResponse<String> changeStateStart(@PathVariable("orderIdx") int orderIdx) {
+        try {
+            orderService.changeStateStart(orderIdx);
+            String result = "조리가 시작 되었습니다";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
 //    @ResponseBody
 //    @PatchMapping("/{orderIdx}/delete")

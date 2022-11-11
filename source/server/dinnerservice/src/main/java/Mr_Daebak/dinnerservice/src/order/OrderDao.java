@@ -100,4 +100,10 @@ public class OrderDao {
         return this.jdbcTemplate.update(changeStateAcceptQuery, changeStateAcceptParams);
     }
 
+    public int changeStateStart(int orderIdx) {
+        String changeStateAcceptQuery = "update `order` set state = 3 where orderIdx = ?";
+        String changeStateAcceptParams = String.valueOf(orderIdx);
+        return this.jdbcTemplate.update(changeStateAcceptQuery, changeStateAcceptParams);
+    }
+
 }
