@@ -73,6 +73,18 @@ public class OrderService {
         }
     }
 
+    public int changeStateComplete(int orderIdx) throws BaseException{
+        try {
+            int state = orderDao.changeStateComplete(orderIdx);
+            if (state == 0) {
+                throw new BaseException(MODIFY_FAIL_STATE);
+            }
+            return state;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 //
 //    public void createDinner(PostOrderReq postOrderReq) throws BaseException {
 //        try {

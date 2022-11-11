@@ -95,15 +95,21 @@ public class OrderDao {
     }
 
     public int changeStateDelete(int orderIdx) {
-        String changeStateAcceptQuery = "update `order` set state = 0 where orderIdx = ?";
-        String changeStateAcceptParams = String.valueOf(orderIdx);
-        return this.jdbcTemplate.update(changeStateAcceptQuery, changeStateAcceptParams);
+        String changeStateDeleteQuery = "update `order` set state = 0 where orderIdx = ?";
+        String changeStateDeleteParams = String.valueOf(orderIdx);
+        return this.jdbcTemplate.update(changeStateDeleteQuery, changeStateDeleteParams);
     }
 
     public int changeStateStart(int orderIdx) {
-        String changeStateAcceptQuery = "update `order` set state = 3 where orderIdx = ?";
-        String changeStateAcceptParams = String.valueOf(orderIdx);
-        return this.jdbcTemplate.update(changeStateAcceptQuery, changeStateAcceptParams);
+        String changeStateStartQuery = "update `order` set state = 3 where orderIdx = ?";
+        String changeStateStartParams = String.valueOf(orderIdx);
+        return this.jdbcTemplate.update(changeStateStartQuery, changeStateStartParams);
+    }
+
+    public int changeStateComplete(int orderIdx) {
+        String changeStateCompleteQuery = "update `order` set state = 4 where orderIdx = ?";
+        String changeStateCompleteParams = String.valueOf(orderIdx);
+        return this.jdbcTemplate.update(changeStateCompleteQuery, changeStateCompleteParams);
     }
 
 }

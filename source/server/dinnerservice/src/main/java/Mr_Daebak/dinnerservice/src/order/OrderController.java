@@ -78,6 +78,18 @@ public class OrderController {
         }
     }
 
+    @ResponseBody
+    @PatchMapping("/{orderIdx}/complete")
+    public BaseResponse<String> changeStateComplete(@PathVariable("orderIdx") int orderIdx) {
+        try {
+            orderService.changeStateStart(orderIdx);
+            String result = "조리가 완료 되었습니다";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
 //    @ResponseBody
 //    @PatchMapping("/{orderIdx}/delete")
 //    public BaseResponse<String> changeStateDelete(@PathVariable("userIdx") Integer userIdx) {
