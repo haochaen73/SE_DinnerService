@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import OrderList from '../components/Employee/OrderList/OrderList';
 import OrderDetail from '../components/Employee/OrderList/OrderDetail';
+import Stock from '../components/Employee/Stock/Stock';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -68,7 +69,7 @@ const Employee = () => {
         <OrderList/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <Stock />
       </TabPanel>
     </Box>
   );

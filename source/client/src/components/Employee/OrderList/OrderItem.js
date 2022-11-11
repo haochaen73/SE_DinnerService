@@ -6,7 +6,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px gray solid;
+  border-bottom: 1px solid #808080;
   cursor: pointer;
   &:hover{  
     background-color : #444444;
