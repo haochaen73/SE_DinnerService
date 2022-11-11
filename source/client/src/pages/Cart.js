@@ -203,7 +203,7 @@ const Cart = () => {
               <div>총 결제금액</div>
               <div>53000원</div>
             </TotalPrice>
-            <Button text='결제하기'/>
+            <Button>결제하기</Button>
           </Box>
         </div>
       </CartContainer>

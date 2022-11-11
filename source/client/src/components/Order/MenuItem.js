@@ -162,7 +162,7 @@ const MenuItem = ({menu}) => {
       <div style={{fontSize: '12px', color: 'gray', marginBottom: '20px'}}>{menu.text}</div>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
         <div style={{fontSize: '15px', fontWeight: 'bold'}}>{menu.price}</div>
-        <Button text="주문하기" onClick={()=> setModalIsOpen(true)}/>
+        <Button onClick={()=> setModalIsOpen(true)}>주문하기</Button>
         <Modal 
           style={{
             content: {
@@ -214,7 +214,7 @@ const MenuItem = ({menu}) => {
                 </div>
               </MidDiv>
               <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                <Button text="장바구니 담기" onClick={()=> setModalIsOpen(false)}/>
+                <Button onClick={()=> setModalIsOpen(false)}>장바구니 담기</Button>
               </div>
             </ModalContainer>
         </Modal>

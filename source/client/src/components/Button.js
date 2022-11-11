@@ -6,7 +6,7 @@ const StyledButton = styled.button`
   border-radius: 20px;
   font-size: 0.8rem;
   line-height: 1.5;
-  border: 1px solid black;
+  border: 0px solid black;
   color: white;
   background: black;  
   text-decoration: none;
@@ -17,10 +17,10 @@ const StyledButton = styled.button`
   }
 `;
 
-const Button = ({text, onClick}) => {
+const Button = ({children, onClick}) => {
   return (
     <StyledButton onClick={onClick}>
-      {text}
+      {children}
     </StyledButton>
   );
 };

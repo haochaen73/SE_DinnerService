@@ -55,7 +55,7 @@ const Order = () => {
     <Container>
       <OrderTextDiv>
         <div>주문하기</div>
-        <Button text="음성인식"/>
+        <Button>음성인식</Button>
       </OrderTextDiv>
       <MenuDiv>
         {
