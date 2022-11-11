@@ -4,14 +4,12 @@ import Mr_Daebak.dinnerservice.config.BaseException;
 import Mr_Daebak.dinnerservice.config.BaseResponse;
 import Mr_Daebak.dinnerservice.src.order.*;
 import Mr_Daebak.dinnerservice.src.order.model.*;
-import Mr_Daebak.dinnerservice.src.user.model.PostUserRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -43,6 +41,32 @@ public class OrderController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    @ResponseBody
+    @PatchMapping("/{orderIdx}/accept")
+    public BaseResponse<String> changeStateAccept(@PathVariable("orderIdx") int orderIdx) {
+        try {
+            System.out.println("1");
+            orderService.changeStateAccept(orderIdx);
+            String result = "주문이 승인되었습니다";
+            System.out.println("6");
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+//    @ResponseBody
+//    @PatchMapping("/{orderIdx}/delete")
+//    public BaseResponse<String> changeStateDelete(@PathVariable("userIdx") Integer userIdx) {
+//        try {
+//            orderService.changeStateAccept(userIdx);
+//            String result = "주문이 승인되었습니다";
+//            return new BaseResponse<>(result);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>(exception.getStatus());
+//        }
+//    }
 
 //    @ResponseBody
 //    @PostMapping("/dinner")

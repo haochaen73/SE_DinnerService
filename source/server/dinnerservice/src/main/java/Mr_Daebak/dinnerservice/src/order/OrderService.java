@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.DATABASE_ERROR;
+import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.*;
 
 @Service
 public class OrderService {
@@ -32,6 +32,20 @@ public class OrderService {
             orderDao.createDinnerExtra(postOrderReq, orderIdx);
             System.out.println("dao 끝");
             return orderIdx;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public int changeStateAccept(int orderIdx) throws BaseException{
+        try {
+            System.out.println("2");
+            int state = orderDao.changeStateAccept(orderIdx);
+            System.out.println("4");
+            if (state == 0) {
+                throw new BaseException(MODIFY_FAIL_STATE);
+            }
+            return state;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

@@ -86,7 +86,13 @@ public class OrderDao {
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
+    }
 
+    public int changeStateAccept(int orderIdx) {
+        System.out.println("3");
+        String changeStateAcceptQuery = "update `order` set state = 2 where orderIdx = ?";
+        String changeStateAcceptParams = String.valueOf(orderIdx);
+        return this.jdbcTemplate.update(changeStateAcceptQuery, changeStateAcceptParams);
     }
 
 }

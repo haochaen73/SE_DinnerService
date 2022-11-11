@@ -57,6 +57,9 @@ public enum BaseResponseStatus {
 
     POST_EMPLOYEES_EXISTS_ID(false, 2037, "중복된 아이디입니다"),
 
+    // /orders
+    // POST_ORDERS
+    MODIFY_FAIL_STATE(false, 2041, "상태 변경에 실패했습니다."),
     /**
      * 3000 : Response 오류
      */
