@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.DATABASE_ERROR;
 
 @Service
@@ -22,14 +25,41 @@ public class OrderService {
         this.orderProvider = orderProvider;
     }
 
-    public PostOrderRes createOrder(PostOrderReq postOrderReq) throws BaseException {
+    public int createOrder(PostOrderReq postOrderReq) throws BaseException {
         try {
             System.out.println("service 시작");
             int orderIdx = orderDao.createOrder(postOrderReq);
+
+            ArrayList<ArrayList> dinnerIdxList = orderDao.createDinner(postOrderReq, orderIdx);
             System.out.println("dao 끝");
-            return new PostOrderRes(orderIdx);
+            return orderIdx;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public void createDinner(PostOrderReq postOrderReq) throws BaseException {
+        try {
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public void createExtra(PostOrderReq postOrderReq) throws BaseException {
+        try {
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+//    public PostDinnerRes createDinner(PostDinnerReq postDinnerReq) throws BaseException {
+//        try {
+//            int dinnerIdx = orderDao.createDinner(postDinnerReq);
+//            return new PostDinnerRes(dinnerIdx);
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 }

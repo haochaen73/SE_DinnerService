@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
@@ -32,7 +34,10 @@ public class OrderController {
     public BaseResponse<PostOrderRes> createOrder(@RequestBody PostOrderReq postOrderReq) {
         try {
             System.out.println("controller 시작");
-            PostOrderRes postOrderRes = orderService.createOrder(postOrderReq);
+            int orderIdx = orderService.createOrder(postOrderReq);
+            orderService.createDinner(postOrderReq);
+
+            PostOrderRes postOrderRes = new PostOrderRes(orderIdx);
             System.out.println("orderService 끝");
             return new BaseResponse<>(postOrderRes);
         } catch (BaseException exception) {
@@ -40,5 +45,16 @@ public class OrderController {
         }
     }
 
+//    @ResponseBody
+//    @PostMapping("/dinner")
+//    @Transactional
+//    public BaseResponse<PostDinnerRes> createDinner(@RequestBody PostDinnerReq postDinnerReq) {
+//        try {
+//            PostDinnerRes postDinnerRes = orderService.creatDinner(postDinnerReq);
+//            return new BaseResponse<>(postDinnerRes);
+//        } catch (BaseException baseException) {
+//            return new BaseResponse<>(exception.getStatus());
+//        }
+//    }
 
 }

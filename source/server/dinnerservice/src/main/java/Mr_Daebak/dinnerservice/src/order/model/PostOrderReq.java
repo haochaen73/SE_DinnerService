@@ -1,7 +1,7 @@
 package Mr_Daebak.dinnerservice.src.order.model;
 import lombok.*;
 
-import java.sql.Timestamp;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -13,4 +13,5 @@ public class PostOrderReq {
     private int totalPrice;
     private String address;
     private String cardNum;
+    private ArrayList<Dinner> dinnerList;
 }

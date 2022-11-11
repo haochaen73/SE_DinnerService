@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 public class Extra {
+    private int extraIdx;
     private int extraNo;
     private String extraName;
     private int amount;

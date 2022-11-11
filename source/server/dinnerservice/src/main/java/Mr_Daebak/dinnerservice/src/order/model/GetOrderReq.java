@@ -6,5 +6,4 @@ import lombok.*;
 @AllArgsConstructor
 public class GetOrderReq {
     private int userIdx;
-
 }

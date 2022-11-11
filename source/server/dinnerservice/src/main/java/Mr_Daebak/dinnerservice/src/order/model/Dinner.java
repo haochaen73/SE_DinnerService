@@ -1,7 +1,7 @@
 package Mr_Daebak.dinnerservice.src.order.model;
 
 import lombok.*;
-import java.util.List;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -11,8 +11,8 @@ public class Dinner {
     private int orderIdx;
     private int dinnerno;
     private String dinnerName;
-    private int styleNo;
-    private String styleName;
+    private String style;
     private int dinnerPrice;
-    private List<Extra> extraList;
+    private int amount;
+    private ArrayList<Extra> extraList;
 }
