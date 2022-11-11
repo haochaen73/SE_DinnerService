@@ -54,17 +54,6 @@ public class OrderController {
         }
     }
 
-    @ResponseBody
-    @PatchMapping("/{orderIdx}/accept")
-    public BaseResponse<String> changeStateAccept(@PathVariable("orderIdx") int orderIdx) {
-        try {
-            orderService.changeStateAccept(orderIdx);
-            String result = "주문이 승인되었습니다";
-            return new BaseResponse<>(result);
-        } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getStatus());
-        }
-    }
 
     @ResponseBody
     @PatchMapping("/{orderIdx}/start")

@@ -49,18 +49,6 @@ public class OrderService {
         }
     }
 
-    public int changeStateAccept(int orderIdx) throws BaseException{
-        try {
-            int state = orderDao.changeStateAccept(orderIdx);
-            if (state == 0) {
-                throw new BaseException(MODIFY_FAIL_STATE);
-            }
-            return state;
-        } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
     public int changeStateStart(int orderIdx) throws BaseException{
         try {
             int state = orderDao.changeStateStart(orderIdx);
