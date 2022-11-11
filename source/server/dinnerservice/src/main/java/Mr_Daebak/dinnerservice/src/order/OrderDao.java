@@ -112,4 +112,10 @@ public class OrderDao {
         return this.jdbcTemplate.update(changeStateCompleteQuery, changeStateCompleteParams);
     }
 
+    public int changeStateDeliver(int orderIdx) {
+        String changeStateDeliverQuery = "update `order` set state = 5 where orderIdx = ?";
+        String changeStateDeliverParams = String.valueOf(orderIdx);
+        return this.jdbcTemplate.update(changeStateDeliverQuery, changeStateDeliverParams);
+    }
+
 }
