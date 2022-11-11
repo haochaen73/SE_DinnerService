@@ -88,16 +88,16 @@ public class OrderDao {
         }
     }
 
-    public int changeStateAccept(int orderIdx) {
-        String changeStateAcceptQuery = "update `order` set state = 2 where orderIdx = ?";
-        String changeStateAcceptParams = String.valueOf(orderIdx);
-        return this.jdbcTemplate.update(changeStateAcceptQuery, changeStateAcceptParams);
-    }
-
     public int changeStateDelete(int orderIdx) {
         String changeStateDeleteQuery = "update `order` set state = 0 where orderIdx = ?";
         String changeStateDeleteParams = String.valueOf(orderIdx);
         return this.jdbcTemplate.update(changeStateDeleteQuery, changeStateDeleteParams);
+    }
+
+    public int changeStateAccept(int orderIdx) {
+        String changeStateAcceptQuery = "update `order` set state = 2 where orderIdx = ?";
+        String changeStateAcceptParams = String.valueOf(orderIdx);
+        return this.jdbcTemplate.update(changeStateAcceptQuery, changeStateAcceptParams);
     }
 
     public int changeStateStart(int orderIdx) {

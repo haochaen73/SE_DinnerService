@@ -37,9 +37,9 @@ public class OrderService {
         }
     }
 
-    public int changeStateAccept(int orderIdx) throws BaseException{
+    public int changeStateDelete(int orderIdx) throws BaseException{
         try {
-            int state = orderDao.changeStateAccept(orderIdx);
+            int state = orderDao.changeStateDelete(orderIdx);
             if (state == 0) {
                 throw new BaseException(MODIFY_FAIL_STATE);
             }
@@ -49,9 +49,9 @@ public class OrderService {
         }
     }
 
-    public int changeStateDelete(int orderIdx) throws BaseException{
+    public int changeStateAccept(int orderIdx) throws BaseException{
         try {
-            int state = orderDao.changeStateDelete(orderIdx);
+            int state = orderDao.changeStateAccept(orderIdx);
             if (state == 0) {
                 throw new BaseException(MODIFY_FAIL_STATE);
             }

@@ -43,11 +43,11 @@ public class OrderController {
     }
 
     @ResponseBody
-    @PatchMapping("/{orderIdx}/accept")
-    public BaseResponse<String> changeStateAccept(@PathVariable("orderIdx") int orderIdx) {
+    @PatchMapping("/{orderIdx}/delete")
+    public BaseResponse<String> changeStateDelete(@PathVariable("orderIdx") int orderIdx) {
         try {
-            orderService.changeStateAccept(orderIdx);
-            String result = "주문이 승인되었습니다";
+            orderService.changeStateDelete(orderIdx);
+            String result = "주문이 삭제되었습니다";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -55,11 +55,11 @@ public class OrderController {
     }
 
     @ResponseBody
-    @PatchMapping("/{orderIdx}/delete")
-    public BaseResponse<String> changeStateDelete(@PathVariable("orderIdx") int orderIdx) {
+    @PatchMapping("/{orderIdx}/accept")
+    public BaseResponse<String> changeStateAccept(@PathVariable("orderIdx") int orderIdx) {
         try {
             orderService.changeStateAccept(orderIdx);
-            String result = "주문이 삭제되었습니다";
+            String result = "주문이 승인되었습니다";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
@@ -82,7 +82,7 @@ public class OrderController {
     @PatchMapping("/{orderIdx}/complete")
     public BaseResponse<String> changeStateComplete(@PathVariable("orderIdx") int orderIdx) {
         try {
-            orderService.changeStateStart(orderIdx);
+            orderService.changeStateComplete(orderIdx);
             String result = "조리가 완료 되었습니다";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
@@ -94,7 +94,7 @@ public class OrderController {
     @PatchMapping("/{orderIdx}/deliver")
     public BaseResponse<String> changeStateDeliver(@PathVariable("orderIdx") int orderIdx) {
         try {
-            orderService.changeStateStart(orderIdx);
+            orderService.changeStateDeliver(orderIdx);
             String result = "배달이 완료 되었습니다";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
