@@ -39,9 +39,7 @@ public class OrderService {
 
     public int changeStateAccept(int orderIdx) throws BaseException{
         try {
-            System.out.println("2");
             int state = orderDao.changeStateAccept(orderIdx);
-            System.out.println("4");
             if (state == 0) {
                 throw new BaseException(MODIFY_FAIL_STATE);
             }
@@ -50,6 +48,20 @@ public class OrderService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public int changeStateDelete(int orderIdx) throws BaseException{
+        try {
+            int state = orderDao.changeStateDelete(orderIdx);
+            if (state == 0) {
+                throw new BaseException(MODIFY_FAIL_STATE);
+            }
+            return state;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
 //
 //    public void createDinner(PostOrderReq postOrderReq) throws BaseException {
 //        try {

@@ -46,15 +46,37 @@ public class OrderController {
     @PatchMapping("/{orderIdx}/accept")
     public BaseResponse<String> changeStateAccept(@PathVariable("orderIdx") int orderIdx) {
         try {
-            System.out.println("1");
             orderService.changeStateAccept(orderIdx);
             String result = "주문이 승인되었습니다";
-            System.out.println("6");
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+    @ResponseBody
+    @PatchMapping("/{orderIdx}/delete")
+    public BaseResponse<String> changeStateDelete(@PathVariable("orderIdx") int orderIdx) {
+        try {
+            orderService.changeStateAccept(orderIdx);
+            String result = "주문이 삭제되었습니다";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+//    @ResponseBody
+//    @PatchMapping("/{orderIdx}/start")
+//    public BaseResponse<String> changeStateStart(@PathVariable("orderIdx") int orderIdx) {
+//        try {
+//            orderService.changeStateStart(orderIdx);
+//            String result = "조리가 시작 되었습니다";
+//            return new BaseResponse<>(result);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>(exception.getStatus());
+//        }
+//    }
 
 //    @ResponseBody
 //    @PatchMapping("/{orderIdx}/delete")

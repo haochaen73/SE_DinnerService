@@ -89,8 +89,13 @@ public class OrderDao {
     }
 
     public int changeStateAccept(int orderIdx) {
-        System.out.println("3");
         String changeStateAcceptQuery = "update `order` set state = 2 where orderIdx = ?";
+        String changeStateAcceptParams = String.valueOf(orderIdx);
+        return this.jdbcTemplate.update(changeStateAcceptQuery, changeStateAcceptParams);
+    }
+
+    public int changeStateDelete(int orderIdx) {
+        String changeStateAcceptQuery = "update `order` set state = 0 where orderIdx = ?";
         String changeStateAcceptParams = String.valueOf(orderIdx);
         return this.jdbcTemplate.update(changeStateAcceptQuery, changeStateAcceptParams);
     }
