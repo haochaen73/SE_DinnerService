@@ -77,7 +77,7 @@ public class UserDao {
     // getUserByUserIdx
     public GetUserRes getUserByUserIdx(Integer userIdx) {
         String getUserByUserIdxQuery = "select userIdx, name, id, password, email, phoneNum, address, cardNum, totalPrice from user where userIdx = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
-        String getUserByUserIdxParams = String.valueOf(userIdx); // 주입될 email값을 클라이언트의 요청에서 주어진 정보를 통해 가져온다.
+        String getUserByUserIdxParams = String.valueOf(userIdx);
 
         return this.jdbcTemplate.queryForObject(getUserByUserIdxQuery,
                 (rs, rowNum) -> new GetUserRes(
@@ -94,4 +94,6 @@ public class UserDao {
                 getUserByUserIdxParams
         );
     }
+
+    //public GetUserRes getUsers
 }

@@ -4,10 +4,9 @@ import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
-public class Extra {
-    private int extraIdx;
+public class GetExtra {
     private int extraNo;
-    private String extraName;
     private int amount;
 }

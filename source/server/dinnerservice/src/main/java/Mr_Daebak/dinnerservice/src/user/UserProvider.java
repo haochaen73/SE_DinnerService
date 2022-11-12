@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.*;
 
 @Service
@@ -92,4 +94,13 @@ public class UserProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+//    public List<GetUserRes> getUsers() throws BaseException {
+//        try {
+//            List <GetUserRes> getUsersRes = userDao.getUsers();
+//            return getUsersRes;
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 }

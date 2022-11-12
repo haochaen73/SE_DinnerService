@@ -46,7 +46,7 @@ const Header = () => {
           <StyledLink to='/mypage'>마이페이지</StyledLink>
         </MemberDiv>
         <MemberDiv>
-          <StyledLink to='/orderlist'>장바구니</StyledLink>
+          <StyledLink to='/cart'>장바구니</StyledLink>
         </MemberDiv>
       </LeftContentDiv>
     </HeaderDiv>

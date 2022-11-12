@@ -7,5 +7,5 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class GetOrderRes {
-    private List<Order> OrderList;
+    private int orderIdx;
 }

@@ -34,7 +34,7 @@ const SignupCus = () => {
                     <Input placeholder='휴대폰 번호'/>
                     <Input placeholder='배달 주소'/>
 				</InputLayer>
-				<Button text="회원가입"/>
+				<Button>회원가입</Button>
     </MainDiv>
   );
 };

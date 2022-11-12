@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import Mr_Daebak.dinnerservice.utils.JwtService;
+
+import java.util.List;
+
 import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.*;
 import static Mr_Daebak.dinnerservice.utils.ValidationRegex.*;
 
@@ -124,7 +127,20 @@ public class UserController {
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
-
     }
 
+//    /**
+//     * 전체 회원 조회 API
+//     * [GET] /users
+//     */
+//    @ResponseBody
+//    @GetMapping("") // (GET) 127.0.0.1:9000/app/users/:userIdx
+//    public BaseResponse<List<GetUserRes>> GetUsers() {
+//        try {
+//            List <GetUserRes> getUsersRes = userProvider.getUsers();
+//            return new BaseResponse<>(getUsersRes);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
 }

@@ -120,9 +120,6 @@ const ExtraDiv = styled.div`
   place-items: center;
   padding-bottom: 40px;
 `
-const StyleDiv = styled.div`
-
-`
 const RadioChild = ({style}) => {
   return (
     <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>
@@ -145,7 +142,6 @@ const MenuItem = ({menu}) => {
 
   const styleHandler = (e) => {
     setCheckedStyle(e.target.value);
-    console.log(checkedStyle);
   }
 
   const onChangeProps = (id, key, value) => {
@@ -166,7 +162,7 @@ const MenuItem = ({menu}) => {
       <div style={{fontSize: '12px', color: 'gray', marginBottom: '20px'}}>{menu.text}</div>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
         <div style={{fontSize: '15px', fontWeight: 'bold'}}>{menu.price}</div>
-        <Button text="주문하기" onClick={()=> setModalIsOpen(true)}/>
+        <Button onClick={()=> setModalIsOpen(true)}>주문하기</Button>
         <Modal 
           style={{
             content: {
@@ -197,7 +193,7 @@ const MenuItem = ({menu}) => {
                   {/* 임의로.. */}
                 </ExtraDiv>
                 <div style={{fontWeight: 'bold', fontSize: '14px', paddingBottom: '25px'}}>스타일 선택</div>
-                <StyleDiv>
+                <div>
                   <RadioGroup>
                     <Radio name="style" value="simple" 
                       defaultChecked={menu.id !== 4 ? true : false} 
@@ -215,10 +211,10 @@ const MenuItem = ({menu}) => {
                       <RadioChild style={menustyle[2]}/>
                     </Radio>
                   </RadioGroup>
-                </StyleDiv>
+                </div>
               </MidDiv>
               <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                <Button text="장바구니 담기" onClick={()=> setModalIsOpen(false)}/>
+                <Button onClick={()=> setModalIsOpen(false)}>장바구니 담기</Button>
               </div>
             </ModalContainer>
         </Modal>
