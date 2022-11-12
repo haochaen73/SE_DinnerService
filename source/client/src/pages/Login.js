@@ -49,8 +49,8 @@ const Login = (props) => {
         <Input placeholder=' 비밀번호'/>
       </Container>
       <ButtonLayout>
-        <Button text="직원 로그인"/>
-        <Button text="고객 로그인"/>
+        <Button>직원 로그인</Button>
+        <Button>고객 로그인</Button>
       </ButtonLayout>
       <SignupDiv>
         아직 계정이 없으신가요?

@@ -10,6 +10,7 @@ import styled, {css} from 'styled-components';
 import SignupEmp from './pages/SignupEmp';
 import SignupCus from './pages/SignupCus';
 import Cart from './pages/Cart';
+import MyPage from './pages/MyPage';
 import OrderComplete from './pages/OrderComplete';
 import Employee from './pages/Employee';
 
@@ -34,6 +35,7 @@ function App() {
           <Route path="/employee" index element={<Employee/>}></Route>
           <Route path="/signup-employee" index element={<SignupEmp/>}></Route>
           <Route path="/signup-customer" index element={<SignupCus/>}></Route>
+          <Route path="/mypage" index element={<MyPage/>}></Route>
           <Route path="*" index element={<NotFound/>}></Route>
 				</Routes>
 			</BrowserRouter>

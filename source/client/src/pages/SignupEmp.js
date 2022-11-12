@@ -32,7 +32,7 @@ const SignupEmp = () => {
 					<Input placeholder='비밀번호 재입력'/>
 					<Input placeholder='직원코드'/>
 				</InputLayer>
-				<Button text="회원가입"/>
+				<Button>회원가입</Button>
     </MainDiv>
   );
 };
