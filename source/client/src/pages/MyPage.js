@@ -5,6 +5,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import ModifyPersonalInfo from '../components/ModifyPersonalInfo';
 
 
 function TabPanel(props) {
@@ -52,7 +53,7 @@ const MyPage = (props) => {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
       <Tabs value={value} onChange={handleChange} centered
-        textColor="secondary"
+        textColor="black"
         indicatorColor="secondary"
         aria-label="secondary tabs example"
         variant='fullWidth'
@@ -71,7 +72,7 @@ const MyPage = (props) => {
         Item One
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <ModifyPersonalInfo></ModifyPersonalInfo>
       </TabPanel>
     </Box>
   );
