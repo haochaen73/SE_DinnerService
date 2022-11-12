@@ -37,7 +37,7 @@ const OrderTextDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 22px;
+  font-size: 25px;
   color: black;
   font-weight: 500;
   padding: 50px 50px;
@@ -55,7 +55,7 @@ const Order = () => {
     <Container>
       <OrderTextDiv>
         <div>주문하기</div>
-        <Button text="음성인식"/>
+        <Button>음성인식</Button>
       </OrderTextDiv>
       <MenuDiv>
         {

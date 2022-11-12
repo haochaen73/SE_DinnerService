@@ -10,9 +10,12 @@ import styled, {css} from 'styled-components';
 import SignupEmp from './pages/SignupEmp';
 import SignupCus from './pages/SignupCus';
 import Cart from './pages/Cart';
+import OrderComplete from './pages/OrderComplete';
+import Employee from './pages/Employee';
 
 const Container = styled.div`
-  margin: 0px 200px;
+  width: 1000px;
+  margin: 0 auto;
   height: 100vh;
 `
 function App() {
@@ -26,7 +29,9 @@ function App() {
           <Route path="/login" index element={<Login/>}></Route>
           <Route path="/signup" index element={<Signup/>}></Route>
           <Route path="/order" index element={<Order/>}></Route>
-          <Route path="/orderlist" index element={<Cart/>}></Route>
+          <Route path="/cart" index element={<Cart/>}></Route>
+          <Route path="/ordercomplete" index element={<OrderComplete/>}></Route>
+          <Route path="/employee" index element={<Employee/>}></Route>
           <Route path="/signup-employee" index element={<SignupEmp/>}></Route>
           <Route path="/signup-customer" index element={<SignupCus/>}></Route>
           <Route path="*" index element={<NotFound/>}></Route>
