@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useState } from 'react';
 import Button from '../../Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-const stocks = [
+const stocklist = [
   {
     extraNo : 1,
     name : '와인 한 병',
@@ -72,16 +73,34 @@ const stocks = [
 ]
 
 const Container = styled.div`
-  padding: 40px;
+  padding: 0px 40px;
 `
 const Head = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 40px;
+  height: 100px;
 `
-
+const StyledInput = styled.input.attrs({ type: 'number' })`
+  text-align: center;
+  width: 50px;
+`
 const StockModify = () => {
+  const[stocks, setStocks] = useState(stocklist);
+
+  const onChange = (id, key, e) => {
+    console.log(e.target.value);
+    setStocks(prevState => {
+      return prevState.map(obj => {
+        if (obj.extraNo === id) {
+          return { ...obj, [key]: e.target.value };
+        } else {
+          return { ...obj };
+        }
+      });
+    });
+  }
+
   return (
     <Container>
       <Head>
@@ -95,19 +114,25 @@ const StockModify = () => {
           <TableHead sx={{background: 'black'}}>
             <TableRow>
               <TableCell sx={{color: 'white', padding: '0px 60px'}}>품목</TableCell>
+              <TableCell align="center" sx={{color: 'white'}}>입고 수량</TableCell>
               <TableCell align="center" sx={{color: 'white'}}>현재 수량</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {stocks.map((row) => (
+            {stocks.map((stock) => (
               <TableRow
-                key={row.name}
+                key={stock.name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell sx={{padding: '0px 60px'}} component="th" scope="row">
-                  {row.name}
+                  {stock.name}
                 </TableCell>
-                <TableCell align="center">{row.amount}</TableCell>
+                <TableCell align="center">
+                  <StyledInput
+                    defaultValue="0"
+                  />
+                </TableCell>
+                <TableCell align="center">{stock.amount}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -7,7 +8,7 @@ import styled from 'styled-components';
 import OrderItem from './OrderItem';
 import OrderDetail from './OrderDetail';
 
-function TabPanel(props) {
+const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -19,7 +20,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ backgroundColor: '#2B2B2B', marginTop: '-1px' }}>
+        <Box sx={{ height: '90vh', backgroundColor: '#2B2B2B', marginTop: '-1px', overflowY: 'auto' }}>
           {children}
         </Box>
       )}
@@ -46,15 +47,16 @@ const Container = styled.div`
 
 `
 const OrderList = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [orderIdx, setOrderIdx] = useState(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   return (
     <Container>
-      <Box sx={{ width: '100%', marginTop: '-1px', height: '100vh', backgroundColor: '#2B2B2B' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ width: '100%', marginTop: '-1px', backgroundColor: '#2B2B2B' }}>
+        <Box sx={{ position: 'sticky', borderBottom: 1, borderColor: 'divider' }}>
           <Tabs 
             value={value} 
             onChange={handleChange}
@@ -73,6 +75,14 @@ const OrderList = () => {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
+          <OrderItem/>
+          <OrderItem/>
+          <OrderItem/>
+          <OrderItem/>
+          <OrderItem/>
+          <OrderItem/>
+          <OrderItem/>
+          <OrderItem/>
           <OrderItem/>
           <OrderItem/>
         </TabPanel>
