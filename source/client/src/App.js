@@ -16,7 +16,7 @@ import Employee from './pages/Employee';
 const Container = styled.div`
   width: 1000px;
   margin: 0 auto;
-  height: 100vh;
+  height: 100%;
 `
 function App() {
   return (

@@ -71,13 +71,13 @@ const stocks = [
 ]
 
 const Container = styled.div`
-  padding: 40px;
+  padding: 0px 40px;
 `
 const Head = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 40px;
+  height: 100px;
 `
 
 const StockCheck = () => {

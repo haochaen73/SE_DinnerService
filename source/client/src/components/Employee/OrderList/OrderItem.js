@@ -31,9 +31,9 @@ const OrderState = ({text, }) => {
     </OrderStateDiv>
   );
 }
-const OrderItem = ({order}) => {
+const OrderItem = ({order, clickOrder}) => {
   return (
-    <Container>
+    <Container onClick={clickOrder}>
       <div>
         <div style={{color: 'white', fontSize: '8px'}}>주문번호 : 1</div>
         <div style={{marginTop: '5px', color: 'white', fontWeight: '600'}}>
@@ -47,13 +47,8 @@ const OrderItem = ({order}) => {
             10/01 14:00
           </span>
         </div>
-        <div>
-
-        </div>
       </div>
-
       <OrderStateDiv>대기</OrderStateDiv>
-
     </Container>
   );
 };
