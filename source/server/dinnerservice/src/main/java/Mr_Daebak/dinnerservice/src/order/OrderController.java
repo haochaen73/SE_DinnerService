@@ -4,11 +4,15 @@ import Mr_Daebak.dinnerservice.config.BaseException;
 import Mr_Daebak.dinnerservice.config.BaseResponse;
 import Mr_Daebak.dinnerservice.src.order.*;
 import Mr_Daebak.dinnerservice.src.order.model.*;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import Mr_Daebak.dinnerservice.utils.JwtService;
+
+import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.INVALID_USER_JWT;
 
 
 @RestController
@@ -41,6 +45,24 @@ public class OrderController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+//    @ResponseBody
+//    @GetMapping("/{userIdx}")
+//    @Transactional
+//    public BaseResponse<GetOrderRes> getOrder(@PathVariable Integer userIdx) {
+//        try {
+////            //jwt에서 idx 추출.
+////            int userIdxByJwt = JwtService.getUserIdx();
+////            //userIdx와 접근한 유저가 같은지 확인
+////            if(userIdx != userIdxByJwt){
+////                return new BaseResponse<>(INVALID_USER_JWT);
+////            }
+//            GetOrderRes getOrderRes= orderProvider.getOrder(userIdx);
+//            return new BaseResponse<>(getOrderRes);
+//        } catch (BaseException baseException) {
+//            return new BaseResponse<>(baseException.getStatus());
+//        }
+//    }
 
     @ResponseBody
     @PatchMapping("/{orderIdx}/delete")

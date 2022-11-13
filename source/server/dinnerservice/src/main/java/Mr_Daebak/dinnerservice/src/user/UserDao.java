@@ -93,5 +93,13 @@ public class UserDao {
         );
     }
 
-    //public GetUserRes getUsers
+    public void modifyUser(PatchUserReq patchUserReq, int userIdx) {
+        System.out.println("5");
+        String modifyUserQuery = "update user set name = ?, email = ?, phoneNum = ? where userIdx = ?";
+        Object[] modifyUserParams = new Object[]{patchUserReq.getName(), patchUserReq.getEmail(), patchUserReq.getPhoneNum(), userIdx};
+        this.jdbcTemplate.update(modifyUserQuery, modifyUserParams);
+        System.out.println("6");
+    }
+
+
 }

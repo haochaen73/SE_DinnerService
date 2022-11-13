@@ -129,6 +129,7 @@ public class UserController {
         }
     }
 
+    // 이게 필요한가요?
 //    /**
 //     * 전체 회원 조회 API
 //     * [GET] /users
@@ -143,4 +144,26 @@ public class UserController {
 //            return new BaseResponse<>((exception.getStatus()));
 //        }
 //    }
+
+    @ResponseBody
+    @PatchMapping("/{userIdx}")
+    public BaseResponse<String> modifyUser(@PathVariable(" userIdx") int userIdx, @RequestBody PatchUserReq patchUserReq) {
+        try {
+            System.out.println("1");
+//            //jwt에서 idx 추출.
+//            int userIdxByJwt = jwtService.getUserIdx();
+//            //userIdx와 접근한 유저가 같은지 확인
+//                if(userIdx != userIdxByJwt){
+//                    return new BaseResponse<>(INVALID_USER_JWT);
+//                }
+            System.out.println("2");
+            //같다면 유저네임 변경
+            userService.modifyUser(patchUserReq, userIdx);
+
+            String result = "회원정보가 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

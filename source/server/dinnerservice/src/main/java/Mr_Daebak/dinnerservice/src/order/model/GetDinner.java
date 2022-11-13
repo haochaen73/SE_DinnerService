@@ -12,7 +12,6 @@ import java.util.List;
 public class GetDinner {
     private int dinnerNo;
     private String style;
-    private int dinnerPrice;
     private int amount;
     private List<GetExtra> extraList;
 }

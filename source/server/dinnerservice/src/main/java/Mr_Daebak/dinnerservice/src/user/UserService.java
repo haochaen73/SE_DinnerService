@@ -47,7 +47,6 @@ public class UserService {
         try {
             // 암호화: postUserReq에서 제공받은 비밀번호를 보안을 위해 암호화시켜 DB에 저장합니다.
             // ex) password123 -> dfhsjfkjdsnj4@!$!@chdsnjfwkenjfnsjfnjsd.fdsfaifsadjfjaf
-            System.out.println("혹시 너?");
             pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postUserReq.getPassword1()); // 암호화코드
             postUserReq.setPassword1(pwd);
             System.out.println(postUserReq.getPassword1());
@@ -55,13 +54,19 @@ public class UserService {
             throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
         }
         try {
-            System.out.println("넌 뭐가 문제니1");
             int userIdx = userDao.createUser(postUserReq);
-            System.out.println("넌 뭐가 문제니2");
             String jwt = jwtService.createJwt(userIdx);
-            System.out.println("넌 뭐가 문제니3");
-            //return new PostUserRes(userIdx);
             return new PostUserRes(userIdx, jwt);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public void modifyUser(PatchUserReq patchUserReq, int userIdx) throws BaseException{
+        try {
+            System.out.println("3");
+            userDao.modifyUser(patchUserReq, userIdx);
+            System.out.println("4");
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

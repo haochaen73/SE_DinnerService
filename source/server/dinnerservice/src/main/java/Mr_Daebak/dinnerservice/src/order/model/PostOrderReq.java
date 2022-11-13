@@ -10,8 +10,6 @@ import java.util.List;
 public class PostOrderReq {
     private int userIdx;
     private String deliveredAt;
-    private int totalPrice;
-    private String address;
     private String cardNum;
     private List<GetDinner> dinnerList;
 }
