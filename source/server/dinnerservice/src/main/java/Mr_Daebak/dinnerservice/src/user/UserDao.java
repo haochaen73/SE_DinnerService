@@ -55,7 +55,7 @@ public class UserDao {
 
     // 로그인: 해당 email에 해당되는 user의 암호화된 비밀번호 값을 가져온다.
     public User getPwd(PostLoginReq postLoginReq) {
-        String getPwdQuery = "select userIdx, name, id, password, email, phoneNum, address, cardNum, totalPrice from user where id = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
+        String getPwdQuery = "select userIdx, name, id, password, email, phoneNum, address, totalPrice from user where id = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
         String getPwdParams = postLoginReq.getId(); // 주입될 email값을 클라이언트의 요청에서 주어진 정보를 통해 가져온다.
 
         return this.jdbcTemplate.queryForObject(getPwdQuery,
@@ -67,7 +67,6 @@ public class UserDao {
                         rs.getString("email"),
                         rs.getString("phoneNum"),
                         rs.getString("address"),
-                        rs.getString("cardNum"),
                         rs.getInt("totalPrice")
                 ), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
                 getPwdParams
@@ -76,7 +75,7 @@ public class UserDao {
 
     // getUserByUserIdx
     public GetUserRes getUserByUserIdx(Integer userIdx) {
-        String getUserByUserIdxQuery = "select userIdx, name, id, password, email, phoneNum, address, cardNum, totalPrice from user where userIdx = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
+        String getUserByUserIdxQuery = "select userIdx, name, id, password, email, phoneNum, address, totalPrice from user where userIdx = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
         String getUserByUserIdxParams = String.valueOf(userIdx);
 
         return this.jdbcTemplate.queryForObject(getUserByUserIdxQuery,
@@ -88,7 +87,6 @@ public class UserDao {
                         rs.getString("email"),
                         rs.getString("phoneNum"),
                         rs.getString("address"),
-                        rs.getString("cardNum"),
                         rs.getInt("totalPrice")
                 ), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
                 getUserByUserIdxParams

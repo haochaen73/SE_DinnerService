@@ -12,6 +12,5 @@ public class GetUserRes {
     private String email;
     private String phoneNum;
     private String address;
-    private String cardNum;
     private int totalPrice;
 }
