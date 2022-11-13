@@ -2,14 +2,12 @@ package Mr_Daebak.dinnerservice.src.order;
 
 import Mr_Daebak.dinnerservice.config.BaseException;
 import Mr_Daebak.dinnerservice.src.order.model.*;
-import Mr_Daebak.dinnerservice.src.user.model.GetUserRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 
 import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.DATABASE_ERROR;
@@ -59,13 +57,13 @@ public class OrderDao {
             int dinnerPrice = 0;
             int totalPrice = 0;
             System.out.println("createDinnerExtra 시작");
-            List<GetDinner> dinnerList = postOrderReq.getDinnerList();
+            List<PostOrderGetDinner> dinnerList = postOrderReq.getDinnerList();
             System.out.println("dinnerList.size() : " + dinnerList.size());
             for (int i=0; i<=(dinnerList.size()-1); i++) {
                 System.out.println("i : " + i);
                 dinnerPrice = 0;
-                String createDinnerQuery = "insert into dinnerList (orderIdx, dinnerNo, style, amount) values (?,?,?,?)";
-                Object[] createDinnerParams = new Object[]{orderIdx, dinnerList.get(i).getDinnerNo(), dinnerList.get(i).getStyle(), dinnerList.get(i).getAmount()};
+                String createDinnerQuery = "insert into dinnerList (orderIdx, dinnerName, style, amount) values (?,?,?,?)";
+                Object[] createDinnerParams = new Object[]{orderIdx, dinnerList.get(i).getDinnerName(), dinnerList.get(i).getStyle(), dinnerList.get(i).getAmount()};
                 System.out.println("createDinner 시작");
                 this.jdbcTemplate.update(createDinnerQuery, createDinnerParams);
                 System.out.println("createDinner 끝");
@@ -73,7 +71,7 @@ public class OrderDao {
                 String lastInsertIdQuery = "select last_insert_id()";
                 int dinnerIdx = this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
 
-                List<GetExtra> extraList = dinnerList.get(i).getExtraList();
+                List<PostOrderGetExtra> extraList = dinnerList.get(i).getExtraList();
                 System.out.println("extraList.size() : " + extraList.size());
                 for (int j=0; j<=(extraList.size()-1); j++) {
                     System.out.println("j : " + j);

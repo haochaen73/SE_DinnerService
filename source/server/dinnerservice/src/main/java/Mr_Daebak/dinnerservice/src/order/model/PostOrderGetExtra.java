@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetExtra {
+public class PostOrderGetExtra {
     private int extraNo;
     private int amount;
 }

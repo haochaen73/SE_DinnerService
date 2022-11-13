@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Dinner {
     private int dinnerIdx;
     private int orderIdx;
-    private int dinnerNo;
     private String dinnerName;
     private String style;
     private int dinnerPrice;
