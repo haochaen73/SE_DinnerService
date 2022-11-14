@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -8,6 +8,17 @@ import styled from 'styled-components';
 import OrderItem from './OrderItem';
 import OrderDetail from './OrderDetail';
 
+const orderlist = [
+  {
+    orderIdx: 1,
+  },
+  {
+    orderIdx: 2,
+  },
+  {
+    orderIdx: 3,
+  }
+]
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -50,6 +61,10 @@ const OrderList = () => {
   const [value, setValue] = useState(0);
   const [orderIdx, setOrderIdx] = useState(null);
 
+  const clickOrder = useCallback((id) => {
+    setOrderIdx(prev => prev === id ? null : id);
+  }, []);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -75,16 +90,16 @@ const OrderList = () => {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <OrderItem/>
-          <OrderItem/>
-          <OrderItem/>
-          <OrderItem/>
-          <OrderItem/>
-          <OrderItem/>
-          <OrderItem/>
-          <OrderItem/>
-          <OrderItem/>
-          <OrderItem/>
+          {orderlist?.map(() => {
+            <OrderItem clickOrder={clickOrder}/>
+          })}
+          <OrderItem clickOrder={clickOrder}/>
+          <OrderItem clickOrder={clickOrder}/>
+          <OrderItem clickOrder={clickOrder}/>
+          <OrderItem clickOrder={clickOrder}/>
+          <OrderItem clickOrder={clickOrder}/>
+          <OrderItem clickOrder={clickOrder}/>
+          <OrderItem clickOrder={clickOrder}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <OrderItem/>
