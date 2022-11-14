@@ -6,8 +6,7 @@ import MenuItem from '../components/Order/MenuItem';
 const menulist = [
   {
     id: 1,
-    name: '발렌타인 디너',
-    dinnerName : "Valentine",
+    dinnerName: '발렌타인 디너',
     price: '52,000원',
     text: '와인 한 병 / 스테이크',
     extraList: [
@@ -55,8 +54,7 @@ const menulist = [
   },
   {
     id: 2,
-    name: '프렌치 디너',
-    dinnerName : "French",
+    dinnerName: '프렌치 디너',
     price: '51,000원',
     text: '커피 한 잔 / 와인 한 잔 / 샐러드 / 스테이크',
     extraList: [
@@ -104,8 +102,7 @@ const menulist = [
   },
   {
     id: 3,
-    name: '잉글리시 디너',
-    dinnerName : "English",
+    dinnerName: '잉글리시 디너',
     price: '35,000원',
     text: '에그 스크램블 / 베이컨 / 바게트 빵 / 스테이크',
     extraList: [
@@ -153,8 +150,7 @@ const menulist = [
   },
   {
     id: 4,
-    name: '샴페인 축제 디너',
-    dinnerName : "Champagne Feast",
+    dinnerName : '샴페인 축제 디너',
     price: '91,000원',
     text: '와인 한 병 / 스테이크 / 샴페인 한 병 / 바게트 빵 4개 / 커피 한 포트',
     extraList: [

@@ -9,6 +9,158 @@ import CloseIcon from '@mui/icons-material/Close';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 
+const extraInfo = [
+  {
+    extraNo : 1,
+    name : '와인 한 병',
+    price : 22000,
+  },
+  {
+    extraNo : 2,
+    name : '와인 한 잔',
+    price : 7000,
+  },
+  {
+    extraNo : 3,
+    name : '스테이크',
+    price : 30000,
+  },
+  {
+    extraNo : 4,
+    name : '커피 한 잔',
+    price : 4000,
+  },
+  {
+    extraNo : 5,
+    name : '커피 한 포트',
+    price : 9000,
+  },
+  {
+    extraNo : 6,
+    name : '샐러드',
+    price : 10000,
+  },
+  {
+    extraNo : 7,
+    name : '에그 스크램블',
+    price : 2000,
+  },
+  {
+    extraNo : 8,
+    name : '베이컨',
+    price : 1000,
+  },
+  {
+    extraNo : 9,
+    name : '샴페인',
+    price : 22000,
+  },
+  {
+    extraNo : 10,
+    name : '바게트 빵',
+    price : 2000,
+  }
+]
+
+const DinnerListData = [
+  { 
+      dinnerName : "발렌타인 디너",
+      style : "심플",
+      amount : 1,
+      dinnerPrice: 30000,
+      extraList : [
+          {
+              extraNo : 1,
+              amount : 2
+          },
+          { 
+              extraNo : 2,
+              amount : 2
+          },
+          { 
+              extraNo : 3,
+              amount : 0
+          },
+          { 
+              extraNo : 4,
+              amount : 0
+          },
+          { 
+              extraNo : 5,
+              amount : 2
+          },
+          { 
+              extraNo : 6,
+              amount : 2
+          },
+          { 
+              extraNo : 7,
+              amount : 0
+          },
+          { 
+              extraNo : 8,
+              amount : 0
+          },
+          { 
+              extraNo : 9,
+              amount : 0
+          },
+          { 
+              extraNo : 10,
+              amount : 0
+          }
+      ]
+  },
+  { 
+    dinnerName : "샴페인 축제 디너",
+    style : "그랜드",
+    amount : 2,
+    dinnerPrice: 20000,
+      extraList : [
+          { 
+              extraNo : 1,
+              amount : 2
+          },
+          { 
+              extraNo : 2,
+              amount : 2
+          },
+          { 
+              extraNo : 3,
+              amount : 0
+          },
+          { 
+              extraNo : 4,
+              amount : 0
+          },
+          { 
+              extraNo : 5,
+              amount : 2
+          },
+          { 
+              extraNo : 6,
+              amount : 2
+          },
+          { 
+              extraNo : 7,
+              amount : 0
+          },
+          { 
+              extraNo : 8,
+              amount : 0
+          },
+          { 
+              extraNo : 9,
+              amount : 0
+          },
+          { 
+              extraNo : 10,
+              amount : 0
+          }
+      ]
+  }
+]
+
 const CartTextDiv = styled.div`
   display: flex;
   justify-content: center;
@@ -99,17 +251,30 @@ const StyledLink = styled(Link)`
     background: #262626;
   }
 `
-const OrderItem = ({order}) => {
+
+const Dinner = ({dinner}) => {
+  console.log(dinner);
   return(
     <OrderDetail>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-        <div style={{fontSize: '14px', fontWeight: '400'}}>프렌치 디너</div>
+      <div style={{marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <span style={{fontSize: '14px', fontWeight: '600'}}>{dinner.dinnerName}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span style={{fontSize: '10px', fontWeight: '500'}}>{dinner.style}</span>
+        </div>
         <CloseIcon sx={{ fontSize: 14, cursor: 'pointer' }}/>
       </div>
-      <div style={{margin: '30px 0px', fontSize: '12px', color: 'gray'}}>+ 에그 스크램블 1개</div>
-      <div style={{fontSize: '14px', fontWeight: '600'}}>52,000원</div>
+      {
+        dinner.extraList.map((extra) => {
+          if (extra.amount > 0){
+            return (<div style={{marginBottom: '5px', fontSize: '12px', color: 'gray'}}>
+              +{extraInfo[extra.extraNo + 1].name}&nbsp;{extra.amount}개
+            </div>);
+          }
+        })
+      }
+      <div style={{marginTop: '30px', fontSize: '14px', fontWeight: '600'}}>{dinner.dinnerPrice}원</div>
     </OrderDetail>
-  )
+  );
 }
 
 const Cart = () => {
@@ -120,6 +285,12 @@ const Cart = () => {
 
     return currentDate.getTime() < selectedDate.getTime();
   };
+
+  const [dinnerList, setDinnerList] = useState(DinnerListData);
+
+  const deleteDinner = () => {
+  
+  }
 
   return (
     <div>
@@ -149,8 +320,10 @@ const Cart = () => {
             <div style={{display: 'grid', gridTemplateColumns: '1fr 2fr'}}>
               <BoxHeadSpan>주문 정보</BoxHeadSpan>
               <div>
-                <OrderItem />
-                <OrderItem />
+                {dinnerList ? dinnerList?.map((dinner, index) => {
+                  return <Dinner key={index} dinner={dinner}/>;
+                  }) : <div>장바구니가 비었습니다.</div>
+                }
               </div>
             </div>
           </Box>
