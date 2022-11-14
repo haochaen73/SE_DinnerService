@@ -8,6 +8,7 @@ import setMinutes from "date-fns/setMinutes";
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const extraInfo = [
   {
@@ -278,6 +279,8 @@ const Dinner = ({dinner}) => {
 }
 
 const Cart = () => {
+  const cusTotalPrice = 100000; //단골인지
+
   const [startDate, setStartDate] = useState(setMinutes(new Date(), 0));
   const filterPassedTime = (time) => {
     const currentDate = new Date();
@@ -286,11 +289,20 @@ const Cart = () => {
     return currentDate.getTime() < selectedDate.getTime();
   };
 
+  const [totalPrice, setTotalPrice] = useState([0,0]);
   const [dinnerList, setDinnerList] = useState(DinnerListData);
 
   const deleteDinner = () => {
   
   }
+
+  useEffect(() => {
+    const totalPrice = dinnerList.reduce((acc, obj) => {
+      return (acc += obj.dinnerPrice);
+    }, 0);
+    setTotalPrice([totalPrice, cusTotalPrice > 100000 ? (totalPrice + 3000 - 2000) : totalPrice + 3000]);
+  }, [dinnerList])
+
 
   return (
     <div>
@@ -352,7 +364,9 @@ const Cart = () => {
         <div>
           <MembershipBox>
             회원님은
-            <span style={{marginLeft: '5px', fontWeight: 'bold'}}>단골 고객</span>
+            <span style={{marginLeft: '5px', fontWeight: 'bold'}}>
+              {cusTotalPrice > 100000 ? "단골 고객" : "일반 고객"}
+            </span>
             입니다.
           </MembershipBox>
           <Box>
@@ -360,11 +374,11 @@ const Cart = () => {
             <div>
               <PayDetail>
                 <div>주문금액</div>
-                <div>52000원</div>
+                <div>{totalPrice[0]}원</div>
               </PayDetail>
               <PayDetail>
                 <div>단골할인</div>
-                <div style={{color: 'red'}}>-2000원</div>
+                <div style={{color: 'red'}}>{cusTotalPrice > 100000 ? "-2000원" : "0원"}</div>
               </PayDetail>
               <PayDetail>
                 <div>배달비</div>
@@ -374,7 +388,7 @@ const Cart = () => {
             <div style={{marginTop: '20px', borderBottom: '1px solid lightgray'}}></div>
             <TotalPrice>
               <div>총 결제금액</div>
-              <div>53000원</div>
+              <div>{totalPrice[1]}원</div>
             </TotalPrice>
             <Button>결제하기</Button>
           </Box>
