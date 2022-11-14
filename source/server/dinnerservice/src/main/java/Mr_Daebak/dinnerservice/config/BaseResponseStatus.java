@@ -71,7 +71,7 @@ public enum BaseResponseStatus {
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
 
-
+    PATCH_STOCK_ERROR(false, 2050, "재고 수정에 실패했습니다."),
     /**
      * 4000 : Database, Server 오류
      */

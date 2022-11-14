@@ -107,22 +107,14 @@ public class OrderDao {
         }
     }
 
-//    public GetOrderRes getOrder(Integer userIdx) {
-//        String getOrderQuery = "select userIdx, name, id, password, email, phoneNum, address, totalPrice from user where userIdx = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
-//        String getOrderParams = String.valueOf(userIdx);
-//
-//        return this.jdbcTemplate.queryForObject(getOrderQuery,
-//                (rs, rowNum) -> new GetUserRes(
-//                        rs.getInt("userIdx"),
-//                        rs.getString("name"),
-//                        rs.getString("id"),
-//                        rs.getString("password"),
-//                        rs.getString("email"),
-//                        rs.getString("phoneNum"),
-//                        rs.getString("address"),
-//                        rs.getInt("totalPrice")
-//                ), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
-//                getOrderParams
+//    public List<GetOrderRes> getOrder(Integer userIdx) {
+//        String countOrderQuery = "SELECT (orderIdx, deliveredAt, state) FROM `order` WHERE userIdx = ?";
+//        return this.jdbcTemplate.query(countOrderQuery,
+//                (rs, rowNum) -> new GetOrderRes(
+//                        rs.getInt("orderIdx"),
+//                        rs.getString("deliveredAt"),
+//                        rs.getInt("state"),
+//                        rs.) // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
 //        );
 //    }
 
