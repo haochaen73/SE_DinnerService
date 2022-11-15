@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const MainDiv = styled.div`
@@ -33,7 +34,7 @@ const ContentDiv = styled.div`
   margin-top: 50px;
   margin-left: 50px;
 `
-const Button = styled.button`
+const Button = styled(Link)`
   padding: 6px 25px;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -90,7 +91,7 @@ const OrderHistoryDetail = () => {
             <div style={{fontSize: "14px", color: "#6D6D6D", marginTop: "10px"}}>에그 스크램블 1개</div>
             <div style={{fontSize: "14px", color: "#6D6D6D", marginTop: "5px"}}>와인 1병</div>
           </div>
-          <div style={{fontSize: "16px", fontWeight: "700"}}>예약 시간</div>
+          <div style={{fontSize: "16px", fontWeight: "700"}}>예약 일자</div>
           <div style={{fontSize: "15px", fontWeight: "400"}}>10월 3일 머시기</div>
           <div style={{fontSize: "16px", fontWeight: "700"}}>주소</div>
           <div style={{fontSize: "15px", fontWeight: "400"}}>서울특별시 동대문구 서울시립대로 163 정보기술관 xxx호</div>
@@ -99,7 +100,7 @@ const OrderHistoryDetail = () => {
         </div>
       </ContentDiv>
       <ButtonContainer>
-        <Button>주문 변경</Button>
+        <Button to='/orderedit'>주문 변경</Button>
         <StyledButton>주문 취소</StyledButton>
       </ButtonContainer>
     </MainDiv>
