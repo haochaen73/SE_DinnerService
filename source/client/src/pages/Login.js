@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, {css} from 'styled-components';
 import { Link } from 'react-router-dom';
 import Input from '../components/Input';
@@ -40,17 +40,41 @@ const SignupDiv = styled.div`
   font-size: 13px;
 `
 
+
 const Login = (props) => {
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handelClickLoginButton = async (type) => {
+    if (type === 'employee') {
+      // TODO: Employee 로그인 요청
+    } else {
+      console.log({id, password});
+      const res = await fetch('http://localhost:8080/users/login', {
+        method: "POST",
+        headers: {
+          "Content-Type": "applcation/json",
+        },
+        body: {
+          id, password
+        }
+      });
+
+      //TODO: res 값에 따라서, 로그인 성공이면 routing 이동
+      //TODO: 로그인 실패라면 다시하라고 알려주기
+    }
+  }
+
   return (
     <MainDiv>
       <img src='/images/logo_black.svg' alt='logo' width={200}/>
       <Container>
-        <Input placeholder=' 아이디'/>
-        <Input placeholder=' 비밀번호'/>
+        <Input placeholder='아이디' value={id} onChange={e => setId(e.target.value)}/>
+        <Input placeholder='비밀번호' type='password' value={password} onChange={e => setPassword(e.target.value)}/>
       </Container>
       <ButtonLayout>
-        <Button>직원 로그인</Button>
-        <Button>고객 로그인</Button>
+        <Button onClick={() => handelClickLoginButton('employee')}>직원 로그인</Button>
+        <Button onClick={() => handelClickLoginButton('client')}>고객 로그인</Button>
       </ButtonLayout>
       <SignupDiv>
         아직 계정이 없으신가요?

@@ -6,6 +6,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import ModifyPersonalInfo from '../components/ModifyPersonalInfo';
+import OrderHistory from '../components/OrderHistory';
 
 
 function TabPanel(props) {
@@ -50,26 +51,31 @@ const MyPage = (props) => {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-      <Tabs value={value} onChange={handleChange} centered
-        textColor="black"
-        indicatorColor="secondary"
-        aria-label="secondary tabs example"
-        variant='fullWidth'
-        sx={{
-          '& .MuiTabs-indicator': { backgroundColor: 'black', color: 'black' },
-          '& .MuiTab-root': { color: 'black' },
-          '& .Mui-selected': { color: 'black' },
-        }}
-        
-      >
-        <Tab label="주문 내역" {...a11yProps(0)} />
-        <Tab label="회원정보 수정" {...a11yProps(1)} />
-      </Tabs>
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          centered
+          textColor="black"
+          indicatorColor="secondary"
+          aria-label="secondary tabs example"
+          variant="fullWidth"
+          sx={{
+            "& .MuiTabs-indicator": {
+              backgroundColor: "black",
+              color: "black",
+            },
+            "& .MuiTab-root": { color: "black" },
+            "& .Mui-selected": { color: "black" },
+          }}
+        >
+          <Tab label="주문 내역" {...a11yProps(0)} />
+          <Tab label="회원정보 수정" {...a11yProps(1)} />
+        </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        Item One
+        <OrderHistory></OrderHistory>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <ModifyPersonalInfo></ModifyPersonalInfo>
