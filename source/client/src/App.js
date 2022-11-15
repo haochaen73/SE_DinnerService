@@ -14,6 +14,7 @@ import MyPage from './pages/MyPage';
 import OrderComplete from './pages/OrderComplete';
 import Employee from './pages/Employee';
 import OrderHistoryDetail from './pages/OrderHistoryDetail';
+import OrderEdit from './pages/OrderEdit';
 
 const Container = styled.div`
   width: 1000px;
@@ -39,6 +40,7 @@ function App() {
           <Route path="/signup-customer" index element={<SignupCus/>}></Route>
           <Route path="/mypage" index element={<MyPage/>}></Route>
           <Route path="/order-history-detail" index element={<OrderHistoryDetail/>}></Route>
+          <Route path="/orderedit" index element={<OrderEdit/>}></Route>
           <Route path="*" index element={<NotFound/>}></Route>
 				</Routes>
 			</BrowserRouter>

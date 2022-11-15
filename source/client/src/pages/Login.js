@@ -48,9 +48,21 @@ const Login = (props) => {
   const handelClickLoginButton = async (type) => {
     if (type === 'employee') {
       // TODO: Employee 로그인 요청
-    } else {
+      console.log("employee");
       console.log({id, password});
-      const res = await fetch('http://localhost:8080/users/login', {
+      const res = await fetch('http://localhost:8080/users/employee/login', {
+        method: "POST",
+        headers: {
+          "Content-Type": "applcation/json",
+        },
+        body: {
+          id, password
+        }
+      });
+    } else {
+      console.log("client");
+      console.log({id, password});
+      const res = await fetch('http://localhost:8080/users/client/login', {
         method: "POST",
         headers: {
           "Content-Type": "applcation/json",
@@ -61,6 +73,7 @@ const Login = (props) => {
       });
 
       //TODO: res 값에 따라서, 로그인 성공이면 routing 이동
+      
       //TODO: 로그인 실패라면 다시하라고 알려주기
     }
   }
