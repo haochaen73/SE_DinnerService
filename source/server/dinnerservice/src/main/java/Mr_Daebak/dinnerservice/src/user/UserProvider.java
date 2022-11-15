@@ -103,4 +103,13 @@ public class UserProvider {
 //            throw new BaseException(DATABASE_ERROR);
 //        }
 //    }
+
+    public GetTotalPriceRes getTotalPrice(Integer userIdx) throws BaseException {
+        try {
+            GetTotalPriceRes getTotalPriceRes = userDao.getTotalPrice(userIdx);
+            return getTotalPriceRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

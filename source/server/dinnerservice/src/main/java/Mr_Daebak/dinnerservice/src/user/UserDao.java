@@ -101,5 +101,11 @@ public class UserDao {
         System.out.println("6");
     }
 
+    public GetTotalPriceRes getTotalPrice(Integer userIdx) {
+        String getTotalPriceQuery = "SELECT totalPrice FROM user WHERE userIdx = ?";
+        String getTotalPriceParams = String.valueOf(userIdx);
+        int totalPrice = this.jdbcTemplate.queryForObject(getTotalPriceQuery, int.class, getTotalPriceParams);
+        return new GetTotalPriceRes(totalPrice);
+    }
 
 }

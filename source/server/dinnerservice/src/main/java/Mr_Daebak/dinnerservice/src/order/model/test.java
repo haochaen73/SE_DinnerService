@@ -7,10 +7,10 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetOrderRes {
+public class test {
     private int orderIdx;
     private String deliveredAt;
     private String createdAt;
     private int state;
-    private List<GetOrderGetDinner> dinnerList;
+    private List<test2> dinnerList;
 }

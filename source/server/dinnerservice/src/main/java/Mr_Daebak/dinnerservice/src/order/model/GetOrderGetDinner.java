@@ -10,5 +10,6 @@ import java.util.List;
 public class GetOrderGetDinner {
     private String dinnerName;
     private String style;
+    private int amount;
     private List<GetOrderGetExtra> extraList;
 }

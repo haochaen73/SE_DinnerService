@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import Mr_Daebak.dinnerservice.utils.JwtService;
 
+import java.util.List;
+
 import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.INVALID_USER_JWT;
 
 
@@ -46,23 +48,26 @@ public class OrderController {
         }
     }
 
-//    @ResponseBody
-//    @GetMapping("/{userIdx}")
-//    @Transactional
-//    public BaseResponse<GetOrderRes> getOrder(@PathVariable Integer userIdx) {
-//        try {
-////            //jwt에서 idx 추출.
-////            int userIdxByJwt = JwtService.getUserIdx();
-////            //userIdx와 접근한 유저가 같은지 확인
-////            if(userIdx != userIdxByJwt){
-////                return new BaseResponse<>(INVALID_USER_JWT);
-////            }
-//            GetOrderRes getOrderRes= orderProvider.getOrder(userIdx);
-//            return new BaseResponse<>(getOrderRes);
-//        } catch (BaseException baseException) {
-//            return new BaseResponse<>(baseException.getStatus());
-//        }
-//    }
+    @ResponseBody
+    @GetMapping("/{userIdx}")
+    @Transactional
+    public BaseResponse<List<GetOrderRes>> getOrders(@PathVariable Integer userIdx) {
+        try {
+//            //jwt에서 idx 추출.
+//            int userIdxByJwt = JwtService.getUserIdx();
+//            //userIdx와 접근한 유저가 같은지 확인
+//            if(userIdx != userIdxByJwt){
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
+            System.out.println("controller 시작");
+            List<GetOrderRes> getOrdersRes= orderProvider.getOrders(userIdx);
+            System.out.println("controller 끝");
+            return new BaseResponse<>(getOrdersRes);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
+
 
     @ResponseBody
     @PatchMapping("/{orderIdx}/delete")
@@ -128,7 +133,7 @@ public class OrderController {
 //    @ResponseBody
 //    @PostMapping("/dinner")
 //    @Transactional
-//    public BaseResponse<PostDinnerRes> createDinner(@RequestBody PostDinnerReq postDinnerReq) {
+//    public BaseResponse<List<PostDinnerRes>> createDinner(@RequestBody PostDinnerReq postDinnerReq) {
 //        try {
 //            PostDinnerRes postDinnerRes = orderService.creatDinner(postDinnerReq);
 //            return new BaseResponse<>(postDinnerRes);

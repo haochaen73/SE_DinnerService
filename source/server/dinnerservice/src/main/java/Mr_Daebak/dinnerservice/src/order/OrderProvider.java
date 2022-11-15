@@ -7,6 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.DATABASE_ERROR;
+
 @Service
 public class OrderProvider {
     private final OrderDao orderDao;
@@ -18,10 +22,15 @@ public class OrderProvider {
         this.orderDao = orderDao;
     }
 
-//    public GetOrderRes getOrder(Integer userIdx) throws BaseException {
-//        try {
-//            GetOrderRes getOrderRes = OrderDao.getOrder(userIdx);
-//            return getOrderRes;
-//        }
-//    }
+    public List<GetOrderRes> getOrders(Integer userIdx) throws BaseException {
+        try {
+            System.out.println("provider 시작");
+            List<GetOrderRes> getOrdersRes = orderDao.getOrders(userIdx);
+            System.out.println("provider 끝");
+            return getOrdersRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

@@ -166,4 +166,15 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    @ResponseBody
+    @GetMapping("/totalPrice/{userIdx}")
+    public BaseResponse<GetTotalPriceRes> getTotalPrice(@PathVariable("userIdx") int userIdx) {
+        try {
+            GetTotalPriceRes getTotalPriceRes = userProvider.getTotalPrice(userIdx);
+            return new BaseResponse<>(getTotalPriceRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

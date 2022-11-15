@@ -46,7 +46,7 @@ public class StockController {
     @Transactional
     public BaseResponse<GetStockRes> getStock() {
         try {
-            GetStockRes getStockRes = new GetStockRes(0,0,0,0,0,0,0,0);
+            GetStockRes getStockRes = new GetStockRes(0,0,0,0,0,0,0,0,0,0);
             GetStockRes getStockResResult = stockProvider.getStock(getStockRes);
             return new BaseResponse<>(getStockResResult);
         } catch (BaseException exception) {

@@ -26,8 +26,10 @@ public class StockDao {
         System.out.println("amount1 : " + patchStockReq.getAmount1());
         System.out.println(patchStockReq.getClass().getName());
         this.jdbcTemplate.update("UPDATE stock SET amount = ? WHERE stockIdx = 1", patchStockReq.getAmount1());
+        this.jdbcTemplate.update("UPDATE stock SET amount = ? WHERE stockIdx = 2", patchStockReq.getAmount2());
         this.jdbcTemplate.update("UPDATE stock SET amount = ? WHERE stockIdx = 3", patchStockReq.getAmount3());
         this.jdbcTemplate.update("UPDATE stock SET amount = ? WHERE stockIdx = 4", patchStockReq.getAmount4());
+        this.jdbcTemplate.update("UPDATE stock SET amount = ? WHERE stockIdx = 5", patchStockReq.getAmount5());
         this.jdbcTemplate.update("UPDATE stock SET amount = ? WHERE stockIdx = 6", patchStockReq.getAmount6());
         this.jdbcTemplate.update("UPDATE stock SET amount = ? WHERE stockIdx = 7", patchStockReq.getAmount7());
         this.jdbcTemplate.update("UPDATE stock SET amount = ? WHERE stockIdx = 8", patchStockReq.getAmount8());
@@ -38,8 +40,10 @@ public class StockDao {
 
     public GetStockRes getStock(GetStockRes getStockRes) {
         getStockRes.setAmount1(this.jdbcTemplate.queryForObject("SELECT amount FROM stock where stockIdx = 1", int.class));
+        getStockRes.setAmount2(this.jdbcTemplate.queryForObject("SELECT amount FROM stock where stockIdx = 2", int.class));
         getStockRes.setAmount3(this.jdbcTemplate.queryForObject("SELECT amount FROM stock where stockIdx = 3", int.class));
         getStockRes.setAmount4(this.jdbcTemplate.queryForObject("SELECT amount FROM stock where stockIdx = 4", int.class));
+        getStockRes.setAmount5(this.jdbcTemplate.queryForObject("SELECT amount FROM stock where stockIdx = 5", int.class));
         getStockRes.setAmount6(this.jdbcTemplate.queryForObject("SELECT amount FROM stock where stockIdx = 6", int.class));
         getStockRes.setAmount7(this.jdbcTemplate.queryForObject("SELECT amount FROM stock where stockIdx = 7", int.class));
         getStockRes.setAmount8(this.jdbcTemplate.queryForObject("SELECT amount FROM stock where stockIdx = 8", int.class));
