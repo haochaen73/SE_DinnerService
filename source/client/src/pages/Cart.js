@@ -8,6 +8,160 @@ import setMinutes from "date-fns/setMinutes";
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
+import { useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const extraInfo = [
+  {
+    extraNo : 1,
+    name : '와인 한 병',
+    price : 22000,
+  },
+  {
+    extraNo : 2,
+    name : '와인 한 잔',
+    price : 7000,
+  },
+  {
+    extraNo : 3,
+    name : '스테이크',
+    price : 30000,
+  },
+  {
+    extraNo : 4,
+    name : '커피 한 잔',
+    price : 4000,
+  },
+  {
+    extraNo : 5,
+    name : '커피 한 포트',
+    price : 9000,
+  },
+  {
+    extraNo : 6,
+    name : '샐러드',
+    price : 10000,
+  },
+  {
+    extraNo : 7,
+    name : '에그 스크램블',
+    price : 2000,
+  },
+  {
+    extraNo : 8,
+    name : '베이컨',
+    price : 1000,
+  },
+  {
+    extraNo : 9,
+    name : '샴페인',
+    price : 22000,
+  },
+  {
+    extraNo : 10,
+    name : '바게트 빵',
+    price : 2000,
+  }
+]
+
+const DinnerListData = [
+  { 
+      dinnerName : "발렌타인 디너",
+      style : "심플",
+      amount : 1,
+      dinnerPrice: 30000,
+      extraList : [
+          {
+              extraNo : 1,
+              amount : 2
+          },
+          { 
+              extraNo : 2,
+              amount : 2
+          },
+          { 
+              extraNo : 3,
+              amount : 0
+          },
+          { 
+              extraNo : 4,
+              amount : 0
+          },
+          { 
+              extraNo : 5,
+              amount : 2
+          },
+          { 
+              extraNo : 6,
+              amount : 2
+          },
+          { 
+              extraNo : 7,
+              amount : 0
+          },
+          { 
+              extraNo : 8,
+              amount : 0
+          },
+          { 
+              extraNo : 9,
+              amount : 0
+          },
+          { 
+              extraNo : 10,
+              amount : 0
+          }
+      ]
+  },
+  { 
+    dinnerName : "샴페인 축제 디너",
+    style : "그랜드",
+    amount : 2,
+    dinnerPrice: 20000,
+      extraList : [
+          { 
+              extraNo : 1,
+              amount : 2
+          },
+          { 
+              extraNo : 2,
+              amount : 2
+          },
+          { 
+              extraNo : 3,
+              amount : 0
+          },
+          { 
+              extraNo : 4,
+              amount : 0
+          },
+          { 
+              extraNo : 5,
+              amount : 2
+          },
+          { 
+              extraNo : 6,
+              amount : 2
+          },
+          { 
+              extraNo : 7,
+              amount : 0
+          },
+          { 
+              extraNo : 8,
+              amount : 0
+          },
+          { 
+              extraNo : 9,
+              amount : 0
+          },
+          { 
+              extraNo : 10,
+              amount : 0
+          }
+      ]
+  }
+]
 
 const CartTextDiv = styled.div`
   display: flex;
@@ -99,20 +253,48 @@ const StyledLink = styled(Link)`
     background: #262626;
   }
 `
-const OrderItem = ({order}) => {
+
+const Dinner = ({dinner}) => {
   return(
     <OrderDetail>
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-        <div style={{fontSize: '14px', fontWeight: '400'}}>프렌치 디너</div>
+      <div style={{marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <span style={{fontSize: '14px', fontWeight: '600'}}>{dinner.dinnerName}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span style={{fontSize: '10px', fontWeight: '500'}}>{dinner.style}</span>
+        </div>
         <CloseIcon sx={{ fontSize: 14, cursor: 'pointer' }}/>
       </div>
-      <div style={{margin: '30px 0px', fontSize: '12px', color: 'gray'}}>+ 에그 스크램블 1개</div>
-      <div style={{fontSize: '14px', fontWeight: '600'}}>52,000원</div>
+      {
+        dinner.extraList.map((extra, index) => {
+          if (extra.amount > 0){
+            return (<div key={index} style={{marginBottom: '5px', fontSize: '12px', color: 'gray'}}>
+              {extraInfo[extra.extraNo + 1].name}&nbsp;{extra.amount}개
+            </div>);
+          }
+        })
+      }
+      <div style={{marginTop: '30px', fontSize: '14px', fontWeight: '600'}}>{dinner.dinnerPrice}원</div>
     </OrderDetail>
-  )
+  );
+}
+
+const makeOrder = (userIdx, deliveredAt, cardNum, dinnerList, totalPrice) =>
+{
+  const order = {
+    userIdx: userIdx,
+    deliveredAt: deliveredAt,
+    cardNum: cardNum,
+    totalPrice: totalPrice,
+    dinnerList: dinnerList
+  }
+  console.log(order);
+  return order;
 }
 
 const Cart = () => {
+  const cusTotalPrice = 100000; //단골인지
+  const nav = useNavigate();
+
   const [startDate, setStartDate] = useState(setMinutes(new Date(), 0));
   const filterPassedTime = (time) => {
     const currentDate = new Date();
@@ -120,6 +302,26 @@ const Cart = () => {
 
     return currentDate.getTime() < selectedDate.getTime();
   };
+
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [cardNum, setCardNum] = useState();
+  const [dinnerList, setDinnerList] = useState(DinnerListData);
+
+  const deleteDinner = () => {
+  
+  }
+
+  const inputCardNum = useCallback((event) => {
+    setCardNum(event.target.value);
+  }, []);
+
+  useEffect(() => {
+    const totalPrice = dinnerList.reduce((acc, obj) => {
+      return (acc += obj.dinnerPrice);
+    }, 0);
+    setTotalPrice(cusTotalPrice > 100000 ? (totalPrice + 3000 - 2000) : totalPrice + 3000);
+  }, [dinnerList])
+
 
   return (
     <div>
@@ -136,7 +338,7 @@ const Cart = () => {
                 onChange={(date) => setStartDate(date)} // 내가 선택한 날짜가 맨 위에 표시 됨
                 showTimeSelect // 시간 나오게 하기
                 timeFormat="HH:mm" //시간 포맷 
-                timeIntervals={60} // 15분 단위로 선택 가능한 box가 나옴
+                timeIntervals={60} // 60분 단위로 선택 가능한 box가 나옴
                 minTime={setHours(setMinutes(new Date(), 0), 15)}
                 maxTime={setHours(setMinutes(new Date(), 0), 21)}
                 minDate={new Date()}
@@ -149,8 +351,10 @@ const Cart = () => {
             <div style={{display: 'grid', gridTemplateColumns: '1fr 2fr'}}>
               <BoxHeadSpan>주문 정보</BoxHeadSpan>
               <div>
-                <OrderItem />
-                <OrderItem />
+                {dinnerList ? dinnerList?.map((dinner, index) => {
+                  return <Dinner key={index} dinner={dinner}/>;
+                  }) : <div>장바구니가 비었습니다.</div>
+                }
               </div>
             </div>
           </Box>
@@ -172,6 +376,7 @@ const Cart = () => {
                 name='creditcard'
                 type='number'
                 placeholder='신용카드번호'
+                onChange={inputCardNum}
               />
             </div>
           </Box>
@@ -179,7 +384,9 @@ const Cart = () => {
         <div>
           <MembershipBox>
             회원님은
-            <span style={{marginLeft: '5px', fontWeight: 'bold'}}>단골 고객</span>
+            <span style={{marginLeft: '5px', fontWeight: 'bold'}}>
+              {cusTotalPrice > 100000 ? "단골 고객" : "일반 고객"}
+            </span>
             입니다.
           </MembershipBox>
           <Box>
@@ -187,11 +394,11 @@ const Cart = () => {
             <div>
               <PayDetail>
                 <div>주문금액</div>
-                <div>52000원</div>
+                <div>{totalPrice - 3000}원</div>
               </PayDetail>
               <PayDetail>
                 <div>단골할인</div>
-                <div style={{color: 'red'}}>-2000원</div>
+                <div style={{color: 'red'}}>{cusTotalPrice > 100000 ? "-2000원" : "0원"}</div>
               </PayDetail>
               <PayDetail>
                 <div>배달비</div>
@@ -201,9 +408,17 @@ const Cart = () => {
             <div style={{marginTop: '20px', borderBottom: '1px solid lightgray'}}></div>
             <TotalPrice>
               <div>총 결제금액</div>
-              <div>53000원</div>
+              <div>{totalPrice}원</div>
             </TotalPrice>
-            <Button>결제하기</Button>
+            <Button onClick={() => {
+              const order = makeOrder(1, startDate, cardNum, dinnerList, totalPrice);
+              nav('/ordercomplete', {
+                state: {
+                  order
+                }
+              });
+            }
+            }>결제하기</Button>
           </Box>
         </div>
       </CartContainer>

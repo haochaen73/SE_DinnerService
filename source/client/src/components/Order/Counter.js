@@ -28,7 +28,7 @@ const CountDiv = styled.div`
   color: white;
 `
 
-const Counter = ({extra, onChangeProps}) => {
+const Counter = ({extraInfo, extra, onChangeProps}) => {
   const amountIncreaseHandler = event => {
     event.preventDefault();
     onChangeProps(extra.extraNo, 'amount', extra.amount + 1);
@@ -42,8 +42,8 @@ const Counter = ({extra, onChangeProps}) => {
   return (
     <StyledDiv>
       <div>
-        <div style={{margin: '5px 0px', fontSize: '12px', fontWeight: '400'}}>{extra.name}</div>
-        <div style={{fontSize: '8px', color: 'gray'}}>{extra.price}원</div>
+        <div style={{margin: '5px 0px', fontSize: '12px', fontWeight: '400'}}>{extraInfo.name}</div>
+        <div style={{fontSize: '8px', color: 'gray'}}>{extraInfo.price}원</div>
       </div>
       <CountDiv>
         <RemoveIcon sx={{ fontSize: 12, cursor: 'pointer' }} onClick={amountDecreaseHandler}/>

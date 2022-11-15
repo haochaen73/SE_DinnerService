@@ -12,83 +12,76 @@ const menustyle = [
   { 
     id: 1,
     name: '심플 Simple',
+    style: '심플',
     price: 0,
     content: '냅킨 / 플라스틱 쟁반 / 플라스틱 잔 (와인 포함 시)'
   },
   { 
     id: 2,
     name: '그랜드 Grand',
+    style: '그랜드',
     price: 1000,
     content: '도자기 접시 / 컵 / 흰색 면 냅킨 / 나무 쟁반'
   },
   { 
     id: 3,
     name: '딜럭스 Deluxe',
+    style: '딜럭스',
     price: 2000,
     content: '도자기 접시 / 린넨 냅킨 / 은 쟁반 / 작은 꽃병 (꽃 포함)'
   },
 ]
 
-const extramenu = [
+const extraInfo = [
   {
     extraNo : 1,
     name : '와인 한 병',
     price : 22000,
-    amount : 0
   },
   {
     extraNo : 2,
     name : '와인 한 잔',
     price : 7000,
-    amount : 0
   },
   {
     extraNo : 3,
     name : '스테이크',
     price : 30000,
-    amount : 0
   },
   {
     extraNo : 4,
     name : '커피 한 잔',
     price : 4000,
-    amount : 0
   },
   {
     extraNo : 5,
     name : '커피 한 포트',
     price : 9000,
-    amount : 0
   },
   {
     extraNo : 6,
     name : '샐러드',
     price : 10000,
-    amount : 0
   },
   {
     extraNo : 7,
     name : '에그 스크램블',
     price : 2000,
-    amount : 0
   },
   {
     extraNo : 8,
     name : '베이컨',
     price : 1000,
-    amount : 0
   },
   {
     extraNo : 9,
     name : '샴페인',
     price : 22000,
-    amount : 0
   },
   {
     extraNo : 10,
     name : '바게트 빵',
     price : 2000,
-    amount : 0
   }
 ]
 
@@ -131,39 +124,65 @@ const RadioChild = ({style}) => {
 
 const MenuItem = ({menu}) => {
 
-  let style = "simple";
+  let style = "심플";
   if (menu.id === 4){
-    style = "grand"
+    style = "그랜드"
   }
 
   const [checkedStyle, setCheckedStyle] = useState(style);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [extraMenu, setExtraMenu] = useState(extramenu);
+  const [extraList, setExtraList] = useState(menu.extraList);
+  const [amount, setAmount] = useState(1);
 
   const styleHandler = (e) => {
     setCheckedStyle(e.target.value);
   }
 
   const onChangeProps = (id, key, value) => {
-    setExtraMenu(prevState => {
-      return prevState.map(obj => {
-        if (obj.extraNo === id) {
-          return { ...obj, [key]: value };
-        } else {
-          return { ...obj };
-        }
+    if (value >= 0 && value <= 10) {
+      setExtraList(prevState => {
+        return prevState.map(obj => {
+          if (obj.extraNo === id) {
+            return { ...obj, [key]: value };
+          } else {
+            return { ...obj };
+          }
+        });
       });
-    });
+    }
   };
+
+  const makeDinnerList = (dinnerName, style, amount, extraList) => {
+    let dinnerPrice = 0;
+    extraList.map((extra) => {
+      dinnerPrice += extra.amount * extraInfo[extra.extraNo - 1].price;
+    })
+    if (style === "그랜드") dinnerPrice += 1000;
+    else if (style === "딜럭스") dinnerPrice += 2000;
+
+    const dinnerList = {
+      dinnerName: dinnerName,
+      style: style,
+      amount: amount,
+      dinnerPrice: dinnerPrice,
+      extraList: extraList
+    }
+    console.log(dinnerList);
+  }
+
+  const resetExtra = () => {
+    setExtraList(menu.extraList);
+  }
 
   return (
     <MenuBox>
-      <div style={{fontSize: '20px', fontWeight: 'bold', marginBottom: '30px'}}>{menu.name}</div>
+      <div style={{fontSize: '20px', fontWeight: 'bold', marginBottom: '30px'}}>{menu.dinnerName}</div>
       <div style={{fontSize: '12px', color: 'gray', marginBottom: '20px'}}>{menu.text}</div>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
         <div style={{fontSize: '15px', fontWeight: 'bold'}}>{menu.price}</div>
         <Button onClick={()=> setModalIsOpen(true)}>주문하기</Button>
         <Modal 
+          ariaHideApp={false}
           style={{
             content: {
               margin: '0 auto',
@@ -179,15 +198,20 @@ const MenuItem = ({menu}) => {
           isOpen={modalIsOpen}>
             <ModalContainer>
               <TopDiv>
-                <span style={{fontWeight: 'bold', fontSize: '15px'}}>{menu.name}</span>
+                <span style={{fontWeight: 'bold', fontSize: '15px'}}>{menu.dinnerName}</span>
                 <span style={{color: 'gray', fontSize: '12px'}}>{menu.text}</span>
-                <CloseIcon style={{cursor: 'pointer'}} onClick={()=> setModalIsOpen(false)}/>
+                <CloseIcon 
+                  style={{cursor: 'pointer'}} 
+                  onClick={ ()=> {
+                    setModalIsOpen(false);
+                    resetExtra();
+                  }}/>
               </TopDiv>
               <MidDiv>
                 <div style={{fontWeight: 'bold', fontSize: '14px', paddingBottom: '25px'}}>추가 선택</div>
                 <ExtraDiv>
-                  {extraMenu.map((extra) => {
-                    return (<Counter key={extra.extraNo} extra={extra} onChangeProps={onChangeProps}/>);
+                  {extraList.map((extra) => {
+                    return (<Counter key={extra.extraNo} extraInfo={extraInfo[extra.extraNo - 1]} extra={extra} onChangeProps={onChangeProps}/>);
                   })
                   }
                   {/* 임의로.. */}
@@ -195,18 +219,18 @@ const MenuItem = ({menu}) => {
                 <div style={{fontWeight: 'bold', fontSize: '14px', paddingBottom: '25px'}}>스타일 선택</div>
                 <div>
                   <RadioGroup>
-                    <Radio name="style" value="simple" 
+                    <Radio name="style" value="심플" 
                       defaultChecked={menu.id !== 4 ? true : false} 
                       disabled={menu.id === 4 ? true : false}
                       onChange={styleHandler}>
                       <RadioChild style={menustyle[0]}/>
                     </Radio>
-                    <Radio name="style" value="grand" 
+                    <Radio name="style" value="그랜드" 
                       defaultChecked={menu.id === 4 ? true : false}
                       onChange={styleHandler} >
                       <RadioChild style={menustyle[1]}/>
                     </Radio>
-                    <Radio name="style" value="deluxe"
+                    <Radio name="style" value="딜럭스"
                       onChange={styleHandler}>
                       <RadioChild style={menustyle[2]}/>
                     </Radio>
@@ -214,7 +238,13 @@ const MenuItem = ({menu}) => {
                 </div>
               </MidDiv>
               <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                <Button onClick={()=> setModalIsOpen(false)}>장바구니 담기</Button>
+                <Button onClick={() =>{
+                  resetExtra();
+                  makeDinnerList(menu.dinnerName, checkedStyle, 1, extraList);
+                  setModalIsOpen(false);
+                }}>
+                  장바구니 담기
+                </Button>
               </div>
             </ModalContainer>
         </Modal>
