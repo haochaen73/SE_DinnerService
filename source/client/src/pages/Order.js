@@ -230,7 +230,6 @@ const Order = () => {
           menulist?.map((menu) => {
             return <MenuItem key={menu.id} menu={menu}/>;
           })
-          
         }
       </MenuDiv>
     </Container>

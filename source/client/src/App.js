@@ -15,6 +15,7 @@ import OrderComplete from './pages/OrderComplete';
 import Employee from './pages/Employee';
 import OrderHistoryDetail from './pages/OrderHistoryDetail';
 import OrderEdit from './pages/OrderEdit';
+import OrderModifyComplete from './pages/OrderModifyComplete';
 
 const Container = styled.div`
   width: 1000px;
@@ -35,6 +36,7 @@ function App() {
           <Route path="/order" index element={<Order/>}></Route>
           <Route path="/cart" index element={<Cart/>}></Route>
           <Route path="/ordercomplete" index element={<OrderComplete/>}></Route>
+          <Route path="/ordermodifycomplete" index element={<OrderModifyComplete/>}></Route>
           <Route path="/employee" index element={<Employee/>}></Route>
           <Route path="/signup-employee" index element={<SignupEmp/>}></Route>
           <Route path="/signup-customer" index element={<SignupCus/>}></Route>
