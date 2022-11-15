@@ -8,7 +8,8 @@ import setMinutes from "date-fns/setMinutes";
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const extraInfo = [
   {
@@ -254,7 +255,6 @@ const StyledLink = styled(Link)`
 `
 
 const Dinner = ({dinner}) => {
-  console.log(dinner);
   return(
     <OrderDetail>
       <div style={{marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -265,10 +265,10 @@ const Dinner = ({dinner}) => {
         <CloseIcon sx={{ fontSize: 14, cursor: 'pointer' }}/>
       </div>
       {
-        dinner.extraList.map((extra) => {
+        dinner.extraList.map((extra, index) => {
           if (extra.amount > 0){
-            return (<div style={{marginBottom: '5px', fontSize: '12px', color: 'gray'}}>
-              +{extraInfo[extra.extraNo + 1].name}&nbsp;{extra.amount}개
+            return (<div key={index} style={{marginBottom: '5px', fontSize: '12px', color: 'gray'}}>
+              {extraInfo[extra.extraNo + 1].name}&nbsp;{extra.amount}개
             </div>);
           }
         })
@@ -278,8 +278,22 @@ const Dinner = ({dinner}) => {
   );
 }
 
+const makeOrder = (userIdx, deliveredAt, cardNum, dinnerList, totalPrice) =>
+{
+  const order = {
+    userIdx: userIdx,
+    deliveredAt: deliveredAt,
+    cardNum: cardNum,
+    totalPrice: totalPrice,
+    dinnerList: dinnerList
+  }
+  console.log(order);
+  return order;
+}
+
 const Cart = () => {
   const cusTotalPrice = 100000; //단골인지
+  const nav = useNavigate();
 
   const [startDate, setStartDate] = useState(setMinutes(new Date(), 0));
   const filterPassedTime = (time) => {
@@ -289,18 +303,23 @@ const Cart = () => {
     return currentDate.getTime() < selectedDate.getTime();
   };
 
-  const [totalPrice, setTotalPrice] = useState([0,0]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [cardNum, setCardNum] = useState();
   const [dinnerList, setDinnerList] = useState(DinnerListData);
 
   const deleteDinner = () => {
   
   }
 
+  const inputCardNum = useCallback((event) => {
+    setCardNum(event.target.value);
+  }, []);
+
   useEffect(() => {
     const totalPrice = dinnerList.reduce((acc, obj) => {
       return (acc += obj.dinnerPrice);
     }, 0);
-    setTotalPrice([totalPrice, cusTotalPrice > 100000 ? (totalPrice + 3000 - 2000) : totalPrice + 3000]);
+    setTotalPrice(cusTotalPrice > 100000 ? (totalPrice + 3000 - 2000) : totalPrice + 3000);
   }, [dinnerList])
 
 
@@ -319,7 +338,7 @@ const Cart = () => {
                 onChange={(date) => setStartDate(date)} // 내가 선택한 날짜가 맨 위에 표시 됨
                 showTimeSelect // 시간 나오게 하기
                 timeFormat="HH:mm" //시간 포맷 
-                timeIntervals={60} // 15분 단위로 선택 가능한 box가 나옴
+                timeIntervals={60} // 60분 단위로 선택 가능한 box가 나옴
                 minTime={setHours(setMinutes(new Date(), 0), 15)}
                 maxTime={setHours(setMinutes(new Date(), 0), 21)}
                 minDate={new Date()}
@@ -357,6 +376,7 @@ const Cart = () => {
                 name='creditcard'
                 type='number'
                 placeholder='신용카드번호'
+                onChange={inputCardNum}
               />
             </div>
           </Box>
@@ -374,7 +394,7 @@ const Cart = () => {
             <div>
               <PayDetail>
                 <div>주문금액</div>
-                <div>{totalPrice[0]}원</div>
+                <div>{totalPrice - 3000}원</div>
               </PayDetail>
               <PayDetail>
                 <div>단골할인</div>
@@ -388,9 +408,17 @@ const Cart = () => {
             <div style={{marginTop: '20px', borderBottom: '1px solid lightgray'}}></div>
             <TotalPrice>
               <div>총 결제금액</div>
-              <div>{totalPrice[1]}원</div>
+              <div>{totalPrice}원</div>
             </TotalPrice>
-            <Button>결제하기</Button>
+            <Button onClick={() => {
+              const order = makeOrder(1, startDate, cardNum, dinnerList, totalPrice);
+              nav('/ordercomplete', {
+                state: {
+                  order
+                }
+              });
+            }
+            }>결제하기</Button>
           </Box>
         </div>
       </CartContainer>
