@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Modal from 'react-modal';
+import { useState } from 'react';
 
 const MainDiv = styled.div`
   width: 600px;
@@ -75,7 +77,15 @@ const ButtonContainer = styled.div`
 `
 
 
+const ModalContainer = styled.div`
+  padding: 0px 20px;
+  align-items: center;
+`
+
+
 const OrderHistoryDetail = () => {
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
  
   return (
     <MainDiv>
@@ -101,7 +111,28 @@ const OrderHistoryDetail = () => {
       </ContentDiv>
       <ButtonContainer>
         <Button to='/orderedit'>주문 변경</Button>
-        <StyledButton>주문 취소</StyledButton>
+        <StyledButton onClick={()=> setModalIsOpen(true)}>주문 취소</StyledButton>
+        <Modal 
+          onRequestClose={() => setModalIsOpen(false)}
+          ariaHideApp={false}
+          style={{
+            content: {
+              margin: 'auto',
+              width: '300px',
+              height: '200px',
+              border: '1px solid #ccc',
+              background: '#fff',
+              overflow: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              borderRadius: '0px',
+              padding: '50px'
+            }
+          }}
+          isOpen={modalIsOpen}>
+            <ModalContainer>
+              정말 취소하시겠습니까?
+            </ModalContainer>
+        </Modal>
       </ButtonContainer>
     </MainDiv>
   );
