@@ -69,7 +69,7 @@ const DinnerListData = [
       dinnerName : "발렌타인 디너",
       style : "심플",
       amount : 1,
-      dinnerPrice: 30000,
+      dinnerPrice: 50000,
       extraList : [
           {
               extraNo : 1,
@@ -262,7 +262,6 @@ const Dinner = ({dinner}) => {
           <span style={{fontSize: '14px', fontWeight: '600'}}>{dinner.dinnerName}&nbsp;&nbsp;&nbsp;&nbsp;</span>
           <span style={{fontSize: '10px', fontWeight: '500'}}>{dinner.style}</span>
         </div>
-        <CloseIcon sx={{ fontSize: 14, cursor: 'pointer' }}/>
       </div>
       {
         dinner.extraList.map((extra, index) => {
@@ -306,10 +305,6 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [cardNum, setCardNum] = useState();
   const [dinnerList, setDinnerList] = useState(DinnerListData);
-
-  const deleteDinner = () => {
-  
-  }
 
   const inputCardNum = useCallback((event) => {
     setCardNum(event.target.value);
@@ -365,7 +360,7 @@ const Cart = () => {
                 <div style={{marginBottom: '15px', fontSize: '14px', fontWeight: '600'}}>전화번호</div>
                 <div style={{marginBottom: '15px', fontSize: '14px', fontWeight: '400'}}>010-1234-5678</div>
                 <div style={{marginBottom: '15px', fontSize: '14px', fontWeight: '600'}}>주소</div>
-                <div style={{fontSize: '15px', fontWeight: '400'}}>서울특별시 동대문구 서울시립대로 163 정보기술관</div>
+                <div style={{fontSize: '14px', fontWeight: '400'}}>서울특별시 동대문구 서울시립대로 163 정보기술관</div>
               </div>
             </div>
           </Box>
