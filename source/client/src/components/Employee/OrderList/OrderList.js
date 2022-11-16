@@ -16,6 +16,8 @@ const jsonaccept = `{
       {
           "orderIdx": 30,
           "userIdx" : 2,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163", 
           "deliveredAt": "2022-11-16 17:00:00",
           "createdAt": "2022-11-15 12:57:08",
           "state": 1,
@@ -119,6 +121,8 @@ const jsonaccept = `{
       {
           "orderIdx": 47,
           "userIdx" : 11,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163", 
           "deliveredAt": "2022-11-11 12:00:00",
           "createdAt": "2022-11-15 12:57:08",
           "state": 1,
@@ -184,6 +188,8 @@ const jsonprepare = `
       {
           "orderIdx": 30,
           "userIdx" : 2,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163",
           "deliveredAt": "2022-11-11 12:00:00",
           "createdAt": "2022-11-15 12:57:08",
           "state": 2,
@@ -287,6 +293,8 @@ const jsonprepare = `
       {
           "orderIdx": 47,
           "userIdx" : 11,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163",
           "deliveredAt": "2022-11-11 12:00:00",
           "createdAt": "2022-11-15 12:57:08",
           "state": 3,
@@ -343,6 +351,8 @@ const jsonprepare = `
       {
           "orderIdx": 49,
           "userIdx" : 11,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163",
           "deliveredAt": "2022-11-11 12:00:00",
           "createdAt": "2022-11-15 12:57:08",
           "state": 4,
@@ -408,6 +418,8 @@ const jsondone = `
       {
           "orderIdx": 30,
           "userIdx" : 2,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163",
           "deliveredAt": "2022-11-11 12:00:00",
           "createdAt": "2022-11-15 12:57:08",
           "state": 5,
@@ -511,6 +523,8 @@ const jsondone = `
       {
           "orderIdx": 47,
           "userIdx" : 11,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163",
           "deliveredAt": "2022-11-11 12:00:00",
           "createdAt": "2022-11-15 12:57:08",
           "state": 5,
@@ -614,9 +628,10 @@ const OrderList = () => {
   const [orderListAccept, setOrderListAccept] = useState(accept.result);
   const [orderListPrepare, setOrderListPrepare] = useState(prepare.result);
   const [orderListDone, setOrderListDone] = useState(done.result);
+  const [orderDetail, setOrderDetail] = useState();
 
-  const clickOrder = useCallback((id) => {
-    //setOrderIdx(prev => prev === id ? null : id);
+  const clickOrder = useCallback((order) => {
+    setOrderDetail(order);
   }, []);
 
   const handleChange = (event, newValue) => {
@@ -660,7 +675,7 @@ const OrderList = () => {
           })}
         </TabPanel>
       </Box>
-      <OrderDetail />
+      {orderDetail ? <OrderDetail order={orderDetail}/> : null}
     </Container>
   );
 };

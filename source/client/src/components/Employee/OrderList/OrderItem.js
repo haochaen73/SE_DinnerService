@@ -35,9 +35,9 @@ const OrderState = ({state}) => {
   );
 }
 
-const OrderItem = ({state, order, clickOrder}) => {
+const OrderItem = ({order, clickOrder}) => {
   return (
-    <Container onClick={clickOrder}>
+    <Container onClick={() => clickOrder(order)}>
       <div>
         <div style={{color: 'white', fontSize: '8px'}}>주문번호 : {order.orderIdx}</div>
         <div style={{marginTop: '5px', color: 'white', fontWeight: '600'}}>
