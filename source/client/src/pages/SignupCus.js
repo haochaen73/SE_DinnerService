@@ -31,6 +31,23 @@ const SignupCus = () => {
 		phone: '',
 		address: '',
 	});
+
+	const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&])[A-Za-z\d@!%*#?&]{8,}$/;
+	const emailRegEx = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+	const phoneRegEx = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
+  
+	const passwordCheck = (signUpInfo) => {
+		return passwordRegEx.test(signUpInfo);
+	}
+
+  const emailCheck = (signUpInfo) => {
+    return emailRegEx.test(signUpInfo); //형식에 맞을 경우, true 리턴
+  }
+
+	const phoneCheck = (signUpInfo) => {
+		return phoneRegEx.test(signUpInfo);
+	}
+
 	const checkNotEmptySignUpInfoValue = Object.values(signUpInfo).some((data) => data === '');
 
 	const handleChangeSignUpInfoInput = (e) => {
@@ -95,10 +112,22 @@ const SignupCus = () => {
 						alert('모든 항목을 채워주세요.');
 						return;
 					}
+					if(!passwordCheck(signUpInfo.password)){
+						alert('비밀번호를 형식에 맞춰 입력해주세요.\n최소 8자 + 최소 한개의 영문자 + 최소 한개의 숫자 + 최소 한개의 특수 문자');
+						return;
+					}
           if (signUpInfo.password !== signUpInfo.checkPassword) {
             alert("비밀번호가 서로 다릅니다.");
             return;
           }
+					if(!emailCheck(signUpInfo.email)){
+						alert('이메일을 올바르게 입력해주세요.');
+						return;
+					}
+					if(!phoneCheck(signUpInfo.phone)){
+						alert('전화번호를 형식에 맞춰 입력해주세요.\n010-****-****');
+						return;
+					}
         }}
 				//disabled={checkNotEmptySignUpInfoValue}
       >
