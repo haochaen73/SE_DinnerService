@@ -262,6 +262,7 @@ const Dinner = ({dinner}) => {
           <span style={{fontSize: '14px', fontWeight: '600'}}>{dinner.dinnerName}&nbsp;&nbsp;&nbsp;&nbsp;</span>
           <span style={{fontSize: '10px', fontWeight: '500'}}>{dinner.style}</span>
         </div>
+        <CloseIcon sx={{cursor: 'pointer'}}/>
       </div>
       {
         dinner.extraList.map((extra, index) => {
@@ -279,9 +280,11 @@ const Dinner = ({dinner}) => {
 
 const makeOrder = (userIdx, deliveredAt, cardNum, dinnerList, totalPrice) =>
 {
+  console.log((deliveredAt));
+  console.log((deliveredAt.getTime()))
   const order = {
     userIdx: userIdx,
-    deliveredAt: deliveredAt,
+    deliveredAt: deliveredAt.getTime(),
     cardNum: cardNum,
     totalPrice: totalPrice,
     dinnerList: dinnerList

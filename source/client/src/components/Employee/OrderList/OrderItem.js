@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 
 const Container = styled.div`
   padding: 20px 40px;
@@ -24,31 +25,35 @@ const OrderStateDiv = styled.div`
   font-weight: bold;
   background-color: gray;
 `
-const OrderState = ({text, }) => {
+const OrderState = ({state}) => {
+  const states = ['대기', '조리', '픽업', '배달', '완료'];
+  const statesColor = ['gray', '#F89372', '#E8643A', '#B93D16', 'black'];
   return (
-    <OrderStateDiv>
-      {text}
+    <OrderStateDiv style={{backgroundColor: `${statesColor[state-1]}`}}>
+      {states[state-1]}
     </OrderStateDiv>
   );
 }
-const OrderItem = ({order, clickOrder}) => {
+
+const OrderItem = ({state, order, clickOrder}) => {
   return (
     <Container onClick={clickOrder}>
       <div>
-        <div style={{color: 'white', fontSize: '8px'}}>주문번호 : 1</div>
+        <div style={{color: 'white', fontSize: '8px'}}>주문번호 : {order.orderIdx}</div>
         <div style={{marginTop: '5px', color: 'white', fontWeight: '600'}}>
-          발렌타인 디너
+          {order.dinnerList[0].dinnerName}
+          {order.dinnerList.length > 1 ? (" 외 "+(order.dinnerList.length - 1)+"개") : null }
         </div>
-        <div style={{marginTop: '6px'}}>
+        <div style={{marginTop: '6px', alignItems: 'center'}}>
           <span style={{color: 'white', fontSize: '12px'}}>
             예약시간
           </span>
           <span style={{marginLeft: '10px', color: 'red', fontSize: '12px', fontWeight: '500'}}>
-            10/01 14:00
+            {moment(order.deliveredAt).format('MM/DD hh:mm')}
           </span>
         </div>
       </div>
-      <OrderStateDiv>대기</OrderStateDiv>
+      <OrderState state={order.state}/>
     </Container>
   );
 };
