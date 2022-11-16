@@ -132,7 +132,6 @@ const MenuItem = ({menu}) => {
   const [checkedStyle, setCheckedStyle] = useState(style);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [extraList, setExtraList] = useState(menu.extraList);
-  const [amount, setAmount] = useState(1);
 
   const styleHandler = (e) => {
     setCheckedStyle(e.target.value);

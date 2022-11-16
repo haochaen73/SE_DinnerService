@@ -132,7 +132,7 @@ const OrderComplete = () => {
           <div style={{marginBottom: '10px',fontSize: "16px", fontWeight: "700"}}>결제금액</div>
           <div style={{fontSize: "15px", fontWeight: "400"}}>{totalPrice}원</div>
       </OrderInfoContainer>
-      <StyledLink to='/'>
+      <StyledLink to='/main'>
         메인페이지로 이동
       </StyledLink>
     </Div>

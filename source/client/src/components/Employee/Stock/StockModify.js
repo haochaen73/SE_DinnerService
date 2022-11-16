@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../../Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -71,6 +71,18 @@ const stocklist = [
     amount : 30
   }
 ]
+const stockamount = {
+  amount1 : 0,
+  amount2 : 0,
+  amount3 : 0,
+  amount4 : 0,
+  amount5 : 0,
+  amount6 : 0,
+  amount7 : 0,
+  amount8 : 0,
+  amount9 : 0,
+  amount10 : 0
+}
 
 const Container = styled.div`
   padding: 0px 40px;
@@ -87,18 +99,12 @@ const StyledInput = styled.input.attrs({ type: 'number' })`
 `
 const StockModify = () => {
   const[stocks, setStocks] = useState(stocklist);
+  const[stockAmount, setStockAmount] = useState(stockamount);
 
-  const onChange = (id, key, e) => {
+  const modifyStockAmount = (e, key) => {
     console.log(e.target.value);
-    setStocks(prevState => {
-      return prevState.map(obj => {
-        if (obj.extraNo === id) {
-          return { ...obj, [key]: e.target.value };
-        } else {
-          return { ...obj };
-        }
-      });
-    });
+    setStockAmount(prevState => ({ ...prevState, [`amount${key}`]: Number(e.target.value) })
+    );
   }
 
   return (
@@ -107,7 +113,14 @@ const StockModify = () => {
         <div style={{fontWeight: 'bold', fontSize: '20px'}}>
           재고 수정
         </div>
-        <Button>수정완료</Button>
+        <Button onClick={() => {
+          console.log(stocks);
+          //stockamount post
+          //stock get
+        }
+        }>
+          수정완료
+        </Button>
       </Head>
       <TableContainer>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -130,9 +143,10 @@ const StockModify = () => {
                 <TableCell align="center">
                   <StyledInput
                     defaultValue="0"
+                    onChange={(e) => modifyStockAmount(e, stock.extraNo)}
                   />
                 </TableCell>
-                <TableCell align="center">{stock.amount}</TableCell>
+                <TableCell align="center">{stockAmount[`amount${stock.extraNo}`] + stock.amount}</TableCell>
               </TableRow>
             ))}
           </TableBody>

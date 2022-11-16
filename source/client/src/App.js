@@ -30,8 +30,8 @@ function App() {
       <BrowserRouter>
         <Header/>
 				<Routes>
-          <Route path="/" index element={<Main />}></Route>
-          <Route path="/login" index element={<Login/>}></Route>
+          <Route path="/" index element={<Login />}></Route>
+          <Route path="/main" index element={<Main/>}></Route>
           <Route path="/signup" index element={<Signup/>}></Route>
           <Route path="/order" index element={<Order/>}></Route>
           <Route path="/cart" index element={<Cart/>}></Route>

@@ -8,17 +8,583 @@ import styled from 'styled-components';
 import OrderItem from './OrderItem';
 import OrderDetail from './OrderDetail';
 
-const orderlist = [
-  {
-    orderIdx: 1,
-  },
-  {
-    orderIdx: 2,
-  },
-  {
-    orderIdx: 3,
-  }
-]
+const jsonaccept = `{
+  "isSuccess": true,
+  "code": 1000,
+  "message": "요청에 성공하였습니다.",
+  "result": [
+      {
+          "orderIdx": 30,
+          "userIdx" : 2,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163", 
+          "deliveredAt": "2022-11-16 17:00:00",
+          "createdAt": "2022-11-15 12:57:08",
+          "state": 1,
+          "dinnerList": [
+              {
+                  "dinnerName": "발렌타인 디너",
+                  "style": "딜럭스",
+                  "amount": 1,
+                  "extraList": [
+                      {
+                          "extraName": "와인(병)",
+                          "amount": 1
+                      },
+                      {
+                          "extraName": "와인(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "스테이크",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(포트)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샐러드",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "에그 스크램블",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "베이컨",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샴페인(병)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "바게트 빵",
+                          "amount": 0
+                      }
+                  ]
+              },
+              {
+                  "dinnerName": "발렌타인 디너",
+                  "style": "딜럭스",
+                  "amount": 1,
+                  "extraList": [
+                      {
+                          "extraName": "와인(병)",
+                          "amount": 1
+                      },
+                      {
+                          "extraName": "와인(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "스테이크",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(포트)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샐러드",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "에그 스크램블",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "베이컨",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샴페인(병)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "바게트 빵",
+                          "amount": 0
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "orderIdx": 47,
+          "userIdx" : 11,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163", 
+          "deliveredAt": "2022-11-11 12:00:00",
+          "createdAt": "2022-11-15 12:57:08",
+          "state": 1,
+          "dinnerList": [
+              {
+                  "dinnerName": "프렌치 디너",
+                  "style": "딜럭스",
+                  "amount": 1,
+                  "extraList": [
+                      {
+                          "extraName": "와인(병)",
+                          "amount": 1
+                      },
+                      {
+                          "extraName": "와인(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "스테이크",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(포트)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샐러드",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "에그 스크램블",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "베이컨",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샴페인(병)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "바게트 빵",
+                          "amount": 0
+                      }
+                  ]
+              }
+          ]
+      }
+  ]
+}`
+
+const jsonprepare = `
+{
+  "isSuccess": true,
+  "code": 1000,
+  "message": "요청에 성공하였습니다.",
+  "result": [
+      {
+          "orderIdx": 30,
+          "userIdx" : 2,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163",
+          "deliveredAt": "2022-11-11 12:00:00",
+          "createdAt": "2022-11-15 12:57:08",
+          "state": 2,
+          "dinnerList": [
+              {
+                  "dinnerName": "발렌타인 디너",
+                  "style": "딜럭스",
+                  "amount": 1,
+                  "extraList": [
+                      {
+                          "extraName": "와인(병)",
+                          "amount": 1
+                      },
+                      {
+                          "extraName": "와인(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "스테이크",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(포트)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샐러드",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "에그 스크램블",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "베이컨",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샴페인(병)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "바게트 빵",
+                          "amount": 0
+                      }
+                  ]
+              },
+              {
+                  "dinnerName": "발렌타인 디너",
+                  "style": "심플",
+                  "amount": 1,
+                  "extraList": [
+                      {
+                          "extraName": "와인(병)",
+                          "amount": 1
+                      },
+                      {
+                          "extraName": "와인(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "스테이크",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(포트)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샐러드",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "에그 스크램블",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "베이컨",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샴페인(병)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "바게트 빵",
+                          "amount": 0
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "orderIdx": 47,
+          "userIdx" : 11,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163",
+          "deliveredAt": "2022-11-11 12:00:00",
+          "createdAt": "2022-11-15 12:57:08",
+          "state": 3,
+          "dinnerList": [
+              {
+                  "dinnerName": "프렌치 디너",
+                  "style": "그랜드",
+                  "amount": 1,
+                  "extraList": [
+                      {
+                          "extraName": "와인(병)",
+                          "amount": 1
+                      },
+                      {
+                          "extraName": "와인(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "스테이크",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(포트)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샐러드",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "에그 스크램블",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "베이컨",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샴페인(병)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "바게트 빵",
+                          "amount": 0
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "orderIdx": 49,
+          "userIdx" : 11,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163",
+          "deliveredAt": "2022-11-11 12:00:00",
+          "createdAt": "2022-11-15 12:57:08",
+          "state": 4,
+          "dinnerList": [
+              {
+                  "dinnerName": "프렌치 디너",
+                  "style": "그랜드",
+                  "amount": 1,
+                  "extraList": [
+                      {
+                          "extraName": "와인(병)",
+                          "amount": 1
+                      },
+                      {
+                          "extraName": "와인(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "스테이크",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(포트)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샐러드",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "에그 스크램블",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "베이컨",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샴페인(병)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "바게트 빵",
+                          "amount": 0
+                      }
+                  ]
+              }
+          ]
+      }
+  ]
+}`
+
+const jsondone = `
+{
+  "isSuccess": true,
+  "code": 1000,
+  "message": "요청에 성공하였습니다.",
+  "result": [
+      {
+          "orderIdx": 30,
+          "userIdx" : 2,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163",
+          "deliveredAt": "2022-11-11 12:00:00",
+          "createdAt": "2022-11-15 12:57:08",
+          "state": 5,
+          "dinnerList": [
+              {
+                  "dinnerName": "Valentine",
+                  "style": "Deluxe",
+                  "amount": 1,
+                  "extraList": [
+                      {
+                          "extraName": "와인(병)",
+                          "amount": 1
+                      },
+                      {
+                          "extraName": "와인(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "스테이크",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(포트)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샐러드",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "에그 스크램블",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "베이컨",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샴페인(병)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "바게트 빵",
+                          "amount": 0
+                      }
+                  ]
+              },
+              {
+                  "dinnerName": "Valentine",
+                  "style": "Deluxe",
+                  "amount": 1,
+                  "extraList": [
+                      {
+                          "extraName": "와인(병)",
+                          "amount": 1
+                      },
+                      {
+                          "extraName": "와인(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "스테이크",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(포트)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샐러드",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "에그 스크램블",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "베이컨",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샴페인(병)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "바게트 빵",
+                          "amount": 0
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "orderIdx": 47,
+          "userIdx" : 11,
+          "phoneNum" : "010-1111-1111",
+          "address" : "서울시 동대문구 서울시립대로 163",
+          "deliveredAt": "2022-11-11 12:00:00",
+          "createdAt": "2022-11-15 12:57:08",
+          "state": 5,
+          "dinnerList": [
+              {
+                  "dinnerName": "Valentine",
+                  "style": "Deluxe",
+                  "amount": 1,
+                  "extraList": [
+                      {
+                          "extraName": "와인(병)",
+                          "amount": 1
+                      },
+                      {
+                          "extraName": "와인(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "스테이크",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(잔)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "커피(포트)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샐러드",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "에그 스크램블",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "베이컨",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "샴페인(병)",
+                          "amount": 0
+                      },
+                      {
+                          "extraName": "바게트 빵",
+                          "amount": 0
+                      }
+                  ]
+              }
+          ]
+      }
+  ]
+}`
+
+const accept = JSON.parse(jsonaccept);
+const prepare = JSON.parse(jsonprepare);
+const done = JSON.parse(jsondone);
+
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
@@ -59,10 +625,13 @@ const Container = styled.div`
 `
 const OrderList = () => {
   const [value, setValue] = useState(0);
-  const [orderIdx, setOrderIdx] = useState(null);
+  const [orderListAccept, setOrderListAccept] = useState(accept.result);
+  const [orderListPrepare, setOrderListPrepare] = useState(prepare.result);
+  const [orderListDone, setOrderListDone] = useState(done.result);
+  const [orderDetail, setOrderDetail] = useState();
 
-  const clickOrder = useCallback((id) => {
-    setOrderIdx(prev => prev === id ? null : id);
+  const clickOrder = useCallback((order) => {
+    setOrderDetail(order);
   }, []);
 
   const handleChange = (event, newValue) => {
@@ -79,38 +648,34 @@ const OrderList = () => {
             aria-label="basic tabs example"
             variant="fullWidth"
             sx={{
+              textColor: 'white',
               '& .MuiTabs-indicator': { backgroundColor: '#F46335' },
               '& .MuiTab-root': { backgroundColor: '#2B2B2B', color: 'white' },
               '& .Mui-selected': { color: '#F46335' },
             }}
           >
-            <Tab label="접수" {...a11yProps(0)} />
-            <Tab label="준비" {...a11yProps(1)} />
-            <Tab label="완료" {...a11yProps(2)} />
+            <Tab label="접수" {...a11yProps(0)} onClick={() => setOrderDetail()}/>
+            <Tab label="준비" {...a11yProps(1)} onClick={() => setOrderDetail()}/>
+            <Tab label="완료" {...a11yProps(2)} onClick={() => setOrderDetail()}/>
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          {orderlist?.map(() => {
-            <OrderItem clickOrder={clickOrder}/>
+          {orderListAccept?.map((order) => {
+            return <OrderItem selected={order} order={order} clickOrder={clickOrder}/>;
           })}
-          <OrderItem clickOrder={clickOrder}/>
-          <OrderItem clickOrder={clickOrder}/>
-          <OrderItem clickOrder={clickOrder}/>
-          <OrderItem clickOrder={clickOrder}/>
-          <OrderItem clickOrder={clickOrder}/>
-          <OrderItem clickOrder={clickOrder}/>
-          <OrderItem clickOrder={clickOrder}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <OrderItem/>
-          <OrderItem/>
+          {orderListPrepare?.map((order) => {
+              return <OrderItem order={order} clickOrder={clickOrder}/>;
+          })}
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <OrderItem/>
-          <OrderItem/>
+          {orderListDone?.map((order) => {
+            return <OrderItem order={order} clickOrder={clickOrder}/>;
+          })}
         </TabPanel>
       </Box>
-      <OrderDetail />
+      {orderDetail ? <OrderDetail order={orderDetail}/> : null}
     </Container>
   );
 };
