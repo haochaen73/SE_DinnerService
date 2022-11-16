@@ -89,6 +89,21 @@ const DinnerContent = ({dinner}) => {
   );
 }
 
+const StateButton = ({state}) => {
+  const text = ['주문 취소','조리 시작', '조리 완료', '배달 시작', '배달 완료'];
+  if (state === 1) {
+    return (
+      <div>
+        <OrangeButton>조리 시작</OrangeButton>
+        <Button>주문 취소</Button>
+      </div>
+    );
+  }
+  return (
+    <OrangeButton>{text[state]}</OrangeButton>
+  );
+}
+
 const OrderDetail = ({ order }) => {
   return (
     <Container>
@@ -125,8 +140,7 @@ const OrderDetail = ({ order }) => {
         </Box>
       </Content>
       <ButtonLayout>
-        <OrangeButton>조리 시작</OrangeButton>
-        <Button>주문 취소</Button>
+        {order.state === 5 ?  null : <StateButton state={order.state}/>}
       </ButtonLayout>
     </Container>
   );

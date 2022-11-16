@@ -654,14 +654,14 @@ const OrderList = () => {
               '& .Mui-selected': { color: '#F46335' },
             }}
           >
-            <Tab label="접수" {...a11yProps(0)} />
-            <Tab label="준비" {...a11yProps(1)} />
-            <Tab label="완료" {...a11yProps(2)} />
+            <Tab label="접수" {...a11yProps(0)} onClick={() => setOrderDetail()}/>
+            <Tab label="준비" {...a11yProps(1)} onClick={() => setOrderDetail()}/>
+            <Tab label="완료" {...a11yProps(2)} onClick={() => setOrderDetail()}/>
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
           {orderListAccept?.map((order) => {
-            return <OrderItem order={order} clickOrder={clickOrder}/>;
+            return <OrderItem selected={order} order={order} clickOrder={clickOrder}/>;
           })}
         </TabPanel>
         <TabPanel value={value} index={1}>
