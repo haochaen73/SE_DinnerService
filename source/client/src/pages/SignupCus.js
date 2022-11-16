@@ -22,7 +22,7 @@ const InputLayer = styled.div`
 `
 
 const SignupCus = () => {
-	const [signUpInfo, setSignUpInfo] = useState({
+	const [signUpCusInfo, setSignUpCusInfo] = useState({
 		name: '',
 		id: '',
 		password: '',
@@ -36,23 +36,23 @@ const SignupCus = () => {
 	const emailRegEx = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
 	const phoneRegEx = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
   
-	const passwordCheck = (signUpInfo) => {
-		return passwordRegEx.test(signUpInfo);
+	const passwordCheck = (signUpCusInfo) => {
+		return passwordRegEx.test(signUpCusInfo);
 	}
 
-  const emailCheck = (signUpInfo) => {
-    return emailRegEx.test(signUpInfo); //형식에 맞을 경우, true 리턴
+  const emailCheck = (signUpCusInfo) => {
+    return emailRegEx.test(signUpCusInfo); //형식에 맞을 경우, true 리턴
   }
 
-	const phoneCheck = (signUpInfo) => {
-		return phoneRegEx.test(signUpInfo);
+	const phoneCheck = (signUpCusInfo) => {
+		return phoneRegEx.test(signUpCusInfo);
 	}
 
-	const checkNotEmptySignUpInfoValue = Object.values(signUpInfo).some((data) => data === '');
+	const checkNotEmptySignUpInfoValue = Object.values(signUpCusInfo).some((data) => data === '');
 
 	const handleChangeSignUpInfoInput = (e) => {
 		const { name, value } = e.target;
-		setSignUpInfo((prev) => ({ ...prev, [name]: value }));
+		setSignUpCusInfo((prev) => ({ ...prev, [name]: value }));
 	}
 
   return (
@@ -63,68 +63,68 @@ const SignupCus = () => {
         <Input
           placeholder="이름"
           name={"name"}
-          value={signUpInfo.name}
+          value={signUpCusInfo.name}
           onChange={handleChangeSignUpInfoInput}
         />
         <Input
           placeholder="아이디"
           name={"id"}
-          value={signUpInfo.id}
+          value={signUpCusInfo.id}
           onChange={handleChangeSignUpInfoInput}
         />
         <Input
           placeholder="비밀번호"
           type="password"
           name={"password"}
-          value={signUpInfo.password}
+          value={signUpCusInfo.password}
           onChange={handleChangeSignUpInfoInput}
         />
         <Input
           placeholder="비밀번호 재입력"
           type="password"
           name={"checkPassword"}
-          value={signUpInfo.checkPassword}
+          value={signUpCusInfo.checkPassword}
           onChange={handleChangeSignUpInfoInput}
         />
         <Input
           placeholder="이메일 주소"
           name={"email"}
-          value={signUpInfo.email}
+          value={signUpCusInfo.email}
           onChange={handleChangeSignUpInfoInput}
         />
         <Input
           placeholder="휴대폰 번호"
           name={"phone"}
-          value={signUpInfo.phone}
+          value={signUpCusInfo.phone}
           onChange={handleChangeSignUpInfoInput}
         />
         <Input
           placeholder="배달 주소"
           name={"address"}
-          value={signUpInfo.address}
+          value={signUpCusInfo.address}
           onChange={handleChangeSignUpInfoInput}
         />
       </InputLayer>
       <Button
         onClick={() => {
-          console.log(signUpInfo);
+          console.log(signUpCusInfo);
 					if (checkNotEmptySignUpInfoValue) {
 						alert('모든 항목을 채워주세요.');
 						return;
 					}
-					if(!passwordCheck(signUpInfo.password)){
+					if(!passwordCheck(signUpCusInfo.password)){
 						alert('비밀번호를 형식에 맞춰 입력해주세요.\n최소 8자 + 최소 한개의 영문자 + 최소 한개의 숫자 + 최소 한개의 특수 문자');
 						return;
 					}
-          if (signUpInfo.password !== signUpInfo.checkPassword) {
+          if (signUpCusInfo.password !== signUpCusInfo.checkPassword) {
             alert("비밀번호가 서로 다릅니다.");
             return;
           }
-					if(!emailCheck(signUpInfo.email)){
+					if(!emailCheck(signUpCusInfo.email)){
 						alert('이메일을 올바르게 입력해주세요.');
 						return;
 					}
-					if(!phoneCheck(signUpInfo.phone)){
+					if(!phoneCheck(signUpCusInfo.phone)){
 						alert('전화번호를 형식에 맞춰 입력해주세요.\n010-****-****');
 						return;
 					}
