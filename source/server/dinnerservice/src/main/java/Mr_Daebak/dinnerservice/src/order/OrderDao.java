@@ -108,13 +108,13 @@ public class OrderDao {
             this.jdbcTemplate.update(changeOrderPriceQuery, changeOrderPriceParams);
 
             // user 테이블에서 totalPrice 가져오기
-            String getUserTotalPriceQuery = "SELECT totalPrice FROM user WHERE userIdx = ?";
+            String getUserTotalPriceQuery = "SELECT totalPrice FROM `user` WHERE userIdx = ?";
             String getUserTotalPriceParams = String.valueOf(postOrderReq.getUserIdx());
             int userTotalPrice = this.jdbcTemplate.queryForObject(getUserTotalPriceQuery, int.class, getUserTotalPriceParams);
 
             // user totalPrice 업데이트
             totalPrice += userTotalPrice;
-            String changeUserTotalPriceQuery = "update user set totalPrice = ? where userIdx = ?";
+            String changeUserTotalPriceQuery = "update `user` set totalPrice = ? where userIdx = ?";
             Object[] changeUserTotalPriceParams = new Object[]{totalPrice, postOrderReq.getUserIdx()};
             this.jdbcTemplate.update(changeUserTotalPriceQuery, changeUserTotalPriceParams);
 

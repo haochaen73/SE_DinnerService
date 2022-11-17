@@ -20,13 +20,13 @@ public class ValidationRegex {
         return matcher.find();
     }
 
-    // 생일 날짜 형식 체크
-    public static boolean isRegexBirthDate(String target) {
-        String regex = "^(19[0-9][0-9]|20\\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$";
-        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(target);
-        return matcher.find();
-    }
+//    // 생일 날짜 형식 체크
+//    public static boolean isRegexBirthDate(String target) {
+//        String regex = "^(19[0-9][0-9]|20\\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$";
+//        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+//        Matcher matcher = pattern.matcher(target);
+//        return matcher.find();
+//    }
 
     // 핸드폰 번호 형식 체크
     public static boolean isRegexPhoneNum(String target) {

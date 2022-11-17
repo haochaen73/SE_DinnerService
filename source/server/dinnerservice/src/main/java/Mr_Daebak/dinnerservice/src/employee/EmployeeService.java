@@ -40,8 +40,9 @@ public class EmployeeService {
         }
         try {
             int employeeIdx = employeeDao.createEmployee(postEmployeeReq);
-            String jwt = jwtService.createJwt(employeeIdx);
-            return new PostEmployeeRes(employeeIdx, jwt);
+//            String jwt = jwtService.createJwt(employeeIdx);
+//            return new PostEmployeeRes(employeeIdx, jwt);
+            return new PostEmployeeRes(employeeIdx);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

@@ -7,5 +7,4 @@ import lombok.*;
 @AllArgsConstructor
 public class PostEmployeeRes {
     private int employeeIdx;
-    private String jwt;
 }

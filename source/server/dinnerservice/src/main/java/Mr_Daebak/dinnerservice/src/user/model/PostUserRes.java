@@ -8,5 +8,5 @@ import lombok.*;
 
 public class PostUserRes {
     private int userIdx;
-    private String jwt;
+//    private String jwt;
 }
