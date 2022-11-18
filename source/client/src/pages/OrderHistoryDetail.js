@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import { useState } from 'react';
@@ -78,13 +78,19 @@ const ButtonContainer = styled.div`
 
 
 const ModalContainer = styled.div`
-  padding: 0px 20px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: center;
   align-items: center;
 `
 
 
-const OrderHistoryDetail = () => {
 
+const OrderHistoryDetail = () => {
+  const navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
  
   return (
@@ -94,44 +100,85 @@ const OrderHistoryDetail = () => {
         <TopTextDiv>주문시간 : 10/01 (토) 00시 32분</TopTextDiv>
       </TopDiv>
       <ContentDiv>
-        <div style={{display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '60px'}}>
-          <div style={{fontSize: "16px", fontWeight: "700"}}>주문 내역</div>
-          <div style={{fontWeight: "400"}}>
-            <div style={{fontSize: "15px"}}>프렌치 디너(심플)</div>
-            <div style={{fontSize: "14px", color: "#6D6D6D", marginTop: "10px"}}>에그 스크램블 1개</div>
-            <div style={{fontSize: "14px", color: "#6D6D6D", marginTop: "5px"}}>와인 1병</div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 3fr",
+            gap: "60px",
+          }}
+        >
+          <div style={{ fontSize: "16px", fontWeight: "700" }}>주문 내역</div>
+          <div style={{ fontWeight: "400" }}>
+            <div style={{ fontSize: "15px" }}>프렌치 디너(심플)</div>
+            <div
+              style={{ fontSize: "14px", color: "#6D6D6D", marginTop: "10px" }}
+            >
+              에그 스크램블 1개
+            </div>
+            <div
+              style={{ fontSize: "14px", color: "#6D6D6D", marginTop: "5px" }}
+            >
+              와인 1병
+            </div>
           </div>
-          <div style={{fontSize: "16px", fontWeight: "700"}}>예약 일자</div>
-          <div style={{fontSize: "15px", fontWeight: "400"}}>10월 3일 머시기</div>
-          <div style={{fontSize: "16px", fontWeight: "700"}}>주소</div>
-          <div style={{fontSize: "15px", fontWeight: "400"}}>서울특별시 동대문구 서울시립대로 163 정보기술관 xxx호</div>
-          <div style={{fontSize: "16px", fontWeight: "700"}}>총금액</div>
-          <div style={{fontSize: "15px", fontWeight: "400"}}>87,000원</div>
+          <div style={{ fontSize: "16px", fontWeight: "700" }}>예약 일자</div>
+          <div style={{ fontSize: "15px", fontWeight: "400" }}>
+            10월 3일 머시기
+          </div>
+          <div style={{ fontSize: "16px", fontWeight: "700" }}>주소</div>
+          <div style={{ fontSize: "15px", fontWeight: "400" }}>
+            서울특별시 동대문구 서울시립대로 163 정보기술관 xxx호
+          </div>
+          <div style={{ fontSize: "16px", fontWeight: "700" }}>총금액</div>
+          <div style={{ fontSize: "15px", fontWeight: "400" }}>87,000원</div>
         </div>
       </ContentDiv>
       <ButtonContainer>
-        <Button to='/orderedit'>주문 변경</Button>
-        <StyledButton onClick={()=> setModalIsOpen(true)}>주문 취소</StyledButton>
-        <Modal 
+        <Button to="/orderedit">주문 변경</Button>
+        <StyledButton onClick={() => setModalIsOpen(true)}>
+          주문 취소
+        </StyledButton>
+        <Modal
           onRequestClose={() => setModalIsOpen(false)}
           ariaHideApp={false}
           style={{
             content: {
-              margin: 'auto',
-              width: '300px',
-              height: '200px',
-              border: '1px solid #ccc',
-              background: '#fff',
-              overflow: 'auto',
-              WebkitOverflowScrolling: 'touch',
-              borderRadius: '0px',
-              padding: '50px'
-            }
+              margin: "auto",
+              width: "280px",
+              height: "140px",
+              border: "1px solid #ccc",
+              background: "#fff",
+              WebkitOverflowScrolling: "touch",
+              borderRadius: "8px",
+            },
           }}
-          isOpen={modalIsOpen}>
-            <ModalContainer>
-              정말 취소하시겠습니까?
-            </ModalContainer>
+          isOpen={modalIsOpen}
+        >
+          <ModalContainer>
+            <div style={{ fontSize: "20px" }}>정말 취소하시겠습니까?</div>
+            <div style={{ display: "flex", gap: "32px" }}>
+              <Button
+                style={{
+                  minWidth: "80px",
+                  boxSizing: "border-box",
+                  textAlign: "center",
+                }}
+                onClick={(e) => {
+                  // TODO: 취소 요청 백엔드로 보내기
+                  e.preventDefault();
+                  navigate('/mypage');
+                }}
+              >
+                예
+              </Button>
+              <Button
+                style={{ backgroundColor: "#D25656" }}
+                onClick={() => setModalIsOpen(false)}
+              >
+                아니오
+              </Button>
+            </div>
+          </ModalContainer>
         </Modal>
       </ButtonContainer>
     </MainDiv>
