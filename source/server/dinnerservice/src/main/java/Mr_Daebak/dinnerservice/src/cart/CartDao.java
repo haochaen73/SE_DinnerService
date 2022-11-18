@@ -74,7 +74,7 @@ public class CartDao {
     }
     public void deleteCart(Integer cartIdx) {
         System.out.println("dao 시작");
-        String deleteCartQuery = "DROP cart WHERE cartIdx = ? CASCADE";
-
+        String deleteCartQuery = "DELETE FROM cart WHERE cartIdx = ?";
+        this.jdbcTemplate.update(deleteCartQuery, cartIdx);
     }
 }
