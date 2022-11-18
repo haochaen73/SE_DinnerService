@@ -11,7 +11,6 @@ import javax.sql.DataSource;
 import java.util.List;
 
 import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.DATABASE_ERROR;
-import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.REQUEST_ERROR;
 
 @Repository
 public class CartDao {
@@ -22,52 +21,60 @@ public class CartDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public int HowMuchStylePrice(String style) {
-        int result = 0;
-        if (style.equals("Simple")) { result = 0; }
-        else if (style.equals("Grand")) { result = 1000; }
-        else if (style.equals("Deluxe")) { result = 2000; }
-        else { result =  -1; }
-        return result;
-    }
-
     @Transactional
-    public void saveCart(PostCartReq postCartReq) throws BaseException {
+    public int saveCart(PostCartReq postCartReq, Integer userIdx) throws BaseException {
         try {
             System.out.println("dao 시작");
-            int dinnerPrice = 0;
-            List<PostCartGetDinner> dinnerList = postCartReq.getCartList();
-            for (int i = 0; i <= (dinnerList.size() - 1); i++) {
-                dinnerPrice = 0;
-                int stylePrice = HowMuchStylePrice(dinnerList.get(i).getStyle());
-                if (stylePrice == -1) {
-                    throw new BaseException(REQUEST_ERROR);
-                } else {
-                    dinnerPrice += stylePrice;
-                }
-                String createDinnerQuery = "insert into cart (userIdx, dinnerName, style, amount) values (?,?,?,?)";
-                Object[] createDinnerParams = new Object[]{postCartReq.getUserIdx(), dinnerList.get(i).getDinnerName(), dinnerList.get(i).getStyle(), dinnerList.get(i).getAmount()};
-                this.jdbcTemplate.update(createDinnerQuery, createDinnerParams);
-                System.out.println("createDinnerQuery 끝");
+            String createCartQuery = "insert into cart (userIdx, dinnerName, style, amount, dinnerPrice) values (?,?,?,?,?)";
+            Object[] createCartParams = new Object[]{userIdx, postCartReq.getDinnerName(), postCartReq.getStyle(), postCartReq.getAmount(), postCartReq.getDinnerPrice()};
+            this.jdbcTemplate.update(createCartQuery, createCartParams);
+            System.out.println("createDinnerQuery 끝");
 
-                String lastInsertIdQuery = "select last_insert_id()";
-                int cartIdx = this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+            System.out.println("lastInsertIdQuery 시작");
+            String lastInsertIdQuery = "select last_insert_id()";
+            int cartIdx = this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+            System.out.println("lastInsertIdQuery 끝 : " + cartIdx);
 
-                List<PostCartGetExtra> extraList = dinnerList.get(i).getExtraList();
-                for (int j = 0; j <= (extraList.size() - 1); j++) {
-                    String getExtraPriceQuery = "SELECT price FROM extra WHERE extraNo = ?";
-                    String getExtraPriceParams = String.valueOf(extraList.get(j).getExtraNo());
-                    dinnerPrice += extraList.get(j).getAmount() * this.jdbcTemplate.queryForObject(getExtraPriceQuery, int.class, getExtraPriceParams);
-                    System.out.println("getExtraPriceQuery 끝");
-
-                    String createExtraQuery = "insert into extraCartList (cartIdx, extraNo, amount) values (?,?,?)";
-                    Object[] createExtraParams = new Object[]{cartIdx, extraList.get(j).getExtraNo(), extraList.get(j).getAmount()};
-                    this.jdbcTemplate.update(createExtraQuery, createExtraParams);
-                    System.out.println("createExtraQuery 끝");
-                }
+            List<PostCartGetExtra> extraList = postCartReq.getExtraList();
+            for (int j = 0; j <= (extraList.size() - 1); j++) {
+                String createExtraQuery = "insert into extraCartList (cartIdx, extraNo, amount) values (?,?,?)";
+                Object[] createExtraParams = new Object[]{cartIdx, extraList.get(j).getExtraNo(), extraList.get(j).getAmount()};
+                this.jdbcTemplate.update(createExtraQuery, createExtraParams);
+                System.out.println("createExtraQuery 끝");
             }
+            return cartIdx;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
+    }
+
+    public List<GetCartRes> getCarts(Integer userIdx) {
+        System.out.println("dao 시작");
+//        String orderIdxQuery = "SELECT orderIdx FROM `order` WHERE userIdx = ?";
+//        String dinnerIdxQuery = "SELECT dinnerIdx FROM  dinnerList WHERE orderIdx = ?";
+        String getCartsQuery = "SELECT cartIdx, dinnerName, `style`, amount, dinnerPrice FROM cart WHERE userIdx = ?";
+        String getExtraQuery = "SELECT `name`, amount FROM extraCartList JOIN extra ON (extraCartList.extraNo = extra.extraNo AND cartIdx = ?)";
+        List<GetCartRes> result = this.jdbcTemplate.query(
+                getCartsQuery,
+                (rs2, rowNum2) -> new GetCartRes(
+                        rs2.getInt("cartIdx"),
+                        rs2.getString("dinnerName"),
+                        rs2.getString("style"),
+                        rs2.getInt("amount"),
+                        rs2.getInt("dinnerPrice"),
+                        this.jdbcTemplate.query(getExtraQuery,
+                                (rs3, rowNum3) -> new GetCartGetExtra(
+                                        rs3.getString("name"),
+                                        rs3.getInt("amount")),
+                                rs2.getInt("cartIdx")
+                        )),
+                userIdx
+        );
+        return result;
+    }
+    public void deleteCart(Integer cartIdx) {
+        System.out.println("dao 시작");
+        String deleteCartQuery = "DROP cart WHERE cartIdx = ? CASCADE";
+
     }
 }

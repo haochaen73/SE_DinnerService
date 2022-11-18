@@ -1,5 +1,4 @@
 package Mr_Daebak.dinnerservice.src.cart.model;
-import Mr_Daebak.dinnerservice.src.cart.model.PostCartGetDinner;
 import lombok.*;
 
 import java.util.List;
@@ -9,6 +8,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostCartReq {
-    private int userIdx;
-    private List<PostCartGetDinner> cartList;
+    private String dinnerName;
+    private String style;
+    private int amount;
+    private int dinnerPrice;
+    private List<PostCartGetExtra> extraList;
 }

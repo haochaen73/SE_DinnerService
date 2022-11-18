@@ -2,6 +2,7 @@ package Mr_Daebak.dinnerservice.src.cart;
 
 import Mr_Daebak.dinnerservice.config.BaseException;
 import Mr_Daebak.dinnerservice.src.cart.model.PostCartReq;
+import Mr_Daebak.dinnerservice.src.cart.model.PostCartRes;
 import Mr_Daebak.dinnerservice.src.order.OrderDao;
 import Mr_Daebak.dinnerservice.src.order.OrderProvider;
 import Mr_Daebak.dinnerservice.src.order.model.PostOrderReq;
@@ -28,10 +29,22 @@ public class CartService {
     }
 
     @Transactional
-    public void saveCart(PostCartReq postCartReq) throws BaseException {
+    public PostCartRes saveCart(PostCartReq postCartReq, Integer userIdx) throws BaseException {
         try {
             System.out.println("service 시작");
-            cartDao.saveCart(postCartReq);
+            int cartIdx = cartDao.saveCart(postCartReq, userIdx);
+            System.out.println("dao 끝");
+            return new PostCartRes(cartIdx);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    @Transactional
+    public void deleteCart(Integer cartIdx) throws BaseException {
+        try {
+            System.out.println("service 시작");
+            cartDao.deleteCart(cartIdx);
             System.out.println("dao 끝");
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
