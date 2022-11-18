@@ -140,7 +140,7 @@ const OrderDetail = ({ order }) => {
         </Box>
       </Content>
       <ButtonLayout>
-        {order.state === 5 ?  null : <StateButton state={order.state}/>}
+        {order.state === 5 ?  null : <StateButton onClick={() => {/*patch*/}} state={order.state}/>}
       </ButtonLayout>
     </Container>
   );

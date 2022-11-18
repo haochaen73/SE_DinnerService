@@ -27,7 +27,7 @@ const OrderStateDiv = styled.div`
 `
 const OrderState = ({state}) => {
   const states = ['대기', '조리', '픽업', '배달', '완료'];
-  const statesColor = ['gray', '#F89372', '#E8643A', '#B93D16', 'black'];
+  const statesColor = ['gray', '#F89372', '#E8643A', '#B93D16', 'red'];
   return (
     <OrderStateDiv style={{backgroundColor: `${statesColor[state-1]}`}}>
       {states[state-1]}

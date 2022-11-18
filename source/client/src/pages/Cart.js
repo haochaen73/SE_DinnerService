@@ -69,6 +69,7 @@ const DinnerListData = [
       dinnerName : "발렌타인 디너",
       style : "심플",
       amount : 1,
+      cartIdx : 1,
       dinnerPrice: 50000,
       extraList : [
           {
@@ -117,6 +118,7 @@ const DinnerListData = [
     dinnerName : "샴페인 축제 디너",
     style : "그랜드",
     amount : 2,
+    cartIdx : 2,
     dinnerPrice: 20000,
       extraList : [
           { 
@@ -254,7 +256,7 @@ const StyledLink = styled(Link)`
   }
 `
 
-const Dinner = ({dinner}) => {
+const Dinner = ({dinner, onDelete}) => {
   return(
     <OrderDetail>
       <div style={{marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -262,7 +264,13 @@ const Dinner = ({dinner}) => {
           <span style={{fontSize: '14px', fontWeight: '600'}}>{dinner.dinnerName}&nbsp;&nbsp;&nbsp;&nbsp;</span>
           <span style={{fontSize: '10px', fontWeight: '500'}}>{dinner.style}</span>
         </div>
-        <CloseIcon sx={{cursor: 'pointer'}}/>
+        <CloseIcon 
+          sx={{cursor: 'pointer'}} 
+          onClick={() => {
+            console.log(dinner.cartIdx);
+            onDelete(dinner.cartIdx);
+          }
+            /*delete -> setdinnerlist -> cart post*/}/>
       </div>
       {
         dinner.extraList.map((extra, index) => {
@@ -306,18 +314,33 @@ const Cart = () => {
   };
 
   const [totalPrice, setTotalPrice] = useState(0);
-  const [cardNum, setCardNum] = useState();
-  const [dinnerList, setDinnerList] = useState(DinnerListData);
+  const [cardNum, setCardNum] = useState('');
+  const [dinnerList, setDinnerList] = useState(DinnerListData); // get
 
   const inputCardNum = useCallback((event) => {
     setCardNum(event.target.value);
   }, []);
 
+  const deleteDinner = (cartIdx) => {
+    setDinnerList(prevState => {
+      return prevState.filter(dinner => cartIdx !== dinner.cartIdx)
+      });
+    //dinnerlist post
+  }
+
+  useEffect(() => {
+    //cart get -> setdinnerlist(맨첨실행됏을때)
+  }, [])
+
+  useEffect(() => {
+    console.log(dinnerList);
+  }, [dinnerList])
+
   useEffect(() => {
     const totalPrice = dinnerList.reduce((acc, obj) => {
       return (acc += obj.dinnerPrice);
     }, 0);
-    setTotalPrice(cusTotalPrice > 100000 ? (totalPrice + 3000 - 2000) : totalPrice + 3000);
+    setTotalPrice(cusTotalPrice > 100000 ? (totalPrice - 2000) : totalPrice);
   }, [dinnerList])
 
 
@@ -350,7 +373,7 @@ const Cart = () => {
               <BoxHeadSpan>주문 정보</BoxHeadSpan>
               <div>
                 {dinnerList ? dinnerList?.map((dinner, index) => {
-                  return <Dinner key={index} dinner={dinner}/>;
+                  return <Dinner key={index} dinner={dinner} onDelete={deleteDinner}/>;
                   }) : <div>장바구니가 비었습니다.</div>
                 }
               </div>
@@ -392,7 +415,7 @@ const Cart = () => {
             <div>
               <PayDetail>
                 <div>주문금액</div>
-                <div>{totalPrice - 3000}원</div>
+                <div>{totalPrice}원</div>
               </PayDetail>
               <PayDetail>
                 <div>단골할인</div>
@@ -400,21 +423,31 @@ const Cart = () => {
               </PayDetail>
               <PayDetail>
                 <div>배달비</div>
-                <div>3000원</div>
+                <div>{totalPrice === 0 ? "0원": "3000원"}</div>
               </PayDetail>
             </div>
             <div style={{marginTop: '20px', borderBottom: '1px solid lightgray'}}></div>
             <TotalPrice>
               <div>총 결제금액</div>
-              <div>{totalPrice}원</div>
+              <div>{totalPrice === 0 ? 0 : totalPrice + 3000}원</div>
             </TotalPrice>
             <Button onClick={() => {
-              const order = makeOrder(1, startDate, cardNum, dinnerList, totalPrice);
-              nav('/ordercomplete', {
-                state: {
-                  order
+              if (totalPrice !== 0) {
+                const order = makeOrder(1, startDate, cardNum, dinnerList, totalPrice + 3000);
+                //order post
+                if (cardNum === '') {
+                  alert('신용카드 번호를 입력하세요.');
+                  return;
                 }
-              });
+                nav('/ordercomplete', {
+                  state: {
+                    order
+                  }
+                });
+              } else {
+                alert('장바구니 목록이 존재하지 않습니다.');
+                return;
+              }
             }
             }>결제하기</Button>
           </Box>
