@@ -111,7 +111,19 @@ public class OrderController {
     public BaseResponse<String> changeStateDeliver(@PathVariable("orderIdx") int orderIdx) {
         try {
             orderService.changeStateDeliver(orderIdx);
-            String result = "배달이 완료 되었습니다";
+            String result = "배달이 시작 되었습니다";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    @ResponseBody
+    @PatchMapping("/{orderIdx}/done")
+    public BaseResponse<String> changeStateDone(@PathVariable("orderIdx") int orderIdx) {
+        try {
+            orderService.changeStateDone(orderIdx);
+            String result = "주문 및 배달이 완료 되었습니다";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
