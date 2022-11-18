@@ -117,6 +117,7 @@ const StockModify = () => {
           console.log(stocks);
           //stockamount post
           //stock get
+          setStockAmount(stockamount);
         }
         }>
           수정완료
@@ -132,7 +133,7 @@ const StockModify = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {stocks.map((stock) => (
+            {stocks.map((stock, index) => (
               <TableRow
                 key={stock.name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -142,7 +143,7 @@ const StockModify = () => {
                 </TableCell>
                 <TableCell align="center">
                   <StyledInput
-                    defaultValue="0"
+                    value={stockAmount[`amount${index+1}`]}
                     onChange={(e) => modifyStockAmount(e, stock.extraNo)}
                   />
                 </TableCell>

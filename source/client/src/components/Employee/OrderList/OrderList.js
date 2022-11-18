@@ -661,7 +661,7 @@ const OrderList = () => {
         </Box>
         <TabPanel value={value} index={0}>
           {orderListAccept?.map((order) => {
-            return <OrderItem selected={order} order={order} clickOrder={clickOrder}/>;
+            return <OrderItem order={order} clickOrder={clickOrder}/>;
           })}
         </TabPanel>
         <TabPanel value={value} index={1}>
