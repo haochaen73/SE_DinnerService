@@ -20,7 +20,8 @@ import OrderModifyComplete from './pages/OrderModifyComplete';
 const Container = styled.div`
   width: 1000px;
   margin: 0 auto;
-  height: 100%;
+  height: 100vh;
+  //없애도 예쁠거같음..
 `
 function App() {
   

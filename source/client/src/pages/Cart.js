@@ -303,7 +303,7 @@ const makeOrder = (userIdx, deliveredAt, cardNum, dinnerList, totalPrice) =>
 
 const Cart = () => {
   const cusTotalPrice = 100000; //단골인지
-  const nav = useNavigate();
+  const navigator = useNavigate();
 
   const [startDate, setStartDate] = useState(setMinutes(new Date(), 0));
   const filterPassedTime = (time) => {
@@ -439,7 +439,7 @@ const Cart = () => {
                   alert('신용카드 번호를 입력하세요.');
                   return;
                 }
-                nav('/ordercomplete', {
+                navigator('/ordercomplete', {
                   state: {
                     order
                   }

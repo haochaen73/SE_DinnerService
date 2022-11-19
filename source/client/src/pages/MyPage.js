@@ -21,7 +21,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -75,10 +75,10 @@ const MyPage = (props) => {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <OrderHistory></OrderHistory>
+        <OrderHistory/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ModifyPersonalInfo></ModifyPersonalInfo>
+        <ModifyPersonalInfo/>
       </TabPanel>
     </Box>
   );
