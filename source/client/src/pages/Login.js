@@ -59,6 +59,9 @@ const Login = (props) => {
           id, password
         }
       });
+      // const res = await axios.post('주소', {id, password}, {
+      //   'Authorizatoin': 'Bearer ${리코일에 저장되어있는 값}'
+      // });
     } else {
       console.log("client");
       console.log({id, password});
@@ -72,7 +75,7 @@ const Login = (props) => {
         }
       });
 
-      //TODO: res 값에 따라서, 로그인 성공이면 routing 이동
+      //TODO: res 값에 따라서, 로그인 성공이면 routing 이동, 리코일에 저장되어 있는 값을 보고 직원/고객 권한주기
       
       //TODO: 로그인 실패라면 다시하라고 알려주기
     }
