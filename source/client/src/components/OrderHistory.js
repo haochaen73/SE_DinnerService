@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import OrderHistoryItem from './OrderHistoryItem';
 
 const json = `{
@@ -692,13 +692,14 @@ const FirstItemContainer = styled(Link)`
   }
 `;
 
-const ItemContainer = styled(Link)`
+const ItemContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 150px;
   border-bottom: 1px solid lightgray;
   text-decoration: none;
+  cursor: pointer;
   &:visited {
     color: black;
   }
@@ -710,6 +711,8 @@ const ItemContainer = styled(Link)`
 
 const OrderHistory = ({menu}) => {
   const [orders, setOrders] = useState([]);
+  const navigator = useNavigate();
+
   useEffect(() => {
     //get
     setOrders(JSON.parse(json).result);
@@ -721,7 +724,13 @@ const OrderHistory = ({menu}) => {
         orders === [] ? <div>주문 내역이 없습니다.</div> :
         orders?.map((order) => {
           return (
-            <ItemContainer to='/order-history-detail'>
+            <ItemContainer onClick={() => {
+              navigator('/order-history-detail', {
+                state: {
+                  order
+                }
+              });
+            }}>
               <OrderHistoryItem order={order}/>
             </ItemContainer>
           );
