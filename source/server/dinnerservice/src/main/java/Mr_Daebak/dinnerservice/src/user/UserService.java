@@ -63,10 +63,10 @@ public class UserService {
         }
     }
 
-    public void modifyUser(PatchUserReq patchUserReq, int userIdx) throws BaseException{
+    public void modifyUser(PatchUserReq patchUserReq) throws BaseException{
         try {
             System.out.println("3");
-            userDao.modifyUser(patchUserReq, userIdx);
+            userDao.modifyUser(patchUserReq);
             System.out.println("4");
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

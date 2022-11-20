@@ -146,8 +146,8 @@ public class UserController {
 //    }
 
     @ResponseBody
-    @PatchMapping("/{userIdx}")
-    public BaseResponse<String> modifyUser(@PathVariable(" userIdx") int userIdx, @RequestBody PatchUserReq patchUserReq) {
+    @PatchMapping("/modify")
+    public BaseResponse<String> modifyUser(@RequestBody PatchUserReq patchUserReq) {
         try {
             System.out.println("1");
 //            //jwt에서 idx 추출.
@@ -158,7 +158,7 @@ public class UserController {
 //                }
             System.out.println("2");
             //같다면 유저네임 변경
-            userService.modifyUser(patchUserReq, userIdx);
+            userService.modifyUser(patchUserReq);
 
             String result = "회원정보가 수정되었습니다.";
             return new BaseResponse<>(result);

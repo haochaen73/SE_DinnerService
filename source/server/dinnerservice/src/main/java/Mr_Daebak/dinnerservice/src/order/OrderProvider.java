@@ -33,4 +33,37 @@ public class OrderProvider {
         }
     }
 
+    public List<GetOrderStateRes> getOrderAccept() throws BaseException {
+        try {
+            System.out.println("provider 시작");
+            List<GetOrderStateRes> GetOrderAcceptRes = orderDao.getOrderAccept();
+            System.out.println("provider 끝");
+            return GetOrderAcceptRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetOrderStateRes> getOrderPrepare() throws BaseException {
+        try {
+            System.out.println("provider 시작");
+            List<GetOrderStateRes> getOrderPrepareRes = orderDao.getOrderPrepare();
+            System.out.println("provider 끝");
+            return getOrderPrepareRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetOrderStateRes> getOrderDone() throws BaseException {
+        try {
+            System.out.println("provider 시작");
+            List<GetOrderStateRes> getOrderDoneRes = orderDao.getOrderDone();
+            System.out.println("provider 끝");
+            return getOrderDoneRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

@@ -68,6 +68,45 @@ public class OrderController {
         }
     }
 
+    @ResponseBody
+    @GetMapping("/accept")
+    public BaseResponse<List<GetOrderStateRes>> getOrderAccept() {
+        try {
+            System.out.println("controller 시작");
+            List<GetOrderStateRes> GetOrderAcceptRes = orderProvider.getOrderAccept();
+            System.out.println("controller 끝");
+            return new BaseResponse<>(GetOrderAcceptRes);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/prepare")
+    public BaseResponse<List<GetOrderStateRes>> getOrderPrepare() {
+        try {
+            System.out.println("controller 시작");
+            List<GetOrderStateRes> GetOrderPrepareRes = orderProvider.getOrderPrepare();
+            System.out.println("controller 끝");
+            return new BaseResponse<>(GetOrderPrepareRes);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/done")
+    public BaseResponse<List<GetOrderStateRes>> getOrderDone() {
+        try {
+            System.out.println("controller 시작");
+            List<GetOrderStateRes> GetOrderDoneRes = orderProvider.getOrderDone();
+            System.out.println("controller 끝");
+            return new BaseResponse<>(GetOrderDoneRes);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
+
 
     @ResponseBody
     @PatchMapping("/{orderIdx}/delete")

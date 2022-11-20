@@ -93,10 +93,10 @@ public class UserDao {
         );
     }
 
-    public void modifyUser(PatchUserReq patchUserReq, int userIdx) {
+    public void modifyUser(PatchUserReq patchUserReq) {
         System.out.println("5");
-        String modifyUserQuery = "update user set name = ?, email = ?, phoneNum = ? where userIdx = ?";
-        Object[] modifyUserParams = new Object[]{patchUserReq.getName(), patchUserReq.getEmail(), patchUserReq.getPhoneNum(), userIdx};
+        String modifyUserQuery = "update user set name = ?, email = ?, phoneNum = ?,  where userIdx = ?";
+        Object[] modifyUserParams = new Object[]{patchUserReq.getName(), patchUserReq.getEmail(), patchUserReq.getPhoneNum(), patchUserReq.getUserIdx()};
         this.jdbcTemplate.update(modifyUserQuery, modifyUserParams);
         System.out.println("6");
     }
