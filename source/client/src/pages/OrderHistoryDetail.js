@@ -37,7 +37,7 @@ const ContentDiv = styled.div`
   margin-top: 50px;
   margin-left: 50px;
 `
-const Button = styled(Link)`
+const Button = styled.div`
   padding: 6px 25px;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -111,20 +111,20 @@ const OrderHistoryDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const order = location.state.order;
+  const [order] = useState(() => location.state?.order);  // 이거 이렇게 안하면 작동 안함
  
   return (
     <MainDiv>
       <TopDiv>
-        <TopTextDiv>주문번호 : {order.orderIdx}</TopTextDiv>
-        <TopTextDiv>주문시간 : {moment(order.createdAt).format('MM/DD hh시 mm분')}</TopTextDiv>
+        <TopTextDiv>주문번호 : {order?.orderIdx}</TopTextDiv>
+        <TopTextDiv>주문시간 : {moment(order?.createdAt).format('MM/DD hh시 mm분')}</TopTextDiv>
       </TopDiv>
       <ContentDiv>
         <div style={{display: "grid", gridTemplateColumns: "1fr 3fr", gap: "60px"}}>
           <div style={{ fontSize: "16px", fontWeight: "700" }}>주문 내역</div>
           <div style={{ fontWeight: "400" }}>
             {
-              order.dinnerList?.map((dinner, index) => {
+              order?.dinnerList?.map((dinner, index) => {
                 console.log(dinner);
                 return <DinnerContent key={index} dinner={dinner}/>;
               })
@@ -132,10 +132,11 @@ const OrderHistoryDetail = () => {
           </div>
           <div style={{ fontSize: "16px", fontWeight: "700" }}>예약 일자</div>
           <div style={{ fontSize: "15px", fontWeight: "400" }}>
-            {moment(order.deliveredAt).format('MM/DD hh시 mm분')}
+            {moment(order?.deliveredAt).format('MM/DD hh시 mm분')}
           </div>
           <div style={{ fontSize: "16px", fontWeight: "700" }}>주소</div>
           <div style={{ fontSize: "15px", fontWeight: "400" }}>
+            {/* //TODO: user정보가 없어서 못받아온다고 생각했는데, 혹시 받아올 수 있는 방법이 있나? */}
             서울특별시 동대문구 서울시립대로 163 정보기술관 xxx호
           </div>
           <div style={{ fontSize: "16px", fontWeight: "700" }}>총금액</div>
@@ -143,7 +144,14 @@ const OrderHistoryDetail = () => {
         </div>
       </ContentDiv>
       <ButtonContainer>
-        <Button to="/orderedit">주문 변경</Button>
+        <Button onClick={() => {
+          console.log(order);
+          navigate('/orderedit', {
+            state: {
+              order,
+            }
+          });
+        }}>주문 변경</Button>
         <StyledButton onClick={() => setModalIsOpen(true)}>
           주문 취소
         </StyledButton>

@@ -2,7 +2,7 @@ import styled, {css} from 'styled-components';
 import React, {useState} from 'react';
 import Button from '../components/Button';
 import { useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Modal from 'react-modal';
 import CloseIcon from '@mui/icons-material/Close';
 import RadioGroup from '../components/Order/RadioGroup';
@@ -161,7 +161,6 @@ const DinnerListData = [
       ]
   }
 ]
-
 
 const CartTextDiv = styled.div`
   display: flex;
@@ -437,6 +436,8 @@ const makeOrder = (userIdx, dinnerList, totalPrice) =>
 const OrderEdit = () => {
   const cusTotalPrice = 100000; //단골인지
   const nav = useNavigate();
+  const location = useLocation();
+  const order = location.state.order;
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [dinnerList, setDinnerList] = useState(DinnerListData);
