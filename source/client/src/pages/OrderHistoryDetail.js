@@ -1,7 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import { useState } from 'react';
+import moment from 'moment';
 
 const MainDiv = styled.div`
   width: 600px;
@@ -87,43 +88,51 @@ const ModalContainer = styled.div`
   align-items: center;
 `
 
-
+const DinnerContent = ({dinner}) => {
+  console.log(dinner.dinnerName);
+  return (
+    <div style={{marginBottom: '15px'}}>
+      <div style={{fontSize: '15px'}}>{dinner.dinnerName}({dinner.style})</div>
+      {
+        dinner.extraList.map((extra) => {
+          if (extra.amount > 0){
+            return(
+            <div style={{ fontSize: "14px", color: "#6D6D6D", marginTop: "5px" }}>{extra.extraName}&nbsp;{extra.amount}개</div>
+            );
+          }
+        })
+      }
+      
+    </div>
+  );
+}
 
 const OrderHistoryDetail = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const order = location.state.order;
  
   return (
     <MainDiv>
       <TopDiv>
-        <TopTextDiv>주문번호 : 20221001402</TopTextDiv>
-        <TopTextDiv>주문시간 : 10/01 (토) 00시 32분</TopTextDiv>
+        <TopTextDiv>주문번호 : {order.orderIdx}</TopTextDiv>
+        <TopTextDiv>주문시간 : {moment(order.createdAt).format('MM/DD hh시 mm분')}</TopTextDiv>
       </TopDiv>
       <ContentDiv>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 3fr",
-            gap: "60px",
-          }}
-        >
+        <div style={{display: "grid", gridTemplateColumns: "1fr 3fr", gap: "60px"}}>
           <div style={{ fontSize: "16px", fontWeight: "700" }}>주문 내역</div>
           <div style={{ fontWeight: "400" }}>
-            <div style={{ fontSize: "15px" }}>프렌치 디너(심플)</div>
-            <div
-              style={{ fontSize: "14px", color: "#6D6D6D", marginTop: "10px" }}
-            >
-              에그 스크램블 1개
-            </div>
-            <div
-              style={{ fontSize: "14px", color: "#6D6D6D", marginTop: "5px" }}
-            >
-              와인 1병
-            </div>
+            {
+              order.dinnerList?.map((dinner, index) => {
+                console.log(dinner);
+                return <DinnerContent key={index} dinner={dinner}/>;
+              })
+            }
           </div>
           <div style={{ fontSize: "16px", fontWeight: "700" }}>예약 일자</div>
           <div style={{ fontSize: "15px", fontWeight: "400" }}>
-            10월 3일 머시기
+            {moment(order.deliveredAt).format('MM/DD hh시 mm분')}
           </div>
           <div style={{ fontSize: "16px", fontWeight: "700" }}>주소</div>
           <div style={{ fontSize: "15px", fontWeight: "400" }}>

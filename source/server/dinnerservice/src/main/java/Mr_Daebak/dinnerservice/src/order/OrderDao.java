@@ -38,8 +38,8 @@ public class OrderDao {
             System.out.println("getUserAddressRes 끝");
 
             System.out.println("create Order 시작");
-            String createOrderQuery = "insert into `order`(userIdx, deliveredAt, address, cardNum) values (?,?,?,?)";
-            Object[] createOrderParams = new Object[]{postOrderReq.getUserIdx(), postOrderReq.getDeliveredAt(), address, postOrderReq.getCardNum()};
+            String createOrderQuery = "insert into `order`(userIdx, deliveredAt, address, cardNum, totalPrice) values (?,?,?,?,?)";
+            Object[] createOrderParams = new Object[]{postOrderReq.getUserIdx(), postOrderReq.getDeliveredAt(), address, postOrderReq.getCardNum(), postOrderReq.getTotalPrice()};
             this.jdbcTemplate.update(createOrderQuery, createOrderParams);
             System.out.println("create Order 끝");
 
@@ -55,30 +55,30 @@ public class OrderDao {
         }
     }
 
-    public int HowMuchStylePrice(String style) {
-        int result = 0;
-        if (style.equals("Simple")) { result = 0; }
-        else if (style.equals("Grand")) { result = 1000; }
-        else if (style.equals("Deluxe")) { result = 2000; }
-        else { result =  -1; }
-        return result;
-    }
+//    public int HowMuchStylePrice(String style) {
+//        int result = 0;
+//        if (style.equals("Simple")) { result = 0; }
+//        else if (style.equals("Grand")) { result = 1000; }
+//        else if (style.equals("Deluxe")) { result = 2000; }
+//        else { result =  -1; }
+//        return result;
+//    }
 
     @Transactional
     public void createDinnerExtra(PostOrderReq postOrderReq, int orderIdx) throws BaseException {
         try {
-            int dinnerPrice = 0;
-            int totalPrice = 0;
+//            int dinnerPrice = 0;
+//            int totalPrice = 0;
             List<PostOrderGetDinner> dinnerList = postOrderReq.getDinnerList();
             for (int i=0; i<=(dinnerList.size()-1); i++) {
-                dinnerPrice = 0;
-                int stylePrice = HowMuchStylePrice(dinnerList.get(i).getStyle());
-                if (stylePrice == -1) {
-                    throw new BaseException(REQUEST_ERROR);
-                } else {
-                    dinnerPrice += stylePrice; }
-                String createDinnerQuery = "insert into dinnerList (orderIdx, dinnerName, style, amount) values (?,?,?,?)";
-                Object[] createDinnerParams = new Object[]{orderIdx, dinnerList.get(i).getDinnerName(), dinnerList.get(i).getStyle(), dinnerList.get(i).getAmount()};
+//                dinnerPrice = 0;
+//                int stylePrice = HowMuchStylePrice(dinnerList.get(i).getStyle());
+//                if (stylePrice == -1) {
+//                    throw new BaseException(REQUEST_ERROR);
+//                } else {
+//                    dinnerPrice += stylePrice; }
+                String createDinnerQuery = "insert into dinnerList (orderIdx, dinnerName, style, amount, dinnerPrice) values (?,?,?,?,?)";
+                Object[] createDinnerParams = new Object[]{orderIdx, dinnerList.get(i).getDinnerName(), dinnerList.get(i).getStyle(), dinnerList.get(i).getAmount(), dinnerList.get(i).getDinnerPrice()};
                 this.jdbcTemplate.update(createDinnerQuery, createDinnerParams);
 
                 String lastInsertIdQuery = "select last_insert_id()";
@@ -86,9 +86,9 @@ public class OrderDao {
 
                 List<PostOrderGetExtra> extraList = dinnerList.get(i).getExtraList();
                 for (int j=0; j<=(extraList.size()-1); j++) {
-                    String getExtraPriceQuery = "SELECT price FROM extra WHERE extraNo = ?";
-                    String getExtraPriceParams = String.valueOf(extraList.get(j).getExtraNo());
-                    dinnerPrice += extraList.get(j).getAmount() * this.jdbcTemplate.queryForObject(getExtraPriceQuery, int.class, getExtraPriceParams);
+//                    String getExtraPriceQuery = "SELECT price FROM extra WHERE extraNo = ?";
+//                    String getExtraPriceParams = String.valueOf(extraList.get(j).getExtraNo());
+//                    dinnerPrice += extraList.get(j).getAmount() * this.jdbcTemplate.queryForObject(getExtraPriceQuery, int.class, getExtraPriceParams);
 
                     String createExtraQuery = "insert into extraList (dinnerIdx, extraNo, amount) values (?,?,?)";
                     Object[] createExtraParams = new Object[]{dinnerIdx, extraList.get(j).getExtraNo(), extraList.get(j).getAmount()};
@@ -97,15 +97,15 @@ public class OrderDao {
                     String lastInsertIdQuery2 = "select last_insert_id()";
                     int extraIdx = this.jdbcTemplate.queryForObject(lastInsertIdQuery2, int.class);
                 }
-                totalPrice += dinnerPrice;
+//                totalPrice += dinnerPrice;
 
-                String changeDinnerPriceQuery = "update dinnerList set dinnerPrice = ? where dinnerIdx = ?";
-                Object[] changeDinnerPriceParams = new Object[]{dinnerPrice, dinnerIdx};
-                this.jdbcTemplate.update(changeDinnerPriceQuery, changeDinnerPriceParams);
+//                String changeDinnerPriceQuery = "update dinnerList set dinnerPrice = ? where dinnerIdx = ?";
+//                Object[] changeDinnerPriceParams = new Object[]{dinnerPrice, dinnerIdx};
+//                this.jdbcTemplate.update(changeDinnerPriceQuery, changeDinnerPriceParams);
             }
-            String changeOrderPriceQuery = "update `order` set totalPrice = ? where orderIdx = ?";
-            Object[] changeOrderPriceParams = new Object[]{totalPrice, orderIdx};
-            this.jdbcTemplate.update(changeOrderPriceQuery, changeOrderPriceParams);
+//            String changeOrderPriceQuery = "update `order` set totalPrice = ? where orderIdx = ?";
+//            Object[] changeOrderPriceParams = new Object[]{totalPrice, orderIdx};
+//            this.jdbcTemplate.update(changeOrderPriceQuery, changeOrderPriceParams);
 
             // user 테이블에서 totalPrice 가져오기
             String getUserTotalPriceQuery = "SELECT totalPrice FROM `user` WHERE userIdx = ?";
@@ -113,9 +113,9 @@ public class OrderDao {
             int userTotalPrice = this.jdbcTemplate.queryForObject(getUserTotalPriceQuery, int.class, getUserTotalPriceParams);
 
             // user totalPrice 업데이트
-            totalPrice += userTotalPrice;
+            userTotalPrice += postOrderReq.getTotalPrice();
             String changeUserTotalPriceQuery = "update `user` set totalPrice = ? where userIdx = ?";
-            Object[] changeUserTotalPriceParams = new Object[]{totalPrice, postOrderReq.getUserIdx()};
+            Object[] changeUserTotalPriceParams = new Object[]{userTotalPrice, postOrderReq.getUserIdx()};
             this.jdbcTemplate.update(changeUserTotalPriceQuery, changeUserTotalPriceParams);
 
         } catch (Exception exception) {
@@ -176,6 +176,12 @@ public class OrderDao {
 
     public int changeStateDeliver(int orderIdx) {
         String changeStateDeliverQuery = "update `order` set state = 4 where orderIdx = ?";
+        String changeStateDeliverParams = String.valueOf(orderIdx);
+        return this.jdbcTemplate.update(changeStateDeliverQuery, changeStateDeliverParams);
+    }
+
+    public int changeStateDone(int orderIdx) {
+        String changeStateDeliverQuery = "update `order` set state = 5 where orderIdx = ?";
         String changeStateDeliverParams = String.valueOf(orderIdx);
         return this.jdbcTemplate.update(changeStateDeliverQuery, changeStateDeliverParams);
     }

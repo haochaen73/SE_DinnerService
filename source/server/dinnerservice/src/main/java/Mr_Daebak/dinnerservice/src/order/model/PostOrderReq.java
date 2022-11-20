@@ -11,5 +11,6 @@ public class PostOrderReq {
     private int userIdx;
     private String deliveredAt;
     private String cardNum;
+    private int totalPrice;
     private List<PostOrderGetDinner> dinnerList;
 }

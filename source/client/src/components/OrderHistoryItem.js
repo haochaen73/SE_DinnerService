@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 
-
+const ItemContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 85%;
+  margin: 0 auto;
+`
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -25,18 +31,19 @@ const StateContainer = styled.div`
   padding: 10px;
   
 `
+const OrderState = ({state}) => {
+  const states = ['주문 취소', '주문 대기', '조리 중', '픽업', '배달 중', '배달 완료'];
+  return (
+    <div style={{ fontSize: "17px", fontWeight: "bold", margin: "auto", paddingRight: "13px" }}>
+      {states[state]}
+    </div>
+  );
+}
 
-const OrderHistoryItem = () => {
+const OrderHistoryItem = ({order}) => {
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        width: "85%",
-        margin: "0 auto"
-      }}
-    >
+    <ItemContainer>
       <TextContainer>
         <TextItem>
           <div
@@ -48,7 +55,10 @@ const OrderHistoryItem = () => {
           >
             주문 내역
           </div>
-          <div style={{ fontSize: "14px" }}>프렌치 디너</div>
+          <div style={{ fontSize: "14px" }}>
+            {order.dinnerList[0].dinnerName}
+            {order.dinnerList.length > 1 ? (" 외 "+(order.dinnerList.length - 1)+"개") : null }
+          </div>
         </TextItem>
         <TextItem>
           <div
@@ -60,22 +70,13 @@ const OrderHistoryItem = () => {
           >
             예약 시간
           </div>
-          <div style={{ fontSize: "14px" }}>10/03 (월) 14:00</div>
+          <div style={{ fontSize: "14px" }}>{moment(order.deliveredAt).format('MM/DD hh:mm')}</div>
         </TextItem>
       </TextContainer>
       <StateContainer>
-        <div
-          style={{
-            fontSize: "17px",
-            fontWeight: "bold",
-            margin: "auto",
-            paddingRight: "13px",
-          }}
-        >
-          주문 접수
-        </div>
+        <OrderState state={order.state}/>
       </StateContainer>
-    </div>
+    </ItemContainer>
   );
 };
   
