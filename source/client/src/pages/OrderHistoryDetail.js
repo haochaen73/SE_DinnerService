@@ -148,7 +148,7 @@ const OrderHistoryDetail = () => {
           console.log(order);
           navigate('/orderedit', {
             state: {
-              order,
+              orderIdx: order.orderIdx,
             }
           });
         }}>주문 변경</Button>
