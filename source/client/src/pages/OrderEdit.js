@@ -224,6 +224,14 @@ const TotalPrice = styled.div`
   margin: 30px 0px;
 `
 
+const Input = styled.input`
+    border: 1px solid #212121;
+    padding: 12px 4px;
+    margin: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+`;
+
 // 모달을 위한 코드
 const menustyle = [
   { 
@@ -438,10 +446,14 @@ const OrderEdit = () => {
   const nav = useNavigate();
   const location = useLocation();
   const order = location.state.order;
+  const [cardNum, setCardNum] = useState('');
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [dinnerList, setDinnerList] = useState(DinnerListData);
-
+  const inputCardNum = useCallback((event) => {
+    setCardNum(event.target.value);
+  }, []);
+  
   const deleteDinner = () => {
   
   }
@@ -468,6 +480,17 @@ const OrderEdit = () => {
                   }) : <div>장바구니가 비었습니다.</div>
                 }
               </div>
+            </div>
+          </Box>
+          <Box>
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 2fr'}}>
+              <BoxHeadSpan>결제 정보</BoxHeadSpan>
+              <Input
+                name='creditcard'
+                type='number'
+                placeholder='신용카드번호'
+                onChange={inputCardNum}
+              />
             </div>
           </Box>
         </div>
