@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled, {css} from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import { userState } from '../recoil/user';
 
 const MainDiv = styled.div`
   padding: 80px;
@@ -44,6 +46,8 @@ const SignupDiv = styled.div`
 const Login = (props) => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const setUserState = useSetRecoilState(userState);
+  const navigate = useNavigate();
 
   const handelClickLoginButton = async (type) => {
     if (type === 'employee') {
@@ -59,9 +63,15 @@ const Login = (props) => {
           id, password
         }
       });
-      // const res = await axios.post('주소', {id, password}, {
-      //   'Authorizatoin': 'Bearer ${리코일에 저장되어있는 값}'
-      // });
+      if(res.isSuccess) {
+        navigate('/employee');
+        setUserState({
+          token: res.result.jwt,
+          userType: 'employee',
+        })
+      } else {
+        alert('회원 정보를 정확하게 입력해라 이자식~');
+      }
     } else {
       console.log("client");
       console.log({id, password});
@@ -75,9 +85,15 @@ const Login = (props) => {
         }
       });
 
-      //TODO: res 값에 따라서, 로그인 성공이면 routing 이동, 리코일에 저장되어 있는 값을 보고 직원/고객 권한주기
-      
-      //TODO: 로그인 실패라면 다시하라고 알려주기
+      if(res.isSuccess) {
+        navigate('/main')
+        setUserState({
+          token: res.result.jwt,
+          userType: 'client',
+        })
+      } else {
+        alert('회원 정보를 정확하게 입력해라 이자식~');
+      }
     }
   }
 
