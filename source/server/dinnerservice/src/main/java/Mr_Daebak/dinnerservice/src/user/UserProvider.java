@@ -76,14 +76,34 @@ public class UserProvider {
 
         if (postLoginReq.getPassword().equals(password)) { //비말번호가 일치한다면 userIdx를 가져온다.
             int userIdx = userDao.getPwd(postLoginReq).getUserIdx();
+            String name = userDao.getPwd(postLoginReq).getName();
             // return new PostLoginRes(userIdx);
             // jwt
             String jwt = JwtService.createJwt(userIdx);
-            return new PostLoginRes(userIdx, jwt);
+            return new PostLoginRes(userIdx, name, jwt);
         } else { // 비밀번호가 다르다면 에러메세지를 출력한다.
             throw new BaseException(FAILED_TO_LOGIN);
         }
     }
+
+    public int passwordEqual(PostPasswordEqualReq postPasswordEqualReq) throws BaseException {
+        User user = userDao.modifyGetPwd(postPasswordEqualReq);
+        String password;
+        try {
+            password = new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(user.getPassword()); // 암호화
+            // 회원가입할 때 비밀번호가 암호화되어 저장되었기 떄문에 로그인을 할때도 암호화된 값끼리 비교를 해야합니다.
+        } catch (Exception ignored) {
+            throw new BaseException(PASSWORD_DECRYPTION_ERROR);
+        }
+
+        if (postPasswordEqualReq.getPassword().equals(password)) { //비말번호가 일치한다면 userIdx를 가져온다.
+            return 1;
+        } else { // 비밀번호가 다르다면 에러메세지를 출력한다.
+            throw new BaseException(POST_PASSWORD_NOT_EQUAL);
+        }
+    }
+
+
 
     // getUserByUserIdx
     public GetUserRes getUserByUserIdx(Integer userIdx) throws BaseException {

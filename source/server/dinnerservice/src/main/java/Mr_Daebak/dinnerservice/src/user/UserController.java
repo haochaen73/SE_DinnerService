@@ -109,6 +109,40 @@ public class UserController {
     }
 
     /**
+     * 비밀번호 일치 여부 확인
+     * [POST] /{userIdx}/password
+     */
+    @ResponseBody
+    @PostMapping("/password/equal")
+    public BaseResponse<String> passwordEqual(@RequestBody PostPasswordEqualReq postPasswordEqualReq) {
+        try {
+            String result = "이게 나오면 안돼요";
+            int equal = userProvider.passwordEqual(postPasswordEqualReq);
+            if (equal == 1) { result = "비밀번호가 일치합니다."; }
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    /**
+     * 비밀번호 변경
+     * [PATCH] /modify/password
+     */
+    @ResponseBody
+    @PatchMapping("/modify/password")
+    public BaseResponse<String> modifyPassword(@RequestBody PatchPasswordReq patchPasswordReq) {
+        try {
+            userService.modifyPassword(patchPasswordReq);
+            String result = "비밀번호가 수정되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+
+    /**
      * 회원 조회 API
      * [GET] /users/{userIdx}
      */

@@ -63,6 +63,7 @@ public enum BaseResponseStatus {
     // /orders
     // POST_ORDERS
     MODIFY_FAIL_STATE(false, 2041, "상태 변경에 실패했습니다."),
+    POST_PASSWORD_NOT_EQUAL(false, 2042, "비밀번호가 일치하지 않습니다."),
     /**
      * 3000 : Response 오류
      */

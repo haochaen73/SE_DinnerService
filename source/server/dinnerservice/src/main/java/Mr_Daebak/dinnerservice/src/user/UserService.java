@@ -63,6 +63,26 @@ public class UserService {
         }
     }
 
+    public void modifyPassword(PatchPasswordReq patchPasswordReq) throws BaseException{
+        String pwd;
+        try {
+            // 암호화: postUserReq에서 제공받은 비밀번호를 보안을 위해 암호화시켜 DB에 저장합니다.
+            // ex) password123 -> dfhsjfkjdsnj4@!$!@chdsnjfwkenjfnsjfnjsd.fdsfaifsadjfjaf
+            pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(patchPasswordReq.getPassword1()); // 암호화코드
+            patchPasswordReq.setPassword1(pwd);
+            System.out.println(patchPasswordReq.getPassword1());
+        } catch (Exception ignored) { // 암호화가 실패하였을 경우 에러 발생
+            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
+        }
+        try {
+            System.out.println("3");
+            userDao.modifyPassword(patchPasswordReq);
+            System.out.println("4");
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
     public void modifyUser(PatchUserReq patchUserReq) throws BaseException{
         try {
             System.out.println("3");
