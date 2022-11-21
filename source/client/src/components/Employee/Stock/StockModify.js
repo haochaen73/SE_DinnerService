@@ -96,6 +96,14 @@ const Head = styled.div`
 const StyledInput = styled.input.attrs({ type: 'number' })`
   text-align: center;
   width: 50px;
+  ::-webkit-inner-spin-button{
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+    ::-webkit-outer-spin-button{
+        -webkit-appearance: none; 
+        margin: 0; 
+    }    
 `
 const StockModify = () => {
   const[stocks, setStocks] = useState(stocklist);

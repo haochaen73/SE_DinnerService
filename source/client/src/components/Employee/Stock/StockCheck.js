@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,6 +6,63 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import axios from 'axios'
+
+const stockInfo = [
+  {
+    idx : 1,
+    name : '와인 한 병',
+  },
+  {
+    idx : 2,
+    name : '와인 한 잔',
+  },
+  {
+    idx : 3,
+    name : '스테이크',
+  },
+  {
+    idx : 4,
+    name : '커피 한 잔',
+  },
+  {
+    idx : 5,
+    name : '커피 한 포트',
+  },
+  {
+    idx : 6,
+    name : '샐러드',
+  },
+  {
+    idx : 7,
+    name : '에그 스크램블',
+  },
+  {
+    idx : 8,
+    name : '베이컨',
+  },
+  {
+    idx : 9,
+    name : '샴페인',
+  },
+  {
+    idx : 10,
+    name : '바게트 빵',
+  }
+]
+
+const stockamount = {
+  amount1 : 0,
+  amount2 : 0,
+  amount3 : 0,
+  amount4 : 0,
+  amount5 : 0,
+  amount6 : 0,
+  amount7 : 0,
+  amount8 : 0,
+  amount9 : 0,
+  amount10 : 0
+}
 
 const Container = styled.div`
   padding: 0px 40px;
@@ -17,7 +74,21 @@ const Head = styled.div`
   height: 100px;
 `
 
-const StockCheck = ({stocks}) => {
+const StockCheck = () => {
+  const [stockAmount, setStockAmount] = useState(stockamount);
+
+  useEffect(() => {
+    const fetchStocks = async () => {
+      try {
+        const response = await axios.get('/stocks');
+        setStockAmount(response.data.result);
+      } catch (e) {
+
+      }
+    }
+    fetchStocks();
+  }, []);
+
   return (
     <Container>
       <Head>
@@ -34,7 +105,7 @@ const StockCheck = ({stocks}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {stocks.map((stock) => (
+            {stockInfo?.map((stock) => (
               <TableRow
                 key={stock.name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -42,7 +113,7 @@ const StockCheck = ({stocks}) => {
                 <TableCell sx={{padding: '0px 60px'}} component="th" scope="row">
                   {stock.name}
                 </TableCell>
-                <TableCell align="center">{stock.amount}</TableCell>
+                <TableCell align="center">{stockAmount[`amount${stock.idx}`]}</TableCell>
               </TableRow>
             ))}
           </TableBody>

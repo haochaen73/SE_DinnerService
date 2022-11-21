@@ -117,11 +117,19 @@ const OrderDetail = styled.div`
   justify-content: space-between;
 `
 const Input = styled.input`
-    border: 1px solid #212121;
-    padding: 12px 4px;
-    margin: 5px;
-    box-sizing: border-box;
-    border-radius: 5px;
+  border: 1px solid #212121;
+  padding: 12px 4px;
+  margin: 5px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  ::-webkit-inner-spin-button{
+      -webkit-appearance: none; 
+      margin: 0; 
+  }
+  ::-webkit-outer-spin-button{
+      -webkit-appearance: none; 
+      margin: 0; 
+  }    
 `;
 
 const PayDetail = styled.div`

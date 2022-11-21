@@ -79,7 +79,7 @@ const DinnerContent = ({dinner}) => {
         dinner.extraList.map((extra) => {
           if (extra.amount > 0){
             return(
-            <div style={{fontSize: '12px'}}>{extra.extraName}&nbsp;{extra.amount}개</div>
+            <div style={{fontSize: '12px', marginBottom: '5px'}}>{extra.extraName}&nbsp;{extra.amount}개</div>
             );
           }
         })
