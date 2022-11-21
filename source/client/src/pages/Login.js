@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { userState } from '../recoil/user';
+import axios from 'axios';
 
 const MainDiv = styled.div`
   padding: 80px;
@@ -51,22 +52,15 @@ const Login = (props) => {
 
   const handelClickLoginButton = async (type) => {
     if (type === 'employee') {
-      // TODO: Employee 로그인 요청
       console.log("employee");
       console.log({id, password});
-      const res = await fetch('http://localhost:8080/users/employee/login', {
-        method: "POST",
-        headers: {
-          "Content-Type": "applcation/json",
-        },
-        body: {
-          id, password
-        }
-      });
+      const res = await axios.post('employees/logIn', {id, password});
       if(res.isSuccess) {
         navigate('/employee');
         setUserState({
-          token: res.result.jwt,
+          userIdx: res.result.employeeIdx,
+          name: '',
+          // name: 'res.result.name,'
           userType: 'employee',
         })
       } else {
@@ -75,20 +69,13 @@ const Login = (props) => {
     } else {
       console.log("client");
       console.log({id, password});
-      const res = await fetch('http://localhost:8080/users/client/login', {
-        method: "POST",
-        headers: {
-          "Content-Type": "applcation/json",
-        },
-        body: {
-          id, password
-        }
-      });
-
+      const res = await axios.post('users/logIn', {id, password});
       if(res.isSuccess) {
         navigate('/main')
         setUserState({
-          token: res.result.jwt,
+          userIdx: res.result.userIdx,
+          name: '',
+          // name: res.result.name,
           userType: 'client',
         })
       } else {

@@ -45,7 +45,7 @@ const Header = () => {
       </StyledLink>
       {/* 로그인 여부로 나타낼지 안나타낼지 결정*/}
       <LeftContentDiv>
-        <div style={{padding: '20px', fontWeight: 'bold'}}>{me.name ?? '이수빈'}님</div>
+        <div style={{padding: '20px', fontWeight: 'bold'}}>{me?.name || '이수빈'}님</div>
         <MemberDiv>
           <StyledLink to='/mypage'>마이페이지</StyledLink>
         </MemberDiv>
