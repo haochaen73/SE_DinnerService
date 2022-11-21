@@ -2,7 +2,7 @@ import styled, {css} from 'styled-components';
 import React, {useState} from 'react';
 import Button from '../components/Button';
 import { useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Modal from 'react-modal';
 import CloseIcon from '@mui/icons-material/Close';
 import RadioGroup from '../components/Order/RadioGroup';
@@ -162,6 +162,114 @@ const DinnerListData = [
   }
 ]
 
+const OrderDataJson = `
+{
+	"userIdx" : 1,
+  "deliveredAt" : "2022-11-11 12:00:00",
+  "cardNum" : "123-13411-1341",
+  "totalPrice" : 78000,
+	"dinnerList" : [
+        { 
+          "dinnerName" : "Valentine",
+		      "style" : "Simple",
+          "dinnerPrice" : 28000,
+			    "amount" : 1,
+            "extraList" : [
+                {
+                    "extraNo" : 1,
+                    "amount" : 2
+                },
+                { 
+                    "extraNo" : 2,
+                    "amount" : 2
+                },
+                { 
+                    "extraNo" : 3,
+                    "amount" : 0
+                },
+                { 
+                    "extraNo" : 4,
+                    "amount" : 0
+                },
+                { 
+                    "extraNo" : 5,
+                    "amount" : 2
+                },
+                { 
+                    "extraNo" : 6,
+                    "amount" : 2
+                },
+                { 
+                    "extraNo" : 7,
+                    "amount" : 0
+                },
+                { 
+                    "extraNo" : 8,
+                    "amount" : 0
+                },
+                { 
+                    "extraNo" : 9,
+                    "amount" : 0
+                },
+                { 
+                    "extraNo" : 10,
+                    "amount" : 0
+                }
+            ]
+        },
+        { 
+          "dinnerName" : "Champagne Feast",
+		      "style" : "Grand",
+          "dinnerPrice" : 28000,
+			    "amount" : 2,
+          "extraList" : [
+              { 
+                  "extraNo" : 1,
+                  "amount" : 2
+              },
+              { 
+                  "extraNo" : 2,
+                  "amount" : 2
+              },
+              { 
+                  "extraNo" : 3,
+                  "amount" : 0
+              },
+              { 
+                  "extraNo" : 4,
+                  "amount" : 0
+              },
+              { 
+                  "extraNo" : 5,
+                  "amount" : 1
+              },
+              { 
+                  "extraNo" : 6,
+                  "amount" : 1
+              },
+              { 
+                  "extraNo" : 7,
+                  "amount" : 0
+              },
+              { 
+                  "extraNo" : 8,
+                  "amount" : 0
+              },
+              { 
+                  "extraNo" : 9,
+                  "amount" : 0
+              },
+              { 
+                  "extraNo" : 10,
+                  "amount" : 0
+              }
+            ]
+        }
+    ]
+}
+`;
+
+
 
 const CartTextDiv = styled.div`
   display: flex;
@@ -225,6 +333,14 @@ const TotalPrice = styled.div`
   margin: 30px 0px;
 `
 
+const Input = styled.input`
+    border: 1px solid #212121;
+    padding: 12px 4px;
+    margin: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+`;
+
 // 모달을 위한 코드
 const menustyle = [
   { 
@@ -282,8 +398,8 @@ const RadioChild = ({style}) => {
   );
 }
 
-const Dinner = ({dinner}) => {
-
+const Dinner = ({dinner, index, setDinnerList, setPriceList}) => {
+  const [DinnerItemTotalPrice, setDinnerItemTotalPrice] = useState(0);
   const [checkedStyle, setCheckedStyle] = useState(dinner.style);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [extraList, setExtraList] = useState(dinner.extraList);
@@ -329,96 +445,183 @@ const Dinner = ({dinner}) => {
     setExtraList(dinner.extraList);
   }
 
-  return(
+  useEffect(() => {
+    const nextTotalPrice =
+      extraList.reduce((acc, item) => {
+        return acc + item.amount * extraInfo[item.extraNo - 1].price;
+      }, 0) +
+      dinner.dinnerPrice +
+      (checkedStyle === "심플" ? 0 : checkedStyle === "그랜드" ? 1000 : 2000);
+      setDinnerItemTotalPrice(nextTotalPrice);
+    setPriceList((prev) => {
+      const nextPriceList = [...prev];
+      nextPriceList[index] = nextTotalPrice;
+      return nextPriceList;
+    })
+  }, [extraList]);
+
+
+  return (
     <div>
       <OrderDetail>
-      <div style={{marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-        <div style={{display: 'flex', alignItems: 'center'}}>
-          <span style={{fontSize: '14px', fontWeight: '600'}}>{dinner.dinnerName}&nbsp;&nbsp;&nbsp;&nbsp;</span>
-          <span style={{fontSize: '10px', fontWeight: '500'}}>{dinner.style}</span>
-        </div>
-      </div>
-      {
-        dinner.extraList.map((extra, index) => {
-          if (extra.amount > 0){
-            return (<div key={index} style={{marginBottom: '5px', fontSize: '12px', color: 'gray'}}>
-              {extraInfo[extra.extraNo + 1].name}&nbsp;{extra.amount}개
-            </div>);
-          }
-        })
-      }
-      <div style={{marginTop: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-        <div style={{fontSize: '14px', fontWeight: '600'}}>{dinner.dinnerPrice}원</div>
-        <Button onClick={()=> setModalIsOpen(true)}>수정하기</Button>
-      </div>
-    </OrderDetail>
-    <Modal 
-          ariaHideApp={false}
+        <div
           style={{
-            content: {
-              margin: '0 auto',
-              width: '500px',
-              border: '1px solid #ccc',
-              background: '#fff',
-              overflow: 'auto',
-              WebkitOverflowScrolling: 'touch',
-              borderRadius: '0px',
-              padding: '50px'
-            }
+            marginBottom: "30px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
-          isOpen={modalIsOpen}>
-            <ModalContainer>
-              <TopDiv>
-                <span style={{fontWeight: 'bold', fontSize: '15px'}}>{dinner.dinnerName}</span>
-                <CloseIcon 
-                  style={{cursor: 'pointer'}} 
-                  onClick={ ()=> {
-                    setModalIsOpen(false);
-                    resetExtra();
-                  }}/>
-              </TopDiv>
-              <MidDiv>
-                <div style={{fontWeight: 'bold', fontSize: '14px', paddingBottom: '25px'}}>추가 선택</div>
-                <ExtraDiv>
-                  {extraList.map((extra) => {
-                    return (<Counter key={extra.extraNo} extraInfo={extraInfo[extra.extraNo - 1]} extra={extra} onChangeProps={onChangeProps}/>);
-                  })
-                  }
-                  {/* 임의로.. */}
-                </ExtraDiv>
-                <div style={{fontWeight: 'bold', fontSize: '14px', paddingBottom: '25px'}}>스타일 선택</div>
-                <div>
-                  <RadioGroup>
-                    <Radio name="style" value="심플" 
-                      defaultChecked={dinner.style === "심플" ? true : false} 
-                      disabled={dinner.dinnerName === "샴페인 축제 디너" ? true : false} 
-                      onChange={styleHandler}>
-                      <RadioChild style={menustyle[0]}/>
-                    </Radio>
-                    <Radio name="style" value="그랜드" 
-                      defaultChecked={dinner.style === "그랜드" ? true : false}
-                      onChange={styleHandler} >
-                      <RadioChild style={menustyle[1]}/>
-                    </Radio>
-                    <Radio name="style" value="딜럭스"
-                      defaultChecked={dinner.style === "딜럭스" ? true : false}
-                      onChange={styleHandler}>
-                      <RadioChild style={menustyle[2]}/>
-                    </Radio>
-                  </RadioGroup>
-                </div>
-              </MidDiv>
-              <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                <Button onClick={() =>{
-                  resetExtra();
-                  makeDinnerList(dinner.dinnerName, checkedStyle, 1, extraList);
-                  setModalIsOpen(false);
-                }}>
-                  수정하기
-                </Button>
+        >
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ fontSize: "14px", fontWeight: "600" }}>
+              {dinner.dinnerName}&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span style={{ fontSize: "10px", fontWeight: "500" }}>
+              {dinner.style}
+            </span>
+          </div>
+        </div>
+        {dinner.extraList.map((extra, index) => {
+          if (extra.amount > 0) {
+            return (
+              <div
+                key={index}
+                style={{ marginBottom: "5px", fontSize: "12px", color: "gray" }}
+              >
+                {extraInfo[extra.extraNo - 1].name}&nbsp;{extra.amount}개
               </div>
-            </ModalContainer>
-        </Modal>
+            );
+          }
+        })}
+        <div
+          style={{
+            marginTop: "30px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ fontSize: "14px", fontWeight: "600" }}>
+            {DinnerItemTotalPrice.toLocaleString()}원
+          </div>
+          <Button onClick={() => setModalIsOpen(true)}>수정하기</Button>
+        </div>
+      </OrderDetail>
+      <Modal
+        ariaHideApp={false}
+        style={{
+          content: {
+            margin: "0 auto",
+            width: "500px",
+            border: "1px solid #ccc",
+            background: "#fff",
+            overflow: "auto",
+            WebkitOverflowScrolling: "touch",
+            borderRadius: "0px",
+            padding: "50px",
+          },
+        }}
+        isOpen={modalIsOpen}
+        // onClick={(e) => }
+      >
+        <ModalContainer>
+          <TopDiv>
+            <span style={{ fontWeight: "bold", fontSize: "15px" }}>
+              {dinner.dinnerName}
+            </span>
+            <CloseIcon
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setModalIsOpen(false);
+                resetExtra();
+              }}
+            />
+          </TopDiv>
+          <MidDiv>
+            <div
+              style={{
+                fontWeight: "bold",
+                fontSize: "14px",
+                paddingBottom: "25px",
+              }}
+            >
+              추가 선택
+            </div>
+            <ExtraDiv>
+              {extraList.map((extra) => {
+                return (
+                  <Counter
+                    key={extra.extraNo}
+                    extraInfo={extraInfo[extra.extraNo - 1]}
+                    extra={extra}
+                    onChangeProps={onChangeProps}
+                  />
+                );
+              })}
+              {/* 임의로.. */}
+            </ExtraDiv>
+            <div
+              style={{
+                fontWeight: "bold",
+                fontSize: "14px",
+                paddingBottom: "25px",
+              }}
+            >
+              스타일 선택
+            </div>
+            <div>
+              <RadioGroup>
+                <Radio
+                  name="style"
+                  value="심플"
+                  defaultChecked={dinner.style === "심플" ? true : false}
+                  disabled={
+                    dinner.dinnerName === "샴페인 축제 디너" ? true : false
+                  }
+                  onChange={styleHandler}
+                >
+                  <RadioChild style={menustyle[0]} />
+                </Radio>
+                <Radio
+                  name="style"
+                  value="그랜드"
+                  defaultChecked={dinner.style === "그랜드" ? true : false}
+                  onChange={styleHandler}
+                >
+                  <RadioChild style={menustyle[1]} />
+                </Radio>
+                <Radio
+                  name="style"
+                  value="딜럭스"
+                  defaultChecked={dinner.style === "딜럭스" ? true : false}
+                  onChange={styleHandler}
+                >
+                  <RadioChild style={menustyle[2]} />
+                </Radio>
+              </RadioGroup>
+            </div>
+          </MidDiv>
+          <div
+            style={{ display: "flex", justifyContent: "center", width: "100%" }}
+          >
+            <Button
+              onClick={() => {
+                setDinnerList((prev) => {
+                  const nextDinnerList = [...prev];
+                  console.log(extraList);
+                  nextDinnerList[index].extraList = extraList;
+                  nextDinnerList[index].style = checkedStyle;
+                  return nextDinnerList;
+                });
+                makeDinnerList(dinner.dinnerName, checkedStyle, 1, extraList);
+                setModalIsOpen(false);
+              }}
+            >
+              수정하기
+            </Button>
+          </div>
+        </ModalContainer>
+      </Modal>
     </div>
   );
 }
@@ -435,23 +638,41 @@ const makeOrder = (userIdx, dinnerList, totalPrice) =>
 }
 
 const OrderEdit = () => {
-  const cusTotalPrice = 100000; //단골인지
+  const cusTotalPrice = 101000; //단골인지
   const nav = useNavigate();
+  const location = useLocation();
+  const orderIdx = location.state.orderIdx;
+  const [cardNum, setCardNum] = useState('');
 
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [dinnerList, setDinnerList] = useState(DinnerListData);
+  const [totalPrice, setTotalPrice] = useState(0); // 총 주문 금액
+  const realTotalPrice = totalPrice + (cusTotalPrice > 100000 ? -2000 : 0) + 3000 // 총 결제금액(배달비, 할인 금액 계산)
+  const [dinnerList, setDinnerList] = useState(JSON.parse(OrderDataJson).dinnerList);
+  const [priceList, setPriceList] = useState([0]); // dinnerList에 있는 dinner들의 총 가격을 저장 및 업데이트하는 용도
+  const inputCardNum = useCallback((event) => {
+    setCardNum(event.target.value);
+  }, []);
+
 
   const deleteDinner = () => {
   
   }
 
   useEffect(() => {
-    const totalPrice = dinnerList.reduce((acc, obj) => {
-      return (acc += obj.dinnerPrice);
-    }, 0);
-    setTotalPrice(cusTotalPrice > 100000 ? (totalPrice + 3000 - 2000) : totalPrice + 3000);
-  }, [dinnerList])
+    const nextTotalPrice = priceList.reduce((acc, item) => acc + item);  
+    setTotalPrice(nextTotalPrice);
+  }, [priceList]);
 
+  useEffect(() => {
+    const nextPriceList = dinnerList.map((dinner) => {
+      const dinnerTotalPrice = dinner.extraList.reduce((acc, item) => {
+        return acc + item.amount * extraInfo[item.extraNo - 1].price;
+      }, 0) +
+      dinner.dinnerPrice +
+      (dinner.style === "심플" ? 0 : dinner.style === "그랜드" ? 1000 : 2000);
+      return dinnerTotalPrice;
+    })
+    setPriceList(nextPriceList);
+  }, []);
 
   return (
     <div>
@@ -463,10 +684,21 @@ const OrderEdit = () => {
               <BoxHeadSpan>주문 정보</BoxHeadSpan>
               <div>
                 {dinnerList ? dinnerList?.map((dinner, index) => {
-                  return <Dinner key={index} dinner={dinner}/>;
+                  return <Dinner key={index} dinner={dinner} setDinnerList={setDinnerList} index={index} setPriceList={setPriceList}/>;
                   }) : <div>장바구니가 비었습니다.</div>
                 }
               </div>
+            </div>
+          </Box>
+          <Box>
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 2fr'}}>
+              <BoxHeadSpan>결제 정보</BoxHeadSpan>
+              <Input
+                name='creditcard'
+                type='number'
+                placeholder='신용카드번호'
+                onChange={inputCardNum}
+              />
             </div>
           </Box>
         </div>
@@ -483,24 +715,24 @@ const OrderEdit = () => {
             <div>
               <PayDetail>
                 <div>주문금액</div>
-                <div>{totalPrice - 3000}원</div>
+                <div>{totalPrice.toLocaleString()}원</div>
               </PayDetail>
               <PayDetail>
                 <div>단골할인</div>
-                <div style={{color: 'red'}}>{cusTotalPrice > 100000 ? "-2000원" : "0원"}</div>
+                <div style={{color: 'red'}}>{cusTotalPrice > 100000 ? "-2,000원" : "0원"}</div>
               </PayDetail>
               <PayDetail>
                 <div>배달비</div>
-                <div>3000원</div>
+                <div>3,000원</div>
               </PayDetail>
             </div>
             <div style={{marginTop: '20px', borderBottom: '1px solid lightgray'}}></div>
             <TotalPrice>
               <div>총 결제금액</div>
-              <div>{totalPrice}원</div>
+              <div>{realTotalPrice.toLocaleString()}원</div>
             </TotalPrice>
             <Button onClick={() => {
-              const order = makeOrder(1, dinnerList, totalPrice);
+              const order = makeOrder(1, dinnerList, realTotalPrice);
               nav('/ordermodifycomplete', {
                 state: {
                   order

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import styled, {css} from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import { userState } from '../recoil/user';
+import axios from 'axios';
 
 const MainDiv = styled.div`
   padding: 80px;
@@ -44,40 +47,40 @@ const SignupDiv = styled.div`
 const Login = (props) => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const setUserState = useSetRecoilState(userState);
+  const navigate = useNavigate();
 
   const handelClickLoginButton = async (type) => {
     if (type === 'employee') {
-      // TODO: Employee 로그인 요청
       console.log("employee");
       console.log({id, password});
-      const res = await fetch('http://localhost:8080/users/employee/login', {
-        method: "POST",
-        headers: {
-          "Content-Type": "applcation/json",
-        },
-        body: {
-          id, password
-        }
-      });
-      // const res = await axios.post('주소', {id, password}, {
-      //   'Authorizatoin': 'Bearer ${리코일에 저장되어있는 값}'
-      // });
+      const res = await axios.post('employees/logIn', {id, password});
+      if(res.isSuccess) {
+        navigate('/employee');
+        setUserState({
+          userIdx: res.result.employeeIdx,
+          name: '',
+          // name: 'res.result.name,'
+          userType: 'employee',
+        })
+      } else {
+        alert('회원 정보를 정확하게 입력해라 이자식~');
+      }
     } else {
       console.log("client");
       console.log({id, password});
-      const res = await fetch('http://localhost:8080/users/client/login', {
-        method: "POST",
-        headers: {
-          "Content-Type": "applcation/json",
-        },
-        body: {
-          id, password
-        }
-      });
-
-      //TODO: res 값에 따라서, 로그인 성공이면 routing 이동, 리코일에 저장되어 있는 값을 보고 직원/고객 권한주기
-      
-      //TODO: 로그인 실패라면 다시하라고 알려주기
+      const res = await axios.post('users/logIn', {id, password});
+      if(res.isSuccess) {
+        navigate('/main')
+        setUserState({
+          userIdx: res.result.userIdx,
+          name: '',
+          // name: res.result.name,
+          userType: 'client',
+        })
+      } else {
+        alert('회원 정보를 정확하게 입력해라 이자식~');
+      }
     }
   }
 
