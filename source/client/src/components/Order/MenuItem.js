@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Counter from './Counter';
 import RadioGroup from './RadioGroup';
 import Radio from './Radio';
+import axios from 'axios';
 
 const menustyle = [
   { 
@@ -116,7 +117,7 @@ const ExtraDiv = styled.div`
 const RadioChild = ({style}) => {
   return (
     <span style={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>
-      <span style={{margin: '5px 10px', fontSize: '12px', fontWeight: '400'}}>{style.name} (+ {style.price}원)</span>
+      <span style={{margin: '5px 10px', fontSize: '12px', fontWeight: '400'}}>{style.name} (+ {style.price.toLocaleString()}원)</span>
       <span style={{margin: '10px', fontSize: '8px', color: 'gray'}}>{style.content}</span>
     </span>
   );
@@ -134,7 +135,8 @@ const MenuItem = ({menu}) => {
   const [extraList, setExtraList] = useState(menu.extraList);
 
   const styleHandler = (e) => {
-    setCheckedStyle(e.target.value);
+    setCheckedStyle((prev) => e.target.value);
+    console.log(checkedStyle);
   }
 
   const onChangeProps = (id, key, value) => {
@@ -166,12 +168,23 @@ const MenuItem = ({menu}) => {
       dinnerPrice: dinnerPrice,
       extraList: extraList
     }
-    console.log(dinnerList);
+    return dinnerList;
   }
 
   const resetExtra = () => {
     setExtraList(menu.extraList);
   }
+
+  const putCart = async (menu) => {
+    try {
+      const dinnerList = makeDinnerList(menu.dinnerName, checkedStyle, 1, extraList);
+      const response = await axios.post(`/carts/1`, dinnerList);
+      console.log(response);
+    } catch (e) {
+    }
+    resetExtra();
+    setModalIsOpen(false);
+  };
 
   return (
     <MenuBox>
@@ -237,11 +250,7 @@ const MenuItem = ({menu}) => {
                 </div>
               </MidDiv>
               <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                <Button onClick={() =>{
-                  resetExtra();
-                  makeDinnerList(menu.dinnerName, checkedStyle, 1, extraList);
-                  setModalIsOpen(false);
-                }}>
+                <Button onClick={() => {putCart(menu);}}>
                   장바구니 담기
                 </Button>
               </div>

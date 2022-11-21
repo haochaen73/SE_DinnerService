@@ -93,7 +93,7 @@ const StateButton = ({state}) => {
   const text = ['주문 취소','조리 시작', '조리 완료', '배달 시작', '배달 완료'];
   if (state === 1) {
     return (
-      <div>
+      <div style={{display: 'flex', gap: '20px'}}>
         <OrangeButton>조리 시작</OrangeButton>
         <Button>주문 취소</Button>
       </div>

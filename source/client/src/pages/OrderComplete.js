@@ -91,10 +91,8 @@ const StyledLink = styled(Link)`
 `
 const OrderComplete = () => {
   const location = useLocation();
-
-  const deliveredAt = moment(location.state.order.deliveredAt).format('YYYY-MM-DD HH:mm');
-  const dinnerList = location.state.order.dinnerList;
-  const totalPrice = location.state.order.totalPrice;
+  const user = location.state.user;
+  const order = location.state.order;
 
   return (
     <Div>
@@ -104,7 +102,7 @@ const OrderComplete = () => {
           <div style={{fontWeight: 'bold'}}>주문정보</div>
           <div>
             {
-              dinnerList?.map((dinner, index) => {
+              order.dinnerList?.map((dinner, index) => {
                 return (
                     <div style={{marginBottom: '15px', fontWeight: "400"}}>
                       <div style={{marginBottom: '10px', fontSize: "15px"}}>{dinner.dinnerName}&nbsp;({dinner.style})</div>
@@ -112,7 +110,7 @@ const OrderComplete = () => {
                         dinner.extraList.map((extra, index) => {
                           if (extra.amount > 0){
                             return (<div key={index} style={{marginLeft: '5px', marginBottom: '5px', fontSize: '12px', color: 'gray'}}>
-                              {extraInfo[extra.extraNo + 1].name}&nbsp;{extra.amount}개
+                              {extra.extraName}&nbsp;{extra.amount}개
                             </div>);
                           }
                         })
@@ -123,14 +121,14 @@ const OrderComplete = () => {
             }
           </div>
           <div style={{marginBottom: '10px',fontSize: "16px", fontWeight: "700"}}>예약일자</div>
-          <div style={{fontSize: "15px", fontWeight: "400"}}>{deliveredAt}</div>
+          <div style={{fontSize: "15px", fontWeight: "400"}}>{moment(order.deliveredAt).format('YYYY-MM-DD HH:mm')}</div>
           <div style={{fontSize: "16px", fontWeight: "700"}}>배송정보</div>
           <div style={{fontSize: "15px", fontWeight: "400"}}>
-            <div>010-1234-5678</div>
-            <div style={{marginBottom: '10px', marginTop: '5px'}}>서울특별시 동대문구 서울시립대로 163 정보기술관</div>
+            <div>{user.phoneNum}</div>
+            <div style={{marginBottom: '10px', marginTop: '5px'}}>{user.address}</div>
           </div>
           <div style={{marginBottom: '10px',fontSize: "16px", fontWeight: "700"}}>결제금액</div>
-          <div style={{fontSize: "15px", fontWeight: "400"}}>{totalPrice}원</div>
+          <div style={{fontSize: "15px", fontWeight: "400"}}>{order.totalPrice.toLocaleString()}원</div>
       </OrderInfoContainer>
       <StyledLink to='/main'>
         메인페이지로 이동
