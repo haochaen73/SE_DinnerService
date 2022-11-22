@@ -74,7 +74,7 @@ const ModifyPersonalInfo = () => {
         </TitleContainer>
         <MainTableContainer>
           <TableContainer>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+            <Table aria-label="simple table" >
               <TableBody>
                 {/* 이름 */}
                 <TableRow
