@@ -8,5 +8,5 @@ public class PostLoginRes {
     private int userIdx;
     private String name;
     // jwt
-    private String jwt;
+//    private String jwt;
 }

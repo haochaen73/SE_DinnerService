@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.DATABASE_ERROR;
@@ -160,6 +158,27 @@ public class OrderDao {
             Object[] changeUserTotalPriceParams = new Object[]{userTotalPrice, postOrderReq.getUserIdx()};
             this.jdbcTemplate.update(changeUserTotalPriceQuery, changeUserTotalPriceParams);
 
+
+            System.out.println("selectCartIdxQuery 시작");
+            String selectCartIdxQuery = "SELECT cartIdx FROM cart WHERE userIdx = ?";
+            String userIdx = String.valueOf(postOrderReq.getUserIdx());
+            List<PostOrderGetCart> postOrderGetCarts = this.jdbcTemplate.query(selectCartIdxQuery,
+                    (rs, rowNum) -> new PostOrderGetCart(
+                            rs.getInt("cartIdx")
+                    ),
+                    userIdx);
+            System.out.println("selectCartIdxQuery 끝");
+
+            System.out.println("deleteExtraCartQuery 시작");
+            String deleteExtraCartQuery = "DELETE FROM extraCartList WHERE cartIdx = ?";
+            String deleteCartQuery = "DELETE FROM cart WHERE cartIdx = ?";
+            int cartIdx;
+            for (int i=0; i<postOrderGetCarts.size(); i++) {
+                cartIdx = postOrderGetCarts.get(i).getCartIdx();
+                this.jdbcTemplate.update(deleteExtraCartQuery, cartIdx);
+                this.jdbcTemplate.update(deleteCartQuery, cartIdx);
+            }
+            System.out.println("deleteExtraCartQuery 끝");
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
@@ -171,12 +190,13 @@ public class OrderDao {
         System.out.println("dao 시작");
 //        String orderIdxQuery = "SELECT orderIdx FROM `order` WHERE userIdx = ?";
 //        String dinnerIdxQuery = "SELECT dinnerIdx FROM  dinnerList WHERE orderIdx = ?";
-        String getOrderQuery = "SELECT orderIdx, deliveredAt, createdAt, state FROM `order` WHERE userIdx = ?";
-        String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
+        String getOrderQuery = "SELECT orderIdx, totalPrice, deliveredAt, createdAt, state FROM `order` WHERE userIdx = ?";
+        String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerPrice, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
         String getExtraQuery = "SELECT `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
         List<GetOrderRes> result = this.jdbcTemplate.query(getOrderQuery,
                 (rs, rowNum) -> new GetOrderRes(
                         rs.getInt("orderIdx"),
+                        rs.getInt("totalPrice"),
                         rs.getString("deliveredAt"),
                         rs.getString("createdAt"),
                         rs.getInt("state"),
@@ -186,6 +206,7 @@ public class OrderDao {
                                         rs2.getString("dinnerName"),
                                         rs2.getString("style"),
                                         rs2.getInt("amount"),
+                                        rs2.getInt("dinnerPrice"),
                                         this.jdbcTemplate.query(getExtraQuery,
                                                 (rs3, rowNum3) -> new GetOrderGetExtra(
                                                         rs3.getString("name"),
@@ -204,7 +225,7 @@ public class OrderDao {
 //        String orderIdxQuery = "SELECT orderIdx FROM `order` WHERE userIdx = ?";
 //        String dinnerIdxQuery = "SELECT dinnerIdx FROM  dinnerList WHERE orderIdx = ?";
         String getOrderQuery = "SELECT O.orderIdx, O.userIdx, U.phoneNum, U.address, O.deliveredAt, O.createdAt, O.state FROM `order` as O JOIN `user` as U ON (O.userIdx = U.userIdx AND O.state = 1)";
-        String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
+        String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerPrice, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
         String getExtraQuery = "SELECT `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
         List<GetOrderStateRes> result = this.jdbcTemplate.query(getOrderQuery,
                 (rs, rowNum) -> new GetOrderStateRes(
@@ -221,6 +242,7 @@ public class OrderDao {
                                         rs2.getString("dinnerName"),
                                         rs2.getString("style"),
                                         rs2.getInt("amount"),
+                                        rs2.getInt("dinnerPrice"),
                                         this.jdbcTemplate.query(getExtraQuery,
                                                 (rs3, rowNum3) -> new GetOrderGetExtra(
                                                         rs3.getString("name"),
@@ -239,7 +261,7 @@ public class OrderDao {
 //        String orderIdxQuery = "SELECT orderIdx FROM `order` WHERE userIdx = ?";
 //        String dinnerIdxQuery = "SELECT dinnerIdx FROM  dinnerList WHERE orderIdx = ?";
         String getOrderQuery = "SELECT O.orderIdx, O.userIdx, U.phoneNum, U.address, O.deliveredAt, O.createdAt, O.state FROM `order` as O JOIN `user` as U ON (O.userIdx = U.userIdx AND (O.state = 2 OR O.state = 3 OR O.state = 4))";
-        String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
+        String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerPrice, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
         String getExtraQuery = "SELECT `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
         List<GetOrderStateRes> result = this.jdbcTemplate.query(getOrderQuery,
                 (rs, rowNum) -> new GetOrderStateRes(
@@ -256,6 +278,7 @@ public class OrderDao {
                                         rs2.getString("dinnerName"),
                                         rs2.getString("style"),
                                         rs2.getInt("amount"),
+                                        rs2.getInt("dinnerPrice"),
                                         this.jdbcTemplate.query(getExtraQuery,
                                                 (rs3, rowNum3) -> new GetOrderGetExtra(
                                                         rs3.getString("name"),
@@ -274,7 +297,7 @@ public class OrderDao {
 //        String orderIdxQuery = "SELECT orderIdx FROM `order` WHERE userIdx = ?";
 //        String dinnerIdxQuery = "SELECT dinnerIdx FROM  dinnerList WHERE orderIdx = ?";
         String getOrderQuery = "SELECT O.orderIdx, O.userIdx, U.phoneNum, U.address, O.deliveredAt, O.createdAt, O.state FROM `order` as O JOIN `user` as U ON (O.userIdx = U.userIdx AND O.state = 5)";
-        String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
+        String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerPrice, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
         String getExtraQuery = "SELECT `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
         List<GetOrderStateRes> result = this.jdbcTemplate.query(getOrderQuery,
                 (rs, rowNum) -> new GetOrderStateRes(
@@ -291,6 +314,7 @@ public class OrderDao {
                                         rs2.getString("dinnerName"),
                                         rs2.getString("style"),
                                         rs2.getInt("amount"),
+                                        rs2.getInt("dinnerPrice"),
                                         this.jdbcTemplate.query(getExtraQuery,
                                                 (rs3, rowNum3) -> new GetOrderGetExtra(
                                                         rs3.getString("name"),

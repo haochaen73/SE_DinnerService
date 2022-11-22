@@ -29,12 +29,12 @@ public class CartController {
     }
 
     @ResponseBody
-    @PostMapping("/{userIdx}")
+    @PostMapping("/save")
     @Transactional
-    public BaseResponse<PostCartRes> saveCart(@RequestBody PostCartReq postCartReq, @PathVariable Integer userIdx) {
+    public BaseResponse<PostCartRes> saveCart(@RequestBody PostCartReq postCartReq) {
         try {
             System.out.println("controller 시작");
-            PostCartRes postCartRes = cartService.saveCart(postCartReq, userIdx);
+            PostCartRes postCartRes = cartService.saveCart(postCartReq);
 
             System.out.println("orderService 끝");
             return new BaseResponse<>(postCartRes);

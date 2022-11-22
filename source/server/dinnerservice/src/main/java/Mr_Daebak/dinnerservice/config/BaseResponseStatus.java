@@ -44,6 +44,7 @@ public enum BaseResponseStatus {
     POST_USERS_EXISTS_EMAIL(false,2024,"중복된 이메일입니다."),
     POST_USERS_EXISTS_PHONENUM(false,2025,"중복된 번호입니다."),
     GET_USERS_USERIDX_IS_NULL(false, 2026, "user 인덱스 값이 널입니다."),
+    POST_USERS_FAIL_LOGIN(false, 2027, "계정이 존재하지 않거나 비밀번호가 틀렸습니다."),
 
 
     // [POST] /employees
@@ -72,7 +73,6 @@ public enum BaseResponseStatus {
 
     // [POST] /users
     DUPLICATED_PHONENUMBER(false, 3013, "중복된 핸드폰번호입니다."),
-    FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
 
     PATCH_STOCK_ERROR(false, 2050, "재고 수정에 실패했습니다."),

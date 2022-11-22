@@ -6,9 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Employee {
-    private int employeeIdx;
-    private String name;
+public class PostEmpLoginReq {
     private String id;
     private String password;
 }

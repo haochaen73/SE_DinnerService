@@ -9,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GetOrderRes {
     private int orderIdx;
+    private int totalPrice;
     private String deliveredAt;
     private String createdAt;
     private int state;

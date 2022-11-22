@@ -8,6 +8,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostCartReq {
+    private int userIdx;
     private String dinnerName;
     private String style;
     private int amount;

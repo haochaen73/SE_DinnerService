@@ -29,10 +29,10 @@ public class CartService {
     }
 
     @Transactional
-    public PostCartRes saveCart(PostCartReq postCartReq, Integer userIdx) throws BaseException {
+    public PostCartRes saveCart(PostCartReq postCartReq) throws BaseException {
         try {
             System.out.println("service 시작");
-            int cartIdx = cartDao.saveCart(postCartReq, userIdx);
+            int cartIdx = cartDao.saveCart(postCartReq);
             System.out.println("dao 끝");
             return new PostCartRes(cartIdx);
         } catch (Exception exception) {

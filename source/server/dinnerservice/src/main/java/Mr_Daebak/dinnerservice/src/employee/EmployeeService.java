@@ -30,14 +30,14 @@ public class EmployeeService {
         if (employeeProvider.checkId(postEmployeeReq.getId()) == 1) {
             throw new BaseException(POST_EMPLOYEES_EXISTS_ID);
         }
-        String pwd;
-        try {
-            pwd = new AES128(Secret.EMPLOYEE_INFO_PASSWORD_KEY).encrypt(postEmployeeReq.getPassword1()); // 암호화코드
-            postEmployeeReq.setPassword1(pwd);
-            System.out.println(postEmployeeReq.getPassword1());
-        } catch (Exception ignored) {
-            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
-        }
+//        String pwd;
+//        try {
+//            pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postEmployeeReq.getPassword1()); // 암호화코드
+//            postEmployeeReq.setPassword1(pwd);
+//            System.out.println(postEmployeeReq.getPassword1());
+//        } catch (Exception ignored) {
+//            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
+//        }
         try {
             int employeeIdx = employeeDao.createEmployee(postEmployeeReq);
 //            String jwt = jwtService.createJwt(employeeIdx);

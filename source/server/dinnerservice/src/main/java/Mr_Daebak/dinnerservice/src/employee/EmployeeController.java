@@ -62,4 +62,21 @@ public class EmployeeController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 로그인 API
+     * [POST] /employees/logIn
+     */
+    @ResponseBody
+    @PostMapping("/logIn")
+    public BaseResponse<PostEmpLoginRes> logIn(@RequestBody PostEmpLoginReq postEmpLoginReq) {
+        try {
+            System.out.println("1");
+            PostEmpLoginRes postEmpLoginRes = employeeProvider.logIn(postEmpLoginReq);
+            System.out.println("7");
+            return new BaseResponse<>(postEmpLoginRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }

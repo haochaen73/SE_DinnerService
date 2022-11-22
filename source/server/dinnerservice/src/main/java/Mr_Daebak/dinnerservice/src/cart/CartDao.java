@@ -22,11 +22,11 @@ public class CartDao {
     }
 
     @Transactional
-    public int saveCart(PostCartReq postCartReq, Integer userIdx) throws BaseException {
+    public int saveCart(PostCartReq postCartReq) throws BaseException {
         try {
             System.out.println("dao 시작");
             String createCartQuery = "insert into cart (userIdx, dinnerName, style, amount, dinnerPrice) values (?,?,?,?,?)";
-            Object[] createCartParams = new Object[]{userIdx, postCartReq.getDinnerName(), postCartReq.getStyle(), postCartReq.getAmount(), postCartReq.getDinnerPrice()};
+            Object[] createCartParams = new Object[]{postCartReq.getUserIdx(), postCartReq.getDinnerName(), postCartReq.getStyle(), postCartReq.getAmount(), postCartReq.getDinnerPrice()};
             this.jdbcTemplate.update(createCartQuery, createCartParams);
             System.out.println("createDinnerQuery 끝");
 
@@ -74,6 +74,8 @@ public class CartDao {
     }
     public void deleteCart(Integer cartIdx) {
         System.out.println("dao 시작");
+        String deleteCartListQuery = "DELETE FROM extraCartList WHERE cartIdx = ?";
+        this.jdbcTemplate.update(deleteCartListQuery, cartIdx);
         String deleteCartQuery = "DELETE FROM cart WHERE cartIdx = ?";
         this.jdbcTemplate.update(deleteCartQuery, cartIdx);
     }
