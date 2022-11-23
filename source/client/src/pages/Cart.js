@@ -10,160 +10,61 @@ import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 import { useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import moment from 'moment';
 
-const extraInfo = [
-  {
-    extraNo : 1,
-    name : '와인 한 병',
-    price : 22000,
-  },
-  {
-    extraNo : 2,
-    name : '와인 한 잔',
-    price : 7000,
-  },
-  {
-    extraNo : 3,
-    name : '스테이크',
-    price : 30000,
-  },
-  {
-    extraNo : 4,
-    name : '커피 한 잔',
-    price : 4000,
-  },
-  {
-    extraNo : 5,
-    name : '커피 한 포트',
-    price : 9000,
-  },
-  {
-    extraNo : 6,
-    name : '샐러드',
-    price : 10000,
-  },
-  {
-    extraNo : 7,
-    name : '에그 스크램블',
-    price : 2000,
-  },
-  {
-    extraNo : 8,
-    name : '베이컨',
-    price : 1000,
-  },
-  {
-    extraNo : 9,
-    name : '샴페인',
-    price : 22000,
-  },
-  {
-    extraNo : 10,
-    name : '바게트 빵',
-    price : 2000,
-  }
-]
-
-const DinnerListData = [
-  { 
-      dinnerName : "발렌타인 디너",
-      style : "심플",
-      amount : 1,
-      cartIdx : 1,
-      dinnerPrice: 50000,
-      extraList : [
-          {
-              extraNo : 1,
-              amount : 2
-          },
-          { 
-              extraNo : 2,
-              amount : 2
-          },
-          { 
-              extraNo : 3,
-              amount : 0
-          },
-          { 
-              extraNo : 4,
-              amount : 0
-          },
-          { 
-              extraNo : 5,
-              amount : 2
-          },
-          { 
-              extraNo : 6,
-              amount : 2
-          },
-          { 
-              extraNo : 7,
-              amount : 0
-          },
-          { 
-              extraNo : 8,
-              amount : 0
-          },
-          { 
-              extraNo : 9,
-              amount : 0
-          },
-          { 
-              extraNo : 10,
-              amount : 0
-          }
-      ]
-  },
-  { 
-    dinnerName : "샴페인 축제 디너",
-    style : "그랜드",
-    amount : 2,
-    cartIdx : 2,
-    dinnerPrice: 20000,
-      extraList : [
-          { 
-              extraNo : 1,
-              amount : 2
-          },
-          { 
-              extraNo : 2,
-              amount : 2
-          },
-          { 
-              extraNo : 3,
-              amount : 0
-          },
-          { 
-              extraNo : 4,
-              amount : 0
-          },
-          { 
-              extraNo : 5,
-              amount : 2
-          },
-          { 
-              extraNo : 6,
-              amount : 2
-          },
-          { 
-              extraNo : 7,
-              amount : 0
-          },
-          { 
-              extraNo : 8,
-              amount : 0
-          },
-          { 
-              extraNo : 9,
-              amount : 0
-          },
-          { 
-              extraNo : 10,
-              amount : 0
-          }
-      ]
-  }
-]
+// const extraInfo = [
+//   {
+//     extraNo : 1,
+//     name : '와인 한 병',
+//     price : 22000,
+//   },
+//   {
+//     extraNo : 2,
+//     name : '와인 한 잔',
+//     price : 7000,
+//   },
+//   {
+//     extraNo : 3,
+//     name : '스테이크',
+//     price : 30000,
+//   },
+//   {
+//     extraNo : 4,
+//     name : '커피 한 잔',
+//     price : 4000,
+//   },
+//   {
+//     extraNo : 5,
+//     name : '커피 한 포트',
+//     price : 9000,
+//   },
+//   {
+//     extraNo : 6,
+//     name : '샐러드',
+//     price : 10000,
+//   },
+//   {
+//     extraNo : 7,
+//     name : '에그 스크램블',
+//     price : 2000,
+//   },
+//   {
+//     extraNo : 8,
+//     name : '베이컨',
+//     price : 1000,
+//   },
+//   {
+//     extraNo : 9,
+//     name : '샴페인',
+//     price : 22000,
+//   },
+//   {
+//     extraNo : 10,
+//     name : '바게트 빵',
+//     price : 2000,
+//   }
+// ]
 
 const CartTextDiv = styled.div`
   display: flex;
@@ -217,11 +118,19 @@ const OrderDetail = styled.div`
   justify-content: space-between;
 `
 const Input = styled.input`
-    border: 1px solid #212121;
-    padding: 12px 4px;
-    margin: 5px;
-    box-sizing: border-box;
-    border-radius: 5px;
+  border: 1px solid #212121;
+  padding: 12px 4px;
+  margin: 5px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  ::-webkit-inner-spin-button{
+      -webkit-appearance: none; 
+      margin: 0; 
+  }
+  ::-webkit-outer-spin-button{
+      -webkit-appearance: none; 
+      margin: 0; 
+  }    
 `;
 
 const PayDetail = styled.div`
@@ -267,35 +176,48 @@ const Dinner = ({dinner, onDelete}) => {
         <CloseIcon 
           sx={{cursor: 'pointer'}} 
           onClick={() => {
-            console.log(dinner.cartIdx);
+            //console.log(dinner.cartIdx);
             onDelete(dinner.cartIdx);
           }
             /*delete -> setdinnerlist -> cart post*/}/>
       </div>
       {
-        dinner.extraList.map((extra, index) => {
+        dinner.extraList?.map((extra, index) => {
           if (extra.amount > 0){
             return (<div key={index} style={{marginBottom: '5px', fontSize: '12px', color: 'gray'}}>
-              {extraInfo[extra.extraNo + 1].name}&nbsp;{extra.amount}개
+              {extra.extraName}&nbsp;{extra.amount}개
             </div>);
           }
         })
       }
-      <div style={{marginTop: '30px', fontSize: '14px', fontWeight: '600'}}>{dinner.dinnerPrice}원</div>
+      <div style={{marginTop: '30px', fontSize: '14px', fontWeight: '600'}}>{dinner.dinnerPrice.toLocaleString()}원</div>
     </OrderDetail>
   );
 }
 
 const makeOrder = (userIdx, deliveredAt, cardNum, dinnerList, totalPrice) =>
 {
-  console.log((deliveredAt));
-  console.log((deliveredAt.getTime()))
+  const makeDinnerList = dinnerList.map((dinner) => {
+    const makeExtraList = dinner.extraList.map((extra, index) => {
+      return {
+        extraNo: index+1,
+        amount: extra.amount
+      }
+    })
+    return {
+      dinnerName: dinner.dinnerName,
+      style: dinner.style,
+      amount: dinner.amount,
+      dinnerPrice: dinner.dinnerPrice,
+      extraList: makeExtraList
+    }
+  })
   const order = {
     userIdx: userIdx,
-    deliveredAt: deliveredAt.getTime(),
+    deliveredAt: moment(deliveredAt).format('YYYY-MM-DD HH:mm:ss'),
     cardNum: cardNum,
     totalPrice: totalPrice,
-    dinnerList: dinnerList
+    dinnerList: makeDinnerList
   }
   console.log(order);
   return order;
@@ -305,7 +227,8 @@ const Cart = () => {
   const cusTotalPrice = 100000; //단골인지
   const navigator = useNavigate();
 
-  const [startDate, setStartDate] = useState(setMinutes(new Date(), 0));
+  //날짜선택
+  const [startDate, setStartDate] = useState(0);
   const filterPassedTime = (time) => {
     const currentDate = new Date();
     const selectedDate = new Date(time);
@@ -315,32 +238,55 @@ const Cart = () => {
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [cardNum, setCardNum] = useState('');
-  const [dinnerList, setDinnerList] = useState(DinnerListData); // get
+  const [dinnerList, setDinnerList] = useState([]);
+  const [user, setUser] = useState();
 
   const inputCardNum = useCallback((event) => {
     setCardNum(event.target.value);
   }, []);
 
-  const deleteDinner = (cartIdx) => {
-    setDinnerList(prevState => {
-      return prevState.filter(dinner => cartIdx !== dinner.cartIdx)
+  const deleteDinner = async (cartIdx) => {
+    try {
+      const response = await axios.delete(`carts/delete/${cartIdx}`);
+      await setDinnerList(prevState => {
+        return prevState.filter(dinner => cartIdx !== dinner.cartIdx)
       });
-    //dinnerlist post
+      console.log(dinnerList);
+      alert(response.data.result);
+    } catch (e) {
+
+    }
   }
+  
+  const fetchCart = async () => {
+    try {
+      const responseCart = await axios.get('carts/1');
+      const responseUser = await axios.get('users/1');
+      console.log(responseCart.data.result);
+      console.log(responseUser.data.result);
+      await setUser(responseUser.data.result);
+      await setDinnerList(responseCart.data.result);
+
+      const totalPrice = dinnerList.reduce((acc, obj) => {
+        return (acc += obj.dinnerPrice);
+      }, 0);
+      setTotalPrice(user.totalPrice > 100000 ? (totalPrice - 2000) : totalPrice);
+    } catch (e) {
+
+    }
+  };
 
   useEffect(() => {
-    //cart get -> setdinnerlist(맨첨실행됏을때)
+    //cart get -> setdinnerlist(맨첨실행됐을때)
+    fetchCart();
   }, [])
-
-  useEffect(() => {
-    console.log(dinnerList);
-  }, [dinnerList])
 
   useEffect(() => {
     const totalPrice = dinnerList.reduce((acc, obj) => {
       return (acc += obj.dinnerPrice);
     }, 0);
-    setTotalPrice(cusTotalPrice > 100000 ? (totalPrice - 2000) : totalPrice);
+    
+    setTotalPrice(user?.totalPrice > 100000 ? (totalPrice - 2000) : totalPrice);
   }, [dinnerList])
 
 
@@ -372,7 +318,8 @@ const Cart = () => {
             <div style={{display: 'grid', gridTemplateColumns: '1fr 2fr'}}>
               <BoxHeadSpan>주문 정보</BoxHeadSpan>
               <div>
-                {dinnerList ? dinnerList?.map((dinner, index) => {
+                
+                {dinnerList.length !== 0 ? dinnerList?.map((dinner, index) => {
                   return <Dinner key={index} dinner={dinner} onDelete={deleteDinner}/>;
                   }) : <div>장바구니가 비었습니다.</div>
                 }
@@ -384,9 +331,9 @@ const Cart = () => {
               <BoxHeadSpan>배송 정보</BoxHeadSpan>
               <div>
                 <div style={{marginBottom: '15px', fontSize: '14px', fontWeight: '600'}}>전화번호</div>
-                <div style={{marginBottom: '15px', fontSize: '14px', fontWeight: '400'}}>010-1234-5678</div>
+                <div style={{marginBottom: '15px', fontSize: '14px', fontWeight: '400'}}>{user?.phoneNum}</div>
                 <div style={{marginBottom: '15px', fontSize: '14px', fontWeight: '600'}}>주소</div>
-                <div style={{fontSize: '14px', fontWeight: '400'}}>서울특별시 동대문구 서울시립대로 163 정보기술관</div>
+                <div style={{fontSize: '14px', fontWeight: '400'}}>{user?.address}</div>
               </div>
             </div>
           </Box>
@@ -406,7 +353,7 @@ const Cart = () => {
           <MembershipBox>
             회원님은
             <span style={{marginLeft: '5px', fontWeight: 'bold'}}>
-              {cusTotalPrice > 100000 ? "단골 고객" : "일반 고객"}
+              {user?.totalPrice > 100000 ? "단골 고객" : "일반 고객"}
             </span>
             입니다.
           </MembershipBox>
@@ -415,35 +362,47 @@ const Cart = () => {
             <div>
               <PayDetail>
                 <div>주문금액</div>
-                <div>{totalPrice}원</div>
+                <div>{totalPrice?.toLocaleString()}원</div>
               </PayDetail>
               <PayDetail>
                 <div>단골할인</div>
-                <div style={{color: 'red'}}>{cusTotalPrice > 100000 ? "-2000원" : "0원"}</div>
+                <div style={{color: 'red'}}>{cusTotalPrice > 100000 ? "-2,000원" : "0원"}</div>
               </PayDetail>
               <PayDetail>
                 <div>배달비</div>
-                <div>{totalPrice === 0 ? "0원": "3000원"}</div>
+                <div>{totalPrice === 0 ? "0원": "3,000원"}</div>
               </PayDetail>
             </div>
             <div style={{marginTop: '20px', borderBottom: '1px solid lightgray'}}></div>
             <TotalPrice>
               <div>총 결제금액</div>
-              <div>{totalPrice === 0 ? 0 : totalPrice + 3000}원</div>
+              <div>{totalPrice === 0 ? 0 : (totalPrice + 3000).toLocaleString()}원</div>
             </TotalPrice>
-            <Button onClick={() => {
+            <Button onClick={async () => {
               if (totalPrice !== 0) {
-                const order = makeOrder(1, startDate, cardNum, dinnerList, totalPrice + 3000);
-                //order post
+                if (startDate === 0) {
+                  alert('날짜를 선택하세요.');
+                  return;
+                }
                 if (cardNum === '') {
                   alert('신용카드 번호를 입력하세요.');
                   return;
                 }
-                navigator('/ordercomplete', {
-                  state: {
-                    order
-                  }
-                });
+                const order = makeOrder(1, startDate, cardNum, dinnerList, totalPrice + 3000);
+                //order post
+                const response = await axios.post('/orders/order', order);
+                console.log(response);
+                if(response.data.isSuccess){
+                  navigator('/ordercomplete', {
+                    state: {
+                      order,
+                      user
+                    }
+                  });
+                } else {
+                  alert('결제를 실패했습니다.')
+                  return;
+                }
               } else {
                 alert('장바구니 목록이 존재하지 않습니다.');
                 return;

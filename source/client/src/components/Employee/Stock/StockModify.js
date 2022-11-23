@@ -8,69 +8,51 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import axios from 'axios';
 
-const stocklist = [
+const stockInfo = [
   {
-    extraNo : 1,
+    idx : 1,
     name : '와인 한 병',
-    price : 22000,
-    amount : 30
   },
   {
-    extraNo : 2,
+    idx : 2,
     name : '와인 한 잔',
-    price : 7000,
-    amount : 30
   },
   {
-    extraNo : 3,
+    idx : 3,
     name : '스테이크',
-    price : 30000,
-    amount : 30
   },
   {
-    extraNo : 4,
+    idx : 4,
     name : '커피 한 잔',
-    price : 4000,
-    amount : 30
   },
   {
-    extraNo : 5,
+    idx : 5,
     name : '커피 한 포트',
-    price : 9000,
-    amount : 30
   },
   {
-    extraNo : 6,
+    idx : 6,
     name : '샐러드',
-    price : 10000,
-    amount : 30
   },
   {
-    extraNo : 7,
+    idx : 7,
     name : '에그 스크램블',
-    price : 2000,
-    amount : 30
   },
   {
-    extraNo : 8,
+    idx : 8,
     name : '베이컨',
-    price : 1000,
-    amount : 30
   },
   {
-    extraNo : 9,
+    idx : 9,
     name : '샴페인',
-    price : 22000,
-    amount : 30
   },
   {
-    extraNo : 10,
+    idx : 10,
     name : '바게트 빵',
-    price : 2000,
-    amount : 30
   }
 ]
+
 const stockamount = {
   amount1 : 0,
   amount2 : 0,
@@ -96,16 +78,37 @@ const Head = styled.div`
 const StyledInput = styled.input.attrs({ type: 'number' })`
   text-align: center;
   width: 50px;
+  ::-webkit-inner-spin-button{
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+  ::-webkit-outer-spin-button{
+      -webkit-appearance: none; 
+      margin: 0; 
+  }    
 `
 const StockModify = () => {
-  const[stocks, setStocks] = useState(stocklist);
+  const[stocks, setStocks] = useState(stockInfo);
   const[stockAmount, setStockAmount] = useState(stockamount);
+  const[getAmount, setGetAmount] = useState(stockamount);
 
   const modifyStockAmount = (e, key) => {
     console.log(e.target.value);
-    setStockAmount(prevState => ({ ...prevState, [`amount${key}`]: Number(e.target.value) })
-    );
+    setStockAmount(prevState => ({ ...prevState, [`amount${key}`]: Number(e.target.value) }));
   }
+
+  const fetchStocks = async () => {
+    try {
+      const response = await axios.get('/stocks');
+      setGetAmount(response.data.result);
+    } catch (e) {
+
+    }
+  }
+
+  useEffect(() => {
+    fetchStocks();
+  }, []);
 
   return (
     <Container>
@@ -113,10 +116,26 @@ const StockModify = () => {
         <div style={{fontWeight: 'bold', fontSize: '20px'}}>
           재고 수정
         </div>
-        <Button onClick={() => {
-          console.log(stocks);
-          //stockamount post
-          //stock get
+        <Button onClick={async () => {
+          try {
+            console.log(stocks);
+            const response =  await axios.patch('/stocks/edit', {
+              amount1: stockAmount['amount1'] + getAmount['amount1'],
+              amount2: stockAmount['amount2'] + getAmount['amount2'],
+              amount3: stockAmount['amount3'] + getAmount['amount3'],
+              amount4: stockAmount['amount4'] + getAmount['amount4'],
+              amount5: stockAmount['amount5'] + getAmount['amount5'],
+              amount6: stockAmount['amount6'] + getAmount['amount6'],
+              amount7: stockAmount['amount7'] + getAmount['amount7'],
+              amount8: stockAmount['amount8'] + getAmount['amount8'],
+              amount9: stockAmount['amount9'] + getAmount['amount9'],
+              amount10: stockAmount['amount10'] + getAmount['amount10'],
+            });
+            alert(response.data.result);
+          } catch(e) {
+
+          }
+          fetchStocks();
           setStockAmount(stockamount);
         }
         }>
@@ -133,7 +152,7 @@ const StockModify = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {stocks.map((stock, index) => (
+            {stocks.map((stock) => (
               <TableRow
                 key={stock.name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -143,11 +162,11 @@ const StockModify = () => {
                 </TableCell>
                 <TableCell align="center">
                   <StyledInput
-                    value={stockAmount[`amount${index+1}`]}
-                    onChange={(e) => modifyStockAmount(e, stock.extraNo)}
+                    value={stockAmount[`amount${stock.idx}`]}
+                    onChange={(e) => modifyStockAmount(e, stock.idx)}
                   />
                 </TableCell>
-                <TableCell align="center">{stockAmount[`amount${stock.extraNo}`] + stock.amount}</TableCell>
+                <TableCell align="center">{getAmount[`amount${stock.idx}`] + stockAmount[`amount${stock.idx}`]}</TableCell>
               </TableRow>
             ))}
           </TableBody>

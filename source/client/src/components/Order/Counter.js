@@ -43,7 +43,7 @@ const Counter = ({extraInfo, extra, onChangeProps}) => {
     <StyledDiv>
       <div>
         <div style={{margin: '5px 0px', fontSize: '12px', fontWeight: '400'}}>{extraInfo.name}</div>
-        <div style={{fontSize: '8px', color: 'gray'}}>{extraInfo.price}원</div>
+        <div style={{fontSize: '8px', color: 'gray'}}>{extraInfo.price.toLocaleString()}원</div>
       </div>
       <CountDiv>
         <RemoveIcon sx={{ fontSize: 12, cursor: 'pointer' }} onClick={amountDecreaseHandler}/>

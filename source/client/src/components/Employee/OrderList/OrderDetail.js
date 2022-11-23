@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../../Button';
 import moment from 'moment';
+import axios from 'axios';
 
 const Container = styled.div`
   padding: 40px;
@@ -68,7 +69,6 @@ const BoxContent = ({head, content}) => {
 }
 
 const DinnerContent = ({dinner}) => {
-  console.log(dinner.dinnerName);
   return (
     <div style={{marginBottom: '15px'}}>
       <div style={{display: 'flex', alignItems: 'center', marginBottom: '10px'}}>
@@ -79,7 +79,7 @@ const DinnerContent = ({dinner}) => {
         dinner.extraList.map((extra) => {
           if (extra.amount > 0){
             return(
-            <div style={{fontSize: '12px'}}>{extra.extraName}&nbsp;{extra.amount}개</div>
+            <div style={{fontSize: '12px', marginBottom: '5px'}}>{extra.extraName}&nbsp;{extra.amount}개</div>
             );
           }
         })
@@ -89,22 +89,37 @@ const DinnerContent = ({dinner}) => {
   );
 }
 
-const StateButton = ({state}) => {
-  const text = ['주문 취소','조리 시작', '조리 완료', '배달 시작', '배달 완료'];
-  if (state === 1) {
+const StateButton = ({order, changeState, clickOrder}) => {
+  const text = ['주문 취소', '조리 시작', '조리 완료', '배달 시작', '배달 완료'];
+  if (order.state === 1) {
     return (
-      <div>
-        <OrangeButton>조리 시작</OrangeButton>
-        <Button>주문 취소</Button>
+      <div style={{display: 'flex', gap: '20px'}}>
+        <OrangeButton onClick={() => {
+          changeState(order.orderIdx, order.state, '조리 시작');
+          clickOrder();
+        }}>조리 시작</OrangeButton>
+        <Button onClick={() => {
+          changeState(order.orderIdx, order.state, '주문 취소')
+          clickOrder();
+        }}>주문 취소</Button>
       </div>
     );
   }
   return (
-    <OrangeButton>{text[state]}</OrangeButton>
+    <OrangeButton onClick={() => { 
+      changeState(order.orderIdx, order.state, text[order.state]);
+      clickOrder();
+    }}>
+      {text[order.state]}
+    </OrangeButton>
   );
 }
 
-const OrderDetail = ({ order }) => {
+
+
+
+const OrderDetail = ({ order, changeState, clickOrder }) => {
+
   return (
     <Container>
       <Head>
@@ -133,14 +148,13 @@ const OrderDetail = ({ order }) => {
         <BoxHead>주문 정보</BoxHead>
           {
             order.dinnerList?.map((dinner, index) => {
-              console.log(dinner);
               return <DinnerContent key={index} dinner={dinner}/>;
             })
           }
         </Box>
       </Content>
       <ButtonLayout>
-        {order.state === 5 ?  null : <StateButton onClick={() => {/*patch*/}} state={order.state}/>}
+        {order.state === 5 ?  null : <StateButton order={order} changeState={changeState} clickOrder={clickOrder}/>}
       </ButtonLayout>
     </Container>
   );
