@@ -48,6 +48,57 @@ const Container = styled.div`
   grid-template-columns: 1fr 2fr;
 
 `
+// text 받아서 고걸로 되게 해보자
+// const deleteOrder = async (orderIdx) => {
+//   try{
+//     const response = await axios.patch(`/orders/${orderIdx}/delete`)
+//     console.log(response)
+//     alert(response.data.result);
+//   } catch(e) {
+
+//   }
+// }
+
+// const startOrder = async (orderIdx) => {
+//   try{
+//     const response = await axios.patch(`/orders/${orderIdx}/start`)
+//     console.log(response)
+//     alert(response.data.result);
+//   } catch(e) {
+
+//   }
+// }
+
+// const completeOrder = async (orderIdx) => {
+//   try{
+//     const response = await axios.patch(`/orders/${orderIdx}/complete`)
+//     console.log(response)
+//     alert(response.data.result);
+//   } catch(e) {
+
+//   }
+// }
+
+// const deliverOrder = async (orderIdx) => {
+//   try{
+//     const response = await axios.patch(`/orders/${orderIdx}/deliver`)
+//     console.log(response)
+//     alert(response.data.result);
+//   } catch(e) {
+
+//   }
+// }
+
+const patchOrder = async (orderIdx, state) => {
+  try{
+    const response = await axios.patch(`/orders/${orderIdx}/${state}`);
+    console.log(response)
+    //alert(response.data.result);
+  } catch(e) {
+
+  }
+}
+
 const OrderList = () => {
   const [value, setValue] = useState(0);
   const [orderListAccept, setOrderListAccept] = useState();
@@ -86,6 +137,31 @@ const OrderList = () => {
       } catch (e) {
       }
   };
+
+  const changeState = async (orderIdx, state, button) => {
+    console.log(orderIdx);
+    console.log(button);
+    if (state === 1){
+      if (button === '주문 취소') {
+        await patchOrder(orderIdx, 'delete');
+      }
+      else if (button === '조리 시작'){
+        await patchOrder(orderIdx, 'start');
+      }
+      fetchAccept();
+    } else {
+      if (button === '조리 완료') {
+        await patchOrder(orderIdx, 'complete');
+      }
+      else if (button === '배달 시작'){
+        await patchOrder(orderIdx, 'deliver');
+      }
+      else if (button === '배달 완료'){
+        await patchOrder(orderIdx, 'done');
+      }
+      fetchPrepare();
+    }
+  }
 
   useEffect(() => {
     fetchAccept();
@@ -129,7 +205,7 @@ const OrderList = () => {
           })}
         </TabPanel>
       </Box>
-      {orderDetail ? <OrderDetail order={orderDetail}/> : null}
+      {orderDetail ? <OrderDetail order={orderDetail} changeState={changeState} clickOrder={clickOrder}/> : null}
     </Container>
   );
 };

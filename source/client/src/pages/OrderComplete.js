@@ -110,7 +110,7 @@ const OrderComplete = () => {
                         dinner.extraList.map((extra, index) => {
                           if (extra.amount > 0){
                             return (<div key={index} style={{marginLeft: '5px', marginBottom: '5px', fontSize: '12px', color: 'gray'}}>
-                              {extra.extraName}&nbsp;{extra.amount}개
+                              {extraInfo[extra.extraNo - 1].name}&nbsp;{extra.amount}개
                             </div>);
                           }
                         })

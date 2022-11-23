@@ -153,7 +153,7 @@ const MenuItem = ({menu}) => {
     }
   };
 
-  const makeDinnerList = (dinnerName, style, amount, extraList) => {
+  const makeDinnerList = (userIdx, dinnerName, style, amount, extraList) => {
     let dinnerPrice = 0;
     extraList.map((extra) => {
       dinnerPrice += extra.amount * extraInfo[extra.extraNo - 1].price;
@@ -162,6 +162,7 @@ const MenuItem = ({menu}) => {
     else if (style === "딜럭스") dinnerPrice += 2000;
 
     const dinnerList = {
+      userIdx, userIdx,
       dinnerName: dinnerName,
       style: style,
       amount: amount,
@@ -175,10 +176,10 @@ const MenuItem = ({menu}) => {
     setExtraList(menu.extraList);
   }
 
-  const putCart = async (menu) => {
+  const putCart = async () => {
     try {
-      const dinnerList = makeDinnerList(menu.dinnerName, checkedStyle, 1, extraList);
-      const response = await axios.post(`/carts/1`, dinnerList);
+      const dinnerList = makeDinnerList(1, menu.dinnerName, checkedStyle, 1, extraList);
+      const response = await axios.post(`/carts/save`, dinnerList);
       console.log(response);
     } catch (e) {
     }
@@ -250,7 +251,7 @@ const MenuItem = ({menu}) => {
                 </div>
               </MidDiv>
               <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                <Button onClick={() => {putCart(menu);}}>
+                <Button onClick={() => {putCart();}}>
                   장바구니 담기
                 </Button>
               </div>

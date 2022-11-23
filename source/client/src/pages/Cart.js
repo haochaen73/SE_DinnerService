@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import moment from 'moment';
 
 // const extraInfo = [
 //   {
@@ -196,12 +197,27 @@ const Dinner = ({dinner, onDelete}) => {
 
 const makeOrder = (userIdx, deliveredAt, cardNum, dinnerList, totalPrice) =>
 {
+  const makeDinnerList = dinnerList.map((dinner) => {
+    const makeExtraList = dinner.extraList.map((extra, index) => {
+      return {
+        extraNo: index+1,
+        amount: extra.amount
+      }
+    })
+    return {
+      dinnerName: dinner.dinnerName,
+      style: dinner.style,
+      amount: dinner.amount,
+      dinnerPrice: dinner.dinnerPrice,
+      extraList: makeExtraList
+    }
+  })
   const order = {
     userIdx: userIdx,
-    deliveredAt: deliveredAt.getTime(),
+    deliveredAt: moment(deliveredAt).format('YYYY-MM-DD HH:mm:ss'),
     cardNum: cardNum,
     totalPrice: totalPrice,
-    dinnerList: dinnerList
+    dinnerList: makeDinnerList
   }
   console.log(order);
   return order;
@@ -375,12 +391,18 @@ const Cart = () => {
                 const order = makeOrder(1, startDate, cardNum, dinnerList, totalPrice + 3000);
                 //order post
                 const response = await axios.post('/orders/order', order);
-                navigator('/ordercomplete', {
-                  state: {
-                    order,
-                    user
-                  }
-                });
+                console.log(response);
+                if(response.data.isSuccess){
+                  navigator('/ordercomplete', {
+                    state: {
+                      order,
+                      user
+                    }
+                  });
+                } else {
+                  alert('결제를 실패했습니다.')
+                  return;
+                }
               } else {
                 alert('장바구니 목록이 존재하지 않습니다.');
                 return;
