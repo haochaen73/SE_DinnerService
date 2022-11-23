@@ -118,6 +118,15 @@ const OrderHistoryDetail = () => {
   const recoilUser = useRecoilValue(userState);
   const [address, setAddress] = useState('');
 
+  const deleteOrder = async (orderIdx) => {
+    try {
+      const response = await axios.patch(`orders/${orderIdx}/delete`);
+      console.log(response);
+    } catch (e) {
+
+    }
+  }
+
   useEffect(() => {
     (async () => {
       const result =  await axios.get(`/users/${recoilUser.userIdx}`);
@@ -193,7 +202,7 @@ const OrderHistoryDetail = () => {
                   textAlign: "center",
                 }}
                 onClick={(e) => {
-                  // TODO: 취소 요청 백엔드로 보내기
+                  deleteOrder(order.orderIdx);
                   e.preventDefault();
                   navigate('/mypage');
                 }}
