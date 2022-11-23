@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import styled, {css} from 'styled-components';
 import { userState } from '../recoil/user';
 
@@ -35,7 +36,16 @@ const StyledLink = styled(Link)`
 `
 
 const Header = () => {
+  const setUserState = useSetRecoilState(userState);
   const me = useRecoilValue(userState);
+
+  const handleLogout = () => {
+    setUserState({
+      userIdx: '',
+      name: '',
+      userType: ''
+    })
+  }
 
   return (
     <HeaderDiv>
@@ -43,15 +53,37 @@ const Header = () => {
         <Logo src='images/logo.svg' alt='logo'/>
       </StyledLink>
       {/* 로그인 여부로 나타낼지 안나타낼지 결정*/}
-      <LeftContentDiv>
-        <div style={{padding: '20px', fontWeight: 'bold'}}>{me?.name || '이수빈'}님</div>
-        <MemberDiv>
-          <StyledLink to='/mypage'>마이페이지</StyledLink>
-        </MemberDiv>
-        <MemberDiv>
-          <StyledLink to='/cart'>장바구니</StyledLink>
-        </MemberDiv>
-      </LeftContentDiv>
+        {(function () {
+          if (me?.userIdx != ''){  // 유저 정보가 있는데
+            if (me?.userType === 'employee') { //직원일 경우
+              return (
+                <LeftContentDiv>
+                  <div style={{padding: '20px', fontWeight: 'bold'}}>{me?.name || '이수빈'}님</div>
+                  <StyledLink to='/' onClick={() => handleLogout()} style={{display: "flex", alignItems: "center", padding: '20px'}}>로그아웃</StyledLink>
+                </LeftContentDiv>
+                );
+            } else { //고객일 경우
+              return (
+                <LeftContentDiv>
+                  <div style={{padding: '20px', fontWeight: 'bold'}}>{me?.name || '이수빈'}님</div>
+                  <StyledLink to='/' onClick={() => handleLogout()} style={{display: "flex", alignItems: "center", padding: '20px'}}>로그아웃</StyledLink>
+                  <MemberDiv>
+                    <StyledLink to='/mypage'>마이페이지</StyledLink>
+                  </MemberDiv>
+                  <MemberDiv>
+                    <StyledLink to='/cart'>장바구니</StyledLink>
+                  </MemberDiv>
+                  <MemberDiv>
+                   <StyledLink to='/order'>주문하기</StyledLink>
+                  </MemberDiv>
+                </LeftContentDiv>
+                );
+            }
+          } else { //회원가입 및 로그인일 경우
+            return <div></div>;
+          }
+        })()}
+        
     </HeaderDiv>
   );
 };

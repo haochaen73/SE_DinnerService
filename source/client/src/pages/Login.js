@@ -57,12 +57,12 @@ const Login = (props) => {
       const res = await axios.post('employees/logIn', {id, password});
       console.log(res);
       if(res.data.isSuccess) {
-        navigate('/employee');
-        setUserState({
+        await setUserState({
           userIdx: res.data.result.employeeIdx,
           name: res.data.result.name,
           userType: 'employee',
         })
+        navigate('/employee');
       } else {
         alert('회원 정보를 정확하게 입력해라 이자식~');
       }
@@ -72,12 +72,12 @@ const Login = (props) => {
       const res = await axios.post('users/logIn', {id, password});
       console.log(res);
       if(res.data.isSuccess) {
-        navigate('/main')
-        setUserState({
+        await setUserState({
           userIdx: res.data.result.userIdx,
           name: res.data.result.name,
           userType: 'client',
         })
+        navigate('/main')
       } else {
         alert('회원 정보를 정확하게 입력해라 이자식~');
       }
