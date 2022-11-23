@@ -70,7 +70,7 @@ const OrderHistoryItem = ({order}) => {
           >
             예약 시간
           </div>
-          <div style={{ fontSize: "14px" }}>{moment(order.deliveredAt).format('MM/DD hh:mm')}</div>
+          <div style={{ fontSize: "14px" }}>{moment(order.deliveredAt).format('MM/DD HH:mm')}</div>
         </TextItem>
       </TextContainer>
       <StateContainer>
