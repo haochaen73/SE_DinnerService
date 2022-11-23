@@ -34,7 +34,6 @@ const StyledLink = styled(Link)`
     color: white;
 `
 
-
 const Header = () => {
   const me = useRecoilValue(userState);
 

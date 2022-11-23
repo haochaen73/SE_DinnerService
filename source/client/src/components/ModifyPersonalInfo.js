@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from './Button';
+import { flexbox } from '@mui/system';
 
 const personalInfoData = {
     name : '김하람',
@@ -19,10 +20,26 @@ const personalInfoData = {
     address : '서울특별시 망우로 30'
 }
 
+const ModifyButton = styled.button`
+  padding: 4px 12px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  border: 0px solid #8B8B8B;
+  color: white;
+  background: #8B8B8B;  
+  text-decoration: none;
+  color: white;
+  :hover{
+    background: #787777;
+    cursor: pointer;
+  }
+`
+
 // Input창 넣고 싶으면 StyledInput 태그 사용하기
-const StyledInput = styled.input.attrs({ type: 'number' })`
+const StyledInput = styled.input.attrs({ type: 'text' })`
   text-align: center;
-  width: 50px;
+  width: 80px;
 `
 
 const TitleContainer = styled.div`
@@ -74,7 +91,7 @@ const ModifyPersonalInfo = () => {
         </TitleContainer>
         <MainTableContainer>
           <TableContainer>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table aria-label="simple table" >
               <TableBody>
                 {/* 이름 */}
                 <TableRow
@@ -95,7 +112,7 @@ const ModifyPersonalInfo = () => {
                     이름
                   </TableCell>
 
-                  <TableCell sx={{ borderTop: 1 }} align="center">
+                  <TableCell sx={{ borderTop: 1, paddingLeft: "20px"}} >
                     {personalInfo.name}
                   </TableCell>
                 </TableRow>
@@ -116,7 +133,7 @@ const ModifyPersonalInfo = () => {
                   >
                     아이디
                   </TableCell>
-                  <TableCell align="center">{personalInfo.id}</TableCell>
+                  <TableCell sx={{ paddingLeft: "20px"}}>{personalInfo.id}</TableCell>
                 </TableRow>
 
                 {/* 비밀번호 */}
@@ -135,7 +152,7 @@ const ModifyPersonalInfo = () => {
                   >
                     비밀번호
                   </TableCell>
-                  <TableCell align="center">{personalInfo.pw}</TableCell>
+                  <TableCell sx={{ paddingLeft: "20px"}}><ModifyButton style={{display: "flex", justifyContent: "center"}}>비밀번호 변경</ModifyButton></TableCell>
                 </TableRow>
 
                 {/* 이메일 */}
@@ -154,7 +171,7 @@ const ModifyPersonalInfo = () => {
                   >
                     이메일
                   </TableCell>
-                  <TableCell align="center">{personalInfo.email}</TableCell>
+                  <TableCell sx={{ paddingLeft: "20px"}}>{personalInfo.email}</TableCell>
                 </TableRow>
 
                 {/* 전화번호 */}
@@ -173,7 +190,7 @@ const ModifyPersonalInfo = () => {
                   >
                     전화번호
                   </TableCell>
-                  <TableCell align="center">{personalInfo.phoneNum}</TableCell>
+                  <TableCell sx={{ paddingLeft: "20px"}}>{personalInfo.phoneNum}</TableCell>
                 </TableRow>
 
                 {/* 회원등급 */}
@@ -192,7 +209,7 @@ const ModifyPersonalInfo = () => {
                   >
                     회원등급
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell sx={{ paddingLeft: "20px"}}>
                     {personalInfo.membership}
                   </TableCell>
                 </TableRow>
@@ -211,7 +228,7 @@ const ModifyPersonalInfo = () => {
                   >
                     주소
                   </TableCell>
-                  <TableCell sx={{ borderBottom: 1 }} align="center">
+                  <TableCell sx={{ borderBottom: 1, paddingLeft: "20px"}}>
                     {personalInfo.address}
                   </TableCell>
                 </TableRow>

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled, {css} from 'styled-components';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const MainDiv = styled.div`
   padding: 80px;
@@ -25,16 +27,17 @@ const SignupCus = () => {
 	const [signUpCusInfo, setSignUpCusInfo] = useState({
 		name: '',
 		id: '',
-		password: '',
-		checkPassword: '',
+		password1: '',
+		password2: '',
 		email: '',
-		phone: '',
+		phoneNum: '',
 		address: '',
 	});
 
 	const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&])[A-Za-z\d@!%*#?&]{8,}$/;
 	const emailRegEx = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
-	const phoneRegEx = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
+	const phoneNumRegEx = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
+  const navigate = useNavigate();
   
 	const passwordCheck = (signUpCusInfo) => {
 		return passwordRegEx.test(signUpCusInfo);
@@ -44,8 +47,8 @@ const SignupCus = () => {
     return emailRegEx.test(signUpCusInfo); //형식에 맞을 경우, true 리턴
   }
 
-	const phoneCheck = (signUpCusInfo) => {
-		return phoneRegEx.test(signUpCusInfo);
+	const phoneNumCheck = (signUpCusInfo) => {
+		return phoneNumRegEx.test(signUpCusInfo);
 	}
 
 	const checkNotEmptySignUpInfoValue = Object.values(signUpCusInfo).some((data) => data === '');
@@ -54,6 +57,21 @@ const SignupCus = () => {
 		const { name, value } = e.target;
 		setSignUpCusInfo((prev) => ({ ...prev, [name]: value }));
 	}
+
+  const handleClickSignupButton = async () => {
+    const res = await axios.post("users/signup", signUpCusInfo);
+    if (res.data.isSuccess) {
+      navigate("/");
+    } 
+    else {
+      if (res.data.code === 2023) {
+        alert("중복된 아이디입니다.");
+      }
+      else {
+        alert("회원 정보를 다시 입력해주세요");
+      }
+    }
+  }
 
   return (
     <MainDiv>
@@ -75,15 +93,15 @@ const SignupCus = () => {
         <Input
           placeholder="비밀번호"
           type="password"
-          name={"password"}
-          value={signUpCusInfo.password}
+          name={"password1"}
+          value={signUpCusInfo.password1}
           onChange={handleChangeSignUpInfoInput}
         />
         <Input
           placeholder="비밀번호 재입력"
           type="password"
-          name={"checkPassword"}
-          value={signUpCusInfo.checkPassword}
+          name={"password2"}
+          value={signUpCusInfo.password2}
           onChange={handleChangeSignUpInfoInput}
         />
         <Input
@@ -94,8 +112,8 @@ const SignupCus = () => {
         />
         <Input
           placeholder="휴대폰 번호"
-          name={"phone"}
-          value={signUpCusInfo.phone}
+          name={"phoneNum"}
+          value={signUpCusInfo.phoneNum}
           onChange={handleChangeSignUpInfoInput}
         />
         <Input
@@ -112,11 +130,11 @@ const SignupCus = () => {
 						alert('모든 항목을 채워주세요.');
 						return;
 					}
-					if(!passwordCheck(signUpCusInfo.password)){
+					if(!passwordCheck(signUpCusInfo.password1)){
 						alert('비밀번호를 형식에 맞춰 입력해주세요.\n최소 8자 + 최소 한개의 영문자 + 최소 한개의 숫자 + 최소 한개의 특수 문자');
 						return;
 					}
-          if (signUpCusInfo.password !== signUpCusInfo.checkPassword) {
+          if (signUpCusInfo.password1 !== signUpCusInfo.password2) {
             alert("비밀번호가 서로 다릅니다.");
             return;
           }
@@ -124,10 +142,11 @@ const SignupCus = () => {
 						alert('이메일을 올바르게 입력해주세요.');
 						return;
 					}
-					if(!phoneCheck(signUpCusInfo.phone)){
+					if(!phoneNumCheck(signUpCusInfo.phoneNum)){
 						alert('전화번호를 형식에 맞춰 입력해주세요.\n010-****-****');
 						return;
 					}
+          handleClickSignupButton()
         }}
 				//disabled={checkNotEmptySignUpInfoValue}
       >
