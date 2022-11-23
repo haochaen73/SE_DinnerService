@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
@@ -7,64 +7,11 @@ import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '../components/Button';
-import { Link } from 'react-router-dom';
-import { useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
-
-// const extraInfo = [
-//   {
-//     extraNo : 1,
-//     name : '와인 한 병',
-//     price : 22000,
-//   },
-//   {
-//     extraNo : 2,
-//     name : '와인 한 잔',
-//     price : 7000,
-//   },
-//   {
-//     extraNo : 3,
-//     name : '스테이크',
-//     price : 30000,
-//   },
-//   {
-//     extraNo : 4,
-//     name : '커피 한 잔',
-//     price : 4000,
-//   },
-//   {
-//     extraNo : 5,
-//     name : '커피 한 포트',
-//     price : 9000,
-//   },
-//   {
-//     extraNo : 6,
-//     name : '샐러드',
-//     price : 10000,
-//   },
-//   {
-//     extraNo : 7,
-//     name : '에그 스크램블',
-//     price : 2000,
-//   },
-//   {
-//     extraNo : 8,
-//     name : '베이컨',
-//     price : 1000,
-//   },
-//   {
-//     extraNo : 9,
-//     name : '샴페인',
-//     price : 22000,
-//   },
-//   {
-//     extraNo : 10,
-//     name : '바게트 빵',
-//     price : 2000,
-//   }
-// ]
+import { useRecoilValue } from 'recoil';
+import { userState } from '../recoil/user';
 
 const CartTextDiv = styled.div`
   display: flex;
@@ -176,7 +123,6 @@ const Dinner = ({dinner, onDelete}) => {
         <CloseIcon 
           sx={{cursor: 'pointer'}} 
           onClick={() => {
-            //console.log(dinner.cartIdx);
             onDelete(dinner.cartIdx);
           }
             /*delete -> setdinnerlist -> cart post*/}/>
@@ -195,7 +141,7 @@ const Dinner = ({dinner, onDelete}) => {
   );
 }
 
-const makeOrder = (userIdx, deliveredAt, cardNum, dinnerList, totalPrice) =>
+const makeOrder = (user, deliveredAt, cardNum, dinnerList, totalPrice) =>
 {
   const makeDinnerList = dinnerList.map((dinner) => {
     const makeExtraList = dinner.extraList.map((extra, index) => {
@@ -212,8 +158,9 @@ const makeOrder = (userIdx, deliveredAt, cardNum, dinnerList, totalPrice) =>
       extraList: makeExtraList
     }
   })
+  //user?.totalPrice > 100000 ? (totalPrice - 2000) : totalPrice
   const order = {
-    userIdx: userIdx,
+    userIdx: user.userIdx,
     deliveredAt: moment(deliveredAt).format('YYYY-MM-DD HH:mm:ss'),
     cardNum: cardNum,
     totalPrice: totalPrice,
@@ -226,6 +173,7 @@ const makeOrder = (userIdx, deliveredAt, cardNum, dinnerList, totalPrice) =>
 const Cart = () => {
   const cusTotalPrice = 100000; //단골인지
   const navigator = useNavigate();
+  const recoilUser = useRecoilValue(userState);
 
   //날짜선택
   const [startDate, setStartDate] = useState(0);
@@ -260,17 +208,17 @@ const Cart = () => {
   
   const fetchCart = async () => {
     try {
-      const responseCart = await axios.get('carts/1');
-      const responseUser = await axios.get('users/1');
+      console.log(recoilUser);
+      const responseCart = await axios.get(`carts/${recoilUser.userIdx}`);
+      const responseUser = await axios.get(`users/${recoilUser.userIdx}`);
       console.log(responseCart.data.result);
       console.log(responseUser.data.result);
       await setUser(responseUser.data.result);
       await setDinnerList(responseCart.data.result);
-
       const totalPrice = dinnerList.reduce((acc, obj) => {
         return (acc += obj.dinnerPrice);
       }, 0);
-      setTotalPrice(user.totalPrice > 100000 ? (totalPrice - 2000) : totalPrice);
+      setTotalPrice(totalPrice);
     } catch (e) {
 
     }
@@ -388,7 +336,7 @@ const Cart = () => {
                   alert('신용카드 번호를 입력하세요.');
                   return;
                 }
-                const order = makeOrder(1, startDate, cardNum, dinnerList, totalPrice + 3000);
+                const order = makeOrder(user, startDate, cardNum, dinnerList, totalPrice + 3000);
                 //order post
                 const response = await axios.post('/orders/order', order);
                 console.log(response);
