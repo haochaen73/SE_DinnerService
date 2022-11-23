@@ -38,6 +38,23 @@ public class OrderService {
         }
     }
 
+    public void deleteStock(PatchOrderReq patchOrderReq) throws BaseException {
+        try {
+            orderDao.deleteStock(patchOrderReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public int createNewDinner(PatchOrderReq patchOrderReq) throws BaseException {
+        try {
+            int dinnerIdx = orderDao.createNewDinnerExtra(patchOrderReq);
+            return dinnerIdx;
+        } catch (Exception exception) {
+            throw new BaseException(POST_ORDERS_STARVATION_STOCK);
+        }
+    }
+
     public int changeStateDelete(int orderIdx) throws BaseException{
         try {
             int state = orderDao.changeStateDelete(orderIdx);

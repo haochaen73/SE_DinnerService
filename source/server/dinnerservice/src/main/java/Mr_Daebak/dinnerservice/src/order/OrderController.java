@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import Mr_Daebak.dinnerservice.utils.JwtService;
 
+import javax.sound.midi.Patch;
 import java.util.List;
 
 import static Mr_Daebak.dinnerservice.config.BaseResponseStatus.INVALID_USER_JWT;
@@ -192,5 +193,33 @@ public class OrderController {
 //            return new BaseResponse<>(exception.getStatus());
 //        }
 //    }
+
+    @ResponseBody
+    @DeleteMapping("/delete/dinner")
+    @Transactional
+    public BaseResponse<String> deleteDinner(@RequestBody PatchOrderReq patchOrderReq) {
+        try {
+            orderService.deleteStock(patchOrderReq);
+            String result = "해당 dinner 삭제에 성공하였습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/modify/dinner")
+    @Transactional
+    public BaseResponse<PatchOrderRes> modifyDinner(@RequestBody PatchOrderReq patchOrderReq) {
+        try {
+            int dinnerIdx = orderService.createNewDinner(patchOrderReq);
+            PatchOrderRes patchOrderRes = new PatchOrderRes(dinnerIdx);
+            return new BaseResponse<>(patchOrderRes);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
+
+
 
 }
