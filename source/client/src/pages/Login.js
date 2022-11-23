@@ -55,12 +55,12 @@ const Login = (props) => {
       console.log("employee");
       console.log({id, password});
       const res = await axios.post('employees/logIn', {id, password});
-      if(res.isSuccess) {
+      console.log(res);
+      if(res.data.isSuccess) {
         navigate('/employee');
         setUserState({
-          userIdx: res.result.employeeIdx,
-          name: '',
-          // name: 'res.result.name,'
+          userIdx: res.data.result.employeeIdx,
+          name: res.data.result.name,
           userType: 'employee',
         })
       } else {
@@ -70,12 +70,12 @@ const Login = (props) => {
       console.log("client");
       console.log({id, password});
       const res = await axios.post('users/logIn', {id, password});
-      if(res.isSuccess) {
+      console.log(res);
+      if(res.data.isSuccess) {
         navigate('/main')
         setUserState({
-          userIdx: res.result.userIdx,
-          name: '',
-          // name: res.result.name,
+          userIdx: res.data.result.userIdx,
+          name: res.data.result.name,
           userType: 'client',
         })
       } else {

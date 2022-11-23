@@ -52,7 +52,7 @@ const SignupEmp = () => {
     const res = await axios.post("employees/signup", signUpEmpInfo);
     console.log(res);
     if (res.data.isSuccess) {
-      navigate("/employee");
+      navigate("/");
     } 
     else {
       if (res.data.code === 2037) {
