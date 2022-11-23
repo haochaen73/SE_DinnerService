@@ -31,19 +31,19 @@ public class EmployeeProvider {
         System.out.println("2");
         Employee employee = employeeDao.getPwd(postEmpLoginReq);
         System.out.println("5");
-        String password = employee.getPassword();
-        System.out.println(password);
-//        try {
-//            password = new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(employee.getPassword()); // 암호화
-//            // 회원가입할 때 비밀번호가 암호화되어 저장되었기 떄문에 로그인을 할때도 암호화된 값끼리 비교를 해야합니다.
-//        } catch (Exception ignored) {
-//            throw new BaseException(PASSWORD_DECRYPTION_ERROR);
-//        }
+//        String password = employee.getPassword();
+        String password;
+        try {
+            password = new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(employee.getPassword()); // 암호화
+            // 회원가입할 때 비밀번호가 암호화되어 저장되었기 떄문에 로그인을 할때도 암호화된 값끼리 비교를 해야합니다.
+        } catch (Exception ignored) {
+            throw new BaseException(PASSWORD_DECRYPTION_ERROR);
+        }
 
         if (postEmpLoginReq.getPassword().equals(password)) { //비말번호가 일치한다면 userIdx를 가져온다.
             System.out.println("6");
-            int employeeIdx = employee.getEmployeeIdx();
-            String name = employee.getName();
+            int employeeIdx = employeeDao.getPwd(postEmpLoginReq).getEmployeeIdx();
+            String name = employeeDao.getPwd(postEmpLoginReq).getName();
 //            jwt
 //            String jwt = JwtService.createEmpJwt(employeeIdx);
 //            return new PostEmpLoginRes(employeeIdx, name, jwt);
