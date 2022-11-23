@@ -43,16 +43,18 @@ function a11yProps(index) {
 const Employee = () => {
   const [value, setValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue);
   };
+
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs 
           value={value} 
           onChange={handleChange}
-          textColor="white" 
+          textColor="#000000" 
           aria-label="basic tabs example"
           variant="fullWidth"
           sx={{

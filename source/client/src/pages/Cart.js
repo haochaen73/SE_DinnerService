@@ -171,7 +171,6 @@ const makeOrder = (user, deliveredAt, cardNum, dinnerList, totalPrice) =>
 }
 
 const Cart = () => {
-  const cusTotalPrice = 100000; //단골인지
   const navigator = useNavigate();
   const recoilUser = useRecoilValue(userState);
 
@@ -310,11 +309,11 @@ const Cart = () => {
             <div>
               <PayDetail>
                 <div>주문금액</div>
-                <div>{totalPrice?.toLocaleString()}원</div>
+                <div>{totalPrice === -2000 ? 0 : totalPrice?.toLocaleString()}원</div>
               </PayDetail>
               <PayDetail>
                 <div>단골할인</div>
-                <div style={{color: 'red'}}>{cusTotalPrice > 100000 ? "-2,000원" : "0원"}</div>
+                <div style={{color: 'red'}}>{user?.totalPrice > 100000 ? "-2,000원" : "0원"}</div>
               </PayDetail>
               <PayDetail>
                 <div>배달비</div>
