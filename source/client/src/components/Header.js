@@ -73,6 +73,9 @@ const Header = () => {
                   <MemberDiv>
                     <StyledLink to='/cart'>장바구니</StyledLink>
                   </MemberDiv>
+                  <MemberDiv>
+                   <StyledLink to='/order'>주문하기</StyledLink>
+                  </MemberDiv>
                 </LeftContentDiv>
                 );
             }
