@@ -164,6 +164,7 @@ const OrderHistoryDetail = () => {
           <div style={{ fontSize: "15px", fontWeight: "400" }}>{order?.totalPrice.toLocaleString()}원</div>
         </div>
       </ContentDiv>
+      {order.state === 0 ? <div style={{marginBottom: '100px'}}></div> : 
       <ButtonContainer>
         <Button onClick={() => {
           console.log(order);
@@ -218,7 +219,8 @@ const OrderHistoryDetail = () => {
             </div>
           </ModalContainer>
         </Modal>
-      </ButtonContainer>
+      </ButtonContainer>}
+      
     </MainDiv>
   );
 };
