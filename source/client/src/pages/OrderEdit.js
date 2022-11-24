@@ -582,7 +582,7 @@ const OrderEdit = () => {
                 if(responsePost.data.isSuccess){
                   navigator('/ordermodifycomplete', {
                     state: {
-                      order,
+                      postOrder,
                       user
                     }
                   });

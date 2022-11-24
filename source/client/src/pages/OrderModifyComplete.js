@@ -92,9 +92,9 @@ const StyledLink = styled(Link)`
 const OrderModifyComplete = () => {
   const location = useLocation();
 
-  const deliveredAt = moment(location.state.order.deliveredAt).format('YYYY-MM-DD HH:mm');
-  const dinnerList = location.state.order.dinnerList;
-  const totalPrice = location.state.order.totalPrice;
+  const deliveredAt = moment(location.state.postOrder.deliveredAt).format('YYYY-MM-DD HH:mm');
+  const dinnerList = location.state.postOrder.dinnerList;
+  const totalPrice = location.state.postOrder.totalPrice;
   const user = location.state.user;
 
   return (
@@ -113,7 +113,7 @@ const OrderModifyComplete = () => {
                         dinner.extraList.map((extra, index) => {
                           if (extra.amount > 0){
                             return (<div key={index} style={{marginLeft: '5px', marginBottom: '5px', fontSize: '12px', color: 'gray'}}>
-                              {extraInfo[extra.extraNo + 1].name}&nbsp;{extra.amount}개
+                              {extraInfo[extra.extraNo - 1].name}&nbsp;{extra.amount}개
                             </div>);
                           }
                         })

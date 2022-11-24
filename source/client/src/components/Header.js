@@ -50,7 +50,9 @@ const Header = () => {
   return (
     <HeaderDiv>
       <div>
-        <Logo src='images/logo.svg' alt='logo'/>
+        <StyledLink to='/main'>
+          <Logo src='images/logo.svg' alt='logo'/>
+        </StyledLink>
       </div>
       {/* 로그인 여부로 나타낼지 안나타낼지 결정*/}
         {(function () {
