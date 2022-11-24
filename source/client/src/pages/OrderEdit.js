@@ -576,7 +576,8 @@ const OrderEdit = () => {
                 }
                 const postOrder = makeOrder(user, order.deliveredAt, cardNum, dinnerList, realTotalPrice);
                 //order post
-                // const responseDelete = await axios.delete(`${order.orderIdx}`
+                const responseDelete = await axios.delete(`/orders/${order.orderIdx}/delete`);
+                console.log(responseDelete);
                 const responsePost = await axios.post('/orders/order', postOrder);
                 //console.log(response);
                 if(responsePost.data.isSuccess){
