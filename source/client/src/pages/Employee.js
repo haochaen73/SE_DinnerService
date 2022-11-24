@@ -42,8 +42,9 @@ function a11yProps(index) {
 
 const Employee = () => {
   const [value, setValue] = useState(0);
-
-  const handleChange = (newValue) => {
+  console.log(value);
+  const handleChange = (event, newValue) => {
+    console.log(newValue)
     setValue(newValue);
   };
 
