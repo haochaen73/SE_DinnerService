@@ -324,7 +324,7 @@ public class OrderDao {
         System.out.println("dao 시작");
         String getOrderQuery = "SELECT orderIdx, totalPrice, deliveredAt, createdAt, state FROM `order` WHERE userIdx = ?";
         String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerPrice, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
-        String getExtraQuery = "SELECT `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
+        String getExtraQuery = "SELECT extra.extraNo, `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
         List<GetOrderRes> result = this.jdbcTemplate.query(getOrderQuery,
                 (rs, rowNum) -> new GetOrderRes(
                         rs.getInt("orderIdx"),
@@ -341,6 +341,7 @@ public class OrderDao {
                                         rs2.getInt("dinnerPrice"),
                                         this.jdbcTemplate.query(getExtraQuery,
                                                 (rs3, rowNum3) -> new GetOrderGetExtra(
+                                                        rs3.getInt("extraNo"),
                                                         rs3.getString("name"),
                                                         rs3.getInt("amount")),
                                                 rs2.getInt("dinnerIdx")
@@ -356,7 +357,7 @@ public class OrderDao {
         System.out.println("dao 시작");
         String getOrderQuery = "SELECT O.orderIdx, O.userIdx, U.phoneNum, U.address, O.deliveredAt, O.createdAt, O.state FROM `order` as O JOIN `user` as U ON (O.userIdx = U.userIdx AND O.state = 1)";
         String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerPrice, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
-        String getExtraQuery = "SELECT `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
+        String getExtraQuery = "SELECT extra.extraNo, `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
         List<GetOrderStateRes> result = this.jdbcTemplate.query(getOrderQuery,
                 (rs, rowNum) -> new GetOrderStateRes(
                         rs.getInt("orderIdx"),
@@ -375,6 +376,7 @@ public class OrderDao {
                                         rs2.getInt("dinnerPrice"),
                                         this.jdbcTemplate.query(getExtraQuery,
                                                 (rs3, rowNum3) -> new GetOrderGetExtra(
+                                                        rs3.getInt("extraNo"),
                                                         rs3.getString("name"),
                                                         rs3.getInt("amount")),
                                                 rs2.getInt("dinnerIdx")
@@ -389,7 +391,7 @@ public class OrderDao {
     public List<GetOrderStateRes> getOrderPrepare() {
         String getOrderQuery = "SELECT O.orderIdx, O.userIdx, U.phoneNum, U.address, O.deliveredAt, O.createdAt, O.state FROM `order` as O JOIN `user` as U ON (O.userIdx = U.userIdx AND (O.state = 2 OR O.state = 3 OR O.state = 4))";
         String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerPrice, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
-        String getExtraQuery = "SELECT `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
+        String getExtraQuery = "SELECT extra.extraNo, `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
         List<GetOrderStateRes> result = this.jdbcTemplate.query(getOrderQuery,
                 (rs, rowNum) -> new GetOrderStateRes(
                         rs.getInt("orderIdx"),
@@ -408,6 +410,7 @@ public class OrderDao {
                                         rs2.getInt("dinnerPrice"),
                                         this.jdbcTemplate.query(getExtraQuery,
                                                 (rs3, rowNum3) -> new GetOrderGetExtra(
+                                                        rs3.getInt("extraNo"),
                                                         rs3.getString("name"),
                                                         rs3.getInt("amount")),
                                                 rs2.getInt("dinnerIdx")
@@ -425,7 +428,7 @@ public class OrderDao {
 //        String dinnerIdxQuery = "SELECT dinnerIdx FROM  dinnerList WHERE orderIdx = ?";
         String getOrderQuery = "SELECT O.orderIdx, O.userIdx, U.phoneNum, U.address, O.deliveredAt, O.createdAt, O.state FROM `order` as O JOIN `user` as U ON (O.userIdx = U.userIdx AND O.state = 5)";
         String getDinnersQuery = "SELECT dinnerName, `style`, amount, dinnerPrice, dinnerIdx FROM dinnerList WHERE orderIdx = ?";
-        String getExtraQuery = "SELECT `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
+        String getExtraQuery = "SELECT extra.extraNo, `name`, amount FROM extraList JOIN extra ON (extraList.extraNo = extra.extraNo AND dinnerIdx = ?)";
         List<GetOrderStateRes> result = this.jdbcTemplate.query(getOrderQuery,
                 (rs, rowNum) -> new GetOrderStateRes(
                         rs.getInt("orderIdx"),
@@ -444,6 +447,7 @@ public class OrderDao {
                                         rs2.getInt("dinnerPrice"),
                                         this.jdbcTemplate.query(getExtraQuery,
                                                 (rs3, rowNum3) -> new GetOrderGetExtra(
+                                                        rs3.getInt("extraNo"),
                                                         rs3.getString("name"),
                                                         rs3.getInt("amount")),
                                                 rs2.getInt("dinnerIdx")
@@ -455,9 +459,54 @@ public class OrderDao {
         return result;
     }
 
-        public int changeStateDelete(int orderIdx) {
-        String changeStateDeleteQuery = "update `order` set state = 0 where orderIdx = ?";
+    public void deleteOrder(int orderIdx) {
+        String getOrderTotalPriceQuery = "SELECT totalPrice FROM `order` WHERE orderIdx = ?";
+        String getOrderUserIdxQuery = "SELECT userIdx FROM `order` WHERE orderIdx = ?";
+        String getUserTotalPriceQuery = "SELECT totalPrice FROM `user` WHERE userIdx = ?";
+        String orderIdxParam = String.valueOf(orderIdx);
+        System.out.println("getOrderTotalPrice 시작");
+        int orderTotalPrice = this.jdbcTemplate.queryForObject(getOrderTotalPriceQuery, int.class, orderIdxParam);
+        System.out.println("userIdx 시작");
+        int userIdx = this.jdbcTemplate.queryForObject(getOrderUserIdxQuery, int.class, orderIdxParam);
+        System.out.println("userTotalPrice 시작");
+        int userTotalPrice = this.jdbcTemplate.queryForObject(getUserTotalPriceQuery, int.class, String.valueOf(userIdx));
+        String minusUserTotalPriceQuery = "UPDATE `user` SET totalPrice = ? WHERE userIdx = ?";
+        Object[] minusUserTotalPriceParams = new Object[]{(userTotalPrice - orderTotalPrice), userIdx};
+        System.out.println("minusUserTotalPrice 시작");
+        this.jdbcTemplate.update(minusUserTotalPriceQuery, minusUserTotalPriceParams);
+
+        String getDinnersIdxQuery = "SELECT dinnerIdx FROM `dinnerList` WHERE orderIdx = ?";
+        System.out.println("dinnersIdx 시작");
+        List<GetDinnerIdx> dinnersIdx = this.jdbcTemplate.query(getDinnersIdxQuery,
+                (rs, rowNum) -> new GetDinnerIdx(
+                        rs.getInt("dinnerIdx")),
+                orderIdxParam);
+        for (int i=0; i<dinnersIdx.size(); i++) {
+            String deleteExtrasIdxQuery = "DELETE FROM `extraList` WHERE dinnerIdx = ?";
+            String dinnerIdx = String.valueOf(dinnersIdx.get(i).getDinnerIdx());
+            System.out.println("deleteExtrasIdxQuery 시작");
+            this.jdbcTemplate.update(deleteExtrasIdxQuery, dinnerIdx);
+            String deleteDinnerQuery = "DELETE FROM `dinnerList` WHERE dinnerIdx = ?";
+            System.out.println("deleteDinnerQuery 시작 " + i);
+            this.jdbcTemplate.update(deleteDinnerQuery, dinnerIdx);
+        }
+        System.out.println("deleteOrderQuery 시작");
+        String deleteOrderQuery = "DELETE FROM `order` WHERE orderIdx = ?";
+        this.jdbcTemplate.update(deleteOrderQuery, orderIdxParam);
+    }
+
+    public int changeStateDelete(int orderIdx) {
+        String getOrderTotalPriceQuery = "SELECT totalPrice FROM `order` WHERE orderIdx = ?";
+        String getOrderUserIdxQuery = "SELECT userIdx FROM `order` WHERE orderIdx = ?";
+        String getUserTotalPriceQuery = "SELECT totalPrice FROM `user` WHERE userIdx = ?";
         String changeStateDeleteParams = String.valueOf(orderIdx);
+        String changeStateDeleteQuery = "update `order` set state = 0 where orderIdx = ?";
+        int orderTotalPrice = this.jdbcTemplate.queryForObject(getOrderTotalPriceQuery, int.class, changeStateDeleteParams);
+        int userIdx = this.jdbcTemplate.queryForObject(getOrderUserIdxQuery, int.class, changeStateDeleteParams);
+        int userTotalPrice = this.jdbcTemplate.queryForObject(getUserTotalPriceQuery, int.class, String.valueOf(userIdx));
+        String minusUserTotalPriceQuery = "UPDATE `user` SET totalPrice = ? WHERE userIdx = ?";
+        Object[] minusUserTotalPriceParams = new Object[]{userTotalPrice - orderTotalPrice, userIdx};
+        this.jdbcTemplate.update(minusUserTotalPriceQuery, minusUserTotalPriceParams);
         return this.jdbcTemplate.update(changeStateDeleteQuery, changeStateDeleteParams);
     }
 

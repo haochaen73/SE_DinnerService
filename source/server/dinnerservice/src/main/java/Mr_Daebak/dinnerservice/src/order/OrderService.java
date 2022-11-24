@@ -55,6 +55,14 @@ public class OrderService {
         }
     }
 
+    public void deleteOrder(int orderIdx) throws BaseException {
+        try {
+            orderDao.deleteOrder(orderIdx);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
     public int changeStateDelete(int orderIdx) throws BaseException{
         try {
             int state = orderDao.changeStateDelete(orderIdx);

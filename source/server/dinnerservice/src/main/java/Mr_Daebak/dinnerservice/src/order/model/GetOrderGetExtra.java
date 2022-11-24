@@ -5,6 +5,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 public class GetOrderGetExtra {
+    private int extraNo;
     private String extraName;
     private int amount;
 }

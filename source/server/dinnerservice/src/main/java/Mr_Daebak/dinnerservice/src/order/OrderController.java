@@ -4,6 +4,7 @@ import Mr_Daebak.dinnerservice.config.BaseException;
 import Mr_Daebak.dinnerservice.config.BaseResponse;
 import Mr_Daebak.dinnerservice.src.order.*;
 import Mr_Daebak.dinnerservice.src.order.model.*;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,11 +111,24 @@ public class OrderController {
 
 
     @ResponseBody
-    @PatchMapping("/{orderIdx}/delete")
+    @DeleteMapping("/{orderIdx}/delete")
+    public BaseResponse<String> deleteOrder(@PathVariable("orderIdx") int orderIdx) {
+        try {
+            orderService.deleteOrder(orderIdx);
+            String result = "주문이 삭제되었습니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+
+    @ResponseBody
+    @PatchMapping("/{orderIdx}/cancel")
     public BaseResponse<String> changeStateDelete(@PathVariable("orderIdx") int orderIdx) {
         try {
             orderService.changeStateDelete(orderIdx);
-            String result = "주문이 삭제되었습니다";
+            String result = "주문이 취소되었습니다";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
