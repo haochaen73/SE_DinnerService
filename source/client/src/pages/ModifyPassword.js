@@ -67,7 +67,7 @@ const ModifyPassword = () => {
       alert('변경이 완료되었습니다.');
       navigate('/mypage')
     } else {
-      alert('무슨 문제가 생겨버림');
+      alert('문제 발생, 다시 시도해주세요');
     }
   }
 
