@@ -143,7 +143,7 @@ const OrderList = () => {
     console.log(button);
     if (state === 1){
       if (button === '주문 취소') {
-        await patchOrder(orderIdx, 'delete');
+        await patchOrder(orderIdx, 'cancel');
       }
       else if (button === '조리 시작'){
         await patchOrder(orderIdx, 'start');
