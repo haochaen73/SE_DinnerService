@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Button from '../../Button';
 import moment from 'moment';
-import axios from 'axios';
 
 const Container = styled.div`
   padding: 40px;

@@ -56,8 +56,8 @@ const OrderHistoryItem = ({order}) => {
             주문 내역
           </div>
           <div style={{ fontSize: "14px" }}>
-            {order.dinnerList[0].dinnerName}
-            {order.dinnerList.length > 1 ? (" 외 "+(order.dinnerList.length - 1)+"개") : null }
+            {order.dinnerList[0]?.dinnerName}
+            {order.dinnerList?.length > 1 ? (" 외 "+(order.dinnerList.length - 1)+"개") : null }
           </div>
         </TextItem>
         <TextItem>

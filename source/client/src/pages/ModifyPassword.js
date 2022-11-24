@@ -72,7 +72,7 @@ const ModifyPassword = () => {
     }
   }
 
-  const handleClickSignupButton = async () => {
+  const handleClickModifyButton = async () => {
     const res = await axios.patch("users/modify/password", {
       userIdx: me.userIdx,
       ...passwordInfo
@@ -140,7 +140,7 @@ const ModifyPassword = () => {
             alert("비밀번호가 서로 다릅니다.");
             return;
           }
-          handleClickSignupButton();
+          handleClickModifyButton();
         }}
         //disabled={checkNotEmptySignUpInfoValue}
       >

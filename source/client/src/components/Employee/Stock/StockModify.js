@@ -97,7 +97,7 @@ const StockModify = () => {
     setStockAmount(prevState => ({ ...prevState, [`amount${key}`]: Number(e.target.value) }));
   }
 
-  const fetchStocks = async () => {
+  const getStocks = async () => {
     try {
       const response = await axios.get('/stocks');
       setGetAmount(response.data.result);
@@ -107,8 +107,31 @@ const StockModify = () => {
   }
 
   useEffect(() => {
-    fetchStocks();
+    getStocks();
   }, []);
+
+  const patchStockAmount = async () => {
+    try {
+      console.log(stocks);
+      const response =  await axios.patch('/stocks/edit', {
+        amount1: stockAmount['amount1'] + getAmount['amount1'],
+        amount2: stockAmount['amount2'] + getAmount['amount2'],
+        amount3: stockAmount['amount3'] + getAmount['amount3'],
+        amount4: stockAmount['amount4'] + getAmount['amount4'],
+        amount5: stockAmount['amount5'] + getAmount['amount5'],
+        amount6: stockAmount['amount6'] + getAmount['amount6'],
+        amount7: stockAmount['amount7'] + getAmount['amount7'],
+        amount8: stockAmount['amount8'] + getAmount['amount8'],
+        amount9: stockAmount['amount9'] + getAmount['amount9'],
+        amount10: stockAmount['amount10'] + getAmount['amount10'],
+      });
+      alert(response.data.result);
+    } catch(e) {
+
+    }
+    getStocks();
+    setStockAmount(stockamount);
+  }
 
   return (
     <Container>
@@ -116,29 +139,7 @@ const StockModify = () => {
         <div style={{fontWeight: 'bold', fontSize: '20px'}}>
           재고 수정
         </div>
-        <Button onClick={async () => {
-          try {
-            console.log(stocks);
-            const response =  await axios.patch('/stocks/edit', {
-              amount1: stockAmount['amount1'] + getAmount['amount1'],
-              amount2: stockAmount['amount2'] + getAmount['amount2'],
-              amount3: stockAmount['amount3'] + getAmount['amount3'],
-              amount4: stockAmount['amount4'] + getAmount['amount4'],
-              amount5: stockAmount['amount5'] + getAmount['amount5'],
-              amount6: stockAmount['amount6'] + getAmount['amount6'],
-              amount7: stockAmount['amount7'] + getAmount['amount7'],
-              amount8: stockAmount['amount8'] + getAmount['amount8'],
-              amount9: stockAmount['amount9'] + getAmount['amount9'],
-              amount10: stockAmount['amount10'] + getAmount['amount10'],
-            });
-            alert(response.data.result);
-          } catch(e) {
-
-          }
-          fetchStocks();
-          setStockAmount(stockamount);
-        }
-        }>
+        <Button onClick={() => {patchStockAmount();}}>
           수정완료
         </Button>
       </Head>
