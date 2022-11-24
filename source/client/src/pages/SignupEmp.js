@@ -52,6 +52,7 @@ const SignupEmp = () => {
     const res = await axios.post("employees/signup", signUpEmpInfo);
     console.log(res);
     if (res.data.isSuccess) {
+      alert("회원가입 성공");
       navigate("/");
     } 
     else {

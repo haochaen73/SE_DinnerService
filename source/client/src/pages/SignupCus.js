@@ -61,6 +61,7 @@ const SignupCus = () => {
   const handleClickSignupButton = async () => {
     const res = await axios.post("users/signup", signUpCusInfo);
     if (res.data.isSuccess) {
+      alert("회원가입 성공");
       navigate("/");
     } 
     else {
