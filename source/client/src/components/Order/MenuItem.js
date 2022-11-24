@@ -2,12 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
 import Modal from 'react-modal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import Counter from './Counter';
 import RadioGroup from './RadioGroup';
 import Radio from './Radio';
 import axios from 'axios';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoil/user';
 
 const menustyle = [
   { 
@@ -123,12 +125,15 @@ const RadioChild = ({style}) => {
   );
 }
 
-const MenuItem = ({menu}) => {
-
+const MenuItem = ({menu, dinner, resetDinner}) => {
+  console.log(dinner);
+  console.log(menu.dinnerName);
   let style = "심플";
   if (menu.id === 4){
     style = "그랜드"
   }
+
+  const recoilUser = useRecoilValue(userState);
 
   const [checkedStyle, setCheckedStyle] = useState(style);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -162,7 +167,7 @@ const MenuItem = ({menu}) => {
     else if (style === "딜럭스") dinnerPrice += 2000;
 
     const dinnerList = {
-      userIdx, userIdx,
+      userIdx: userIdx,
       dinnerName: dinnerName,
       style: style,
       amount: amount,
@@ -178,14 +183,22 @@ const MenuItem = ({menu}) => {
 
   const putCart = async () => {
     try {
-      const dinnerList = makeDinnerList(1, menu.dinnerName, checkedStyle, 1, extraList);
-      const response = await axios.post(`/carts/save`, dinnerList);
+      console.log(recoilUser.userIdx);
+      const dinnerList = makeDinnerList(recoilUser.userIdx, menu.dinnerName, checkedStyle, 1, extraList);
+      const response = await axios.post('/carts/save', dinnerList);
       console.log(response);
     } catch (e) {
     }
     resetExtra();
     setModalIsOpen(false);
   };
+
+  useEffect(() => {
+    if (dinner === menu.dinnerName) {
+      console.log(dinner);
+      setModalIsOpen(true);
+    }
+  }, [dinner])
 
   return (
     <MenuBox>
@@ -216,6 +229,7 @@ const MenuItem = ({menu}) => {
                 <CloseIcon 
                   style={{cursor: 'pointer'}} 
                   onClick={ ()=> {
+                    resetDinner();
                     setModalIsOpen(false);
                     resetExtra();
                   }}/>
@@ -227,7 +241,6 @@ const MenuItem = ({menu}) => {
                     return (<Counter key={extra.extraNo} extraInfo={extraInfo[extra.extraNo - 1]} extra={extra} onChangeProps={onChangeProps}/>);
                   })
                   }
-                  {/* 임의로.. */}
                 </ExtraDiv>
                 <div style={{fontWeight: 'bold', fontSize: '14px', paddingBottom: '25px'}}>스타일 선택</div>
                 <div>

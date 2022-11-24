@@ -1,8 +1,11 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Modal from 'react-modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment';
+import axios from 'axios';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../recoil/user';
 
 const MainDiv = styled.div`
   width: 600px;
@@ -112,6 +115,25 @@ const OrderHistoryDetail = () => {
   const navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [order] = useState(() => location.state?.order);  // 이거 이렇게 안하면 작동 안함
+  const recoilUser = useRecoilValue(userState);
+  const [address, setAddress] = useState('');
+
+  const deleteOrder = async (orderIdx) => {
+    try {
+      const response = await axios.patch(`orders/${orderIdx}/cancel`);
+      console.log(response);
+    } catch (e) {
+
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
+      const result =  await axios.get(`/users/${recoilUser.userIdx}`);
+      console.log(result);
+      setAddress(result?.data.result.address);
+    })();
+  }, []);
  
   return (
     <MainDiv>
@@ -132,23 +154,23 @@ const OrderHistoryDetail = () => {
           </div>
           <div style={{ fontSize: "16px", fontWeight: "700" }}>예약 일자</div>
           <div style={{ fontSize: "15px", fontWeight: "400" }}>
-            {moment(order?.deliveredAt).format('MM/DD hh시 mm분')}
+            {moment(order?.deliveredAt).format('MM/DD HH시 mm분')}
           </div>
           <div style={{ fontSize: "16px", fontWeight: "700" }}>주소</div>
           <div style={{ fontSize: "15px", fontWeight: "400" }}>
-            {/* //TODO: user정보가 없어서 못받아온다고 생각했는데, 혹시 받아올 수 있는 방법이 있나? */}
-            서울특별시 동대문구 서울시립대로 163 정보기술관 xxx호
+            {address}
           </div>
           <div style={{ fontSize: "16px", fontWeight: "700" }}>총금액</div>
-          <div style={{ fontSize: "15px", fontWeight: "400" }}>87,000원</div>
+          <div style={{ fontSize: "15px", fontWeight: "400" }}>{order?.totalPrice.toLocaleString()}원</div>
         </div>
       </ContentDiv>
+      {order.state !== 1 ? <div style={{marginBottom: '100px'}}></div> : 
       <ButtonContainer>
         <Button onClick={() => {
           console.log(order);
           navigate('/orderedit', {
             state: {
-              orderIdx: order.orderIdx,
+              order,
             }
           });
         }}>주문 변경</Button>
@@ -181,7 +203,7 @@ const OrderHistoryDetail = () => {
                   textAlign: "center",
                 }}
                 onClick={(e) => {
-                  // TODO: 취소 요청 백엔드로 보내기
+                  deleteOrder(order.orderIdx);
                   e.preventDefault();
                   navigate('/mypage');
                 }}
@@ -197,7 +219,8 @@ const OrderHistoryDetail = () => {
             </div>
           </ModalContainer>
         </Modal>
-      </ButtonContainer>
+      </ButtonContainer>}
+      
     </MainDiv>
   );
 };

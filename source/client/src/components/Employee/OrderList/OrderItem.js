@@ -41,7 +41,7 @@ const OrderItem = ({order, clickOrder}) => {
       <div>
         <div style={{color: 'white', fontSize: '8px'}}>주문번호 : {order.orderIdx}</div>
         <div style={{marginTop: '5px', color: 'white', fontWeight: '600'}}>
-          {order.dinnerList[0].dinnerName}
+          {order.dinnerList[0]?.dinnerName}
           {order.dinnerList.length > 1 ? (" 외 "+(order.dinnerList.length - 1)+"개") : null }
         </div>
         <div style={{marginTop: '6px', alignItems: 'center'}}>
@@ -49,7 +49,7 @@ const OrderItem = ({order, clickOrder}) => {
             예약시간
           </span>
           <span style={{marginLeft: '10px', color: 'red', fontSize: '12px', fontWeight: '500'}}>
-            {moment(order.deliveredAt).format('MM/DD hh:mm')}
+            {moment(order.deliveredAt).format('MM/DD HH:mm')}
           </span>
         </div>
       </div>

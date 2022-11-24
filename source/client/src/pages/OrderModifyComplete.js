@@ -92,9 +92,10 @@ const StyledLink = styled(Link)`
 const OrderModifyComplete = () => {
   const location = useLocation();
 
-  const deliveredAt = moment(location.state.order.deliveredAt).format('YYYY-MM-DD HH:mm');
-  const dinnerList = location.state.order.dinnerList;
-  const totalPrice = location.state.order.totalPrice;
+  const deliveredAt = moment(location.state.postOrder.deliveredAt).format('YYYY-MM-DD HH:mm');
+  const dinnerList = location.state.postOrder.dinnerList;
+  const totalPrice = location.state.postOrder.totalPrice;
+  const user = location.state.user;
 
   return (
     <Div>
@@ -112,7 +113,7 @@ const OrderModifyComplete = () => {
                         dinner.extraList.map((extra, index) => {
                           if (extra.amount > 0){
                             return (<div key={index} style={{marginLeft: '5px', marginBottom: '5px', fontSize: '12px', color: 'gray'}}>
-                              {extraInfo[extra.extraNo + 1].name}&nbsp;{extra.amount}개
+                              {extraInfo[extra.extraNo - 1].name}&nbsp;{extra.amount}개
                             </div>);
                           }
                         })
@@ -126,8 +127,8 @@ const OrderModifyComplete = () => {
           <div style={{fontSize: "15px", fontWeight: "400"}}>{deliveredAt}</div>
           <div style={{fontSize: "16px", fontWeight: "700"}}>배송정보</div>
           <div style={{fontSize: "15px", fontWeight: "400"}}>
-            <div>010-1234-5678</div>
-            <div style={{marginBottom: '10px', marginTop: '5px'}}>서울특별시 동대문구 서울시립대로 163 정보기술관</div>
+            <div>{user.phoneNum}</div>
+            <div style={{marginBottom: '10px', marginTop: '5px'}}>{user.address}</div>
           </div>
           <div style={{marginBottom: '10px',fontSize: "16px", fontWeight: "700"}}>결제금액</div>
           <div style={{fontSize: "15px", fontWeight: "400"}}>{totalPrice}원</div>

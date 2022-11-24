@@ -128,7 +128,7 @@ const OrderDetail = ({ order, changeState, clickOrder }) => {
         </div>
         <div style={{fontSize: '12px'}}>
           <span style={{marginRight: '6px'}}>주문일자</span>
-          <span>{moment(order.createdAt).format('MM/DD hh시 mm분')}</span>
+          <span>{moment(order.createdAt).format('MM/DD HH시 mm분')}</span>
         </div>
       </Head>
       <Content>
@@ -136,7 +136,7 @@ const OrderDetail = ({ order, changeState, clickOrder }) => {
           <Box>
             <BoxHead>예약 정보</BoxHead>
             <BoxContent head="주문번호" content={order.orderIdx} />
-            <BoxContent head="예약시간" content={moment(order.deliveredAt).format('MM/DD hh:00')}/>
+            <BoxContent head="예약시간" content={moment(order.deliveredAt).format('MM/DD HH:00')}/>
           </Box>
           <Box>
             <BoxHead>배송 정보</BoxHead>

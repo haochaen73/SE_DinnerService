@@ -43,15 +43,17 @@ const Header = () => {
     setUserState({
       userIdx: '',
       name: '',
-      userType: ''
+      userType: '',
     })
   }
 
   return (
     <HeaderDiv>
-      <StyledLink to='/'>
-        <Logo src='images/logo.svg' alt='logo'/>
-      </StyledLink>
+      <div>
+        <StyledLink to='/main'>
+          <Logo src='images/logo.svg' alt='logo'/>
+        </StyledLink>
+      </div>
       {/* 로그인 여부로 나타낼지 안나타낼지 결정*/}
         {(function () {
           if (me?.userIdx != ''){  // 유저 정보가 있는데

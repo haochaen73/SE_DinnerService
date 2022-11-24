@@ -8,8 +8,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import RadioGroup from '../components/Order/RadioGroup';
 import Radio from '../components/Order/Radio';
 import Counter from '../components/Order/Counter';
+import axios from 'axios';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../recoil/user';
+import moment from 'moment';
 
-  
 const extraInfo = [
   {
     extraNo: 1,
@@ -62,214 +65,6 @@ const extraInfo = [
     price: 2000,
   },
 ];
-
-const DinnerListData = [
-  { 
-      dinnerName : "발렌타인 디너",
-      style : "심플",
-      amount : 1,
-      dinnerPrice: 30000,
-      extraList : [
-          {
-              extraNo : 1,
-              amount : 2
-          },
-          { 
-              extraNo : 2,
-              amount : 2
-          },
-          { 
-              extraNo : 3,
-              amount : 0
-          },
-          { 
-              extraNo : 4,
-              amount : 0
-          },
-          { 
-              extraNo : 5,
-              amount : 2
-          },
-          { 
-              extraNo : 6,
-              amount : 2
-          },
-          { 
-              extraNo : 7,
-              amount : 0
-          },
-          { 
-              extraNo : 8,
-              amount : 0
-          },
-          { 
-              extraNo : 9,
-              amount : 0
-          },
-          { 
-              extraNo : 10,
-              amount : 0
-          }
-      ]
-  },
-  { 
-    dinnerName : "샴페인 축제 디너",
-    style : "그랜드",
-    amount : 2,
-    dinnerPrice: 20000,
-      extraList : [
-          { 
-              extraNo : 1,
-              amount : 2
-          },
-          { 
-              extraNo : 2,
-              amount : 2
-          },
-          { 
-              extraNo : 3,
-              amount : 0
-          },
-          { 
-              extraNo : 4,
-              amount : 0
-          },
-          { 
-              extraNo : 5,
-              amount : 2
-          },
-          { 
-              extraNo : 6,
-              amount : 2
-          },
-          { 
-              extraNo : 7,
-              amount : 0
-          },
-          { 
-              extraNo : 8,
-              amount : 0
-          },
-          { 
-              extraNo : 9,
-              amount : 0
-          },
-          { 
-              extraNo : 10,
-              amount : 0
-          }
-      ]
-  }
-]
-
-const OrderDataJson = `
-{
-	"userIdx" : 1,
-  "deliveredAt" : "2022-11-11 12:00:00",
-  "cardNum" : "123-13411-1341",
-  "totalPrice" : 78000,
-	"dinnerList" : [
-        { 
-          "dinnerName" : "Valentine",
-		      "style" : "Simple",
-          "dinnerPrice" : 28000,
-			    "amount" : 1,
-            "extraList" : [
-                {
-                    "extraNo" : 1,
-                    "amount" : 2
-                },
-                { 
-                    "extraNo" : 2,
-                    "amount" : 2
-                },
-                { 
-                    "extraNo" : 3,
-                    "amount" : 0
-                },
-                { 
-                    "extraNo" : 4,
-                    "amount" : 0
-                },
-                { 
-                    "extraNo" : 5,
-                    "amount" : 2
-                },
-                { 
-                    "extraNo" : 6,
-                    "amount" : 2
-                },
-                { 
-                    "extraNo" : 7,
-                    "amount" : 0
-                },
-                { 
-                    "extraNo" : 8,
-                    "amount" : 0
-                },
-                { 
-                    "extraNo" : 9,
-                    "amount" : 0
-                },
-                { 
-                    "extraNo" : 10,
-                    "amount" : 0
-                }
-            ]
-        },
-        { 
-          "dinnerName" : "Champagne Feast",
-		      "style" : "Grand",
-          "dinnerPrice" : 28000,
-			    "amount" : 2,
-          "extraList" : [
-              { 
-                  "extraNo" : 1,
-                  "amount" : 2
-              },
-              { 
-                  "extraNo" : 2,
-                  "amount" : 2
-              },
-              { 
-                  "extraNo" : 3,
-                  "amount" : 0
-              },
-              { 
-                  "extraNo" : 4,
-                  "amount" : 0
-              },
-              { 
-                  "extraNo" : 5,
-                  "amount" : 1
-              },
-              { 
-                  "extraNo" : 6,
-                  "amount" : 1
-              },
-              { 
-                  "extraNo" : 7,
-                  "amount" : 0
-              },
-              { 
-                  "extraNo" : 8,
-                  "amount" : 0
-              },
-              { 
-                  "extraNo" : 9,
-                  "amount" : 0
-              },
-              { 
-                  "extraNo" : 10,
-                  "amount" : 0
-              }
-            ]
-        }
-    ]
-}
-`;
-
-
 
 const CartTextDiv = styled.div`
   display: flex;
@@ -339,6 +134,14 @@ const Input = styled.input`
     margin: 5px;
     box-sizing: border-box;
     border-radius: 5px;
+    ::-webkit-inner-spin-button{
+      -webkit-appearance: none; 
+      margin: 0; 
+  }
+  ::-webkit-outer-spin-button{
+      -webkit-appearance: none; 
+      margin: 0; 
+  } 
 `;
 
 // 모달을 위한 코드
@@ -412,7 +215,7 @@ const Dinner = ({dinner, index, setDinnerList, setPriceList}) => {
   const onChangeProps = (id, key, value) => {
     if (value >= 0 && value <= 10) {
       setExtraList(prevState => {
-        return prevState.map(obj => {
+        return prevState.map((obj) => {
           if (obj.extraNo === id) {
             return { ...obj, [key]: value };
           } else {
@@ -447,8 +250,8 @@ const Dinner = ({dinner, index, setDinnerList, setPriceList}) => {
 
   useEffect(() => {
     const nextTotalPrice =
-      extraList.reduce((acc, item) => {
-        return acc + item.amount * extraInfo[item.extraNo - 1].price;
+      extraList.reduce((acc, item, index) => {
+        return acc + item.amount * extraInfo[index].price;
       }, 0) +
       dinner.dinnerPrice +
       (checkedStyle === "심플" ? 0 : checkedStyle === "그랜드" ? 1000 : 2000);
@@ -488,7 +291,7 @@ const Dinner = ({dinner, index, setDinnerList, setPriceList}) => {
                 key={index}
                 style={{ marginBottom: "5px", fontSize: "12px", color: "gray" }}
               >
-                {extraInfo[extra.extraNo - 1].name}&nbsp;{extra.amount}개
+                {extraInfo[index].name}&nbsp;{extra.amount}개
               </div>
             );
           }
@@ -548,11 +351,11 @@ const Dinner = ({dinner, index, setDinnerList, setPriceList}) => {
               추가 선택
             </div>
             <ExtraDiv>
-              {extraList.map((extra) => {
+              {extraList.map((extra, index) => {
                 return (
                   <Counter
-                    key={extra.extraNo}
-                    extraInfo={extraInfo[extra.extraNo - 1]}
+                    key={index}
+                    extraInfo={extraInfo[index]}
                     extra={extra}
                     onChangeProps={onChangeProps}
                   />
@@ -626,12 +429,29 @@ const Dinner = ({dinner, index, setDinnerList, setPriceList}) => {
   );
 }
 
-const makeOrder = (userIdx, dinnerList, totalPrice) =>
+const makeOrder = (user, deliveredAt, cardNum, dinnerList, totalPrice) =>
 {
+  const makeDinnerList = dinnerList.map((dinner) => {
+    const makeExtraList = dinner.extraList.map((extra, index) => {
+      return {
+        extraNo: index+1,
+        amount: extra.amount
+      }
+    })
+    return {
+      dinnerName: dinner.dinnerName,
+      style: dinner.style,
+      amount: dinner.amount,
+      dinnerPrice: dinner.dinnerPrice,
+      extraList: makeExtraList
+    }
+  })
   const order = {
-    userIdx: userIdx,
+    userIdx: user.userIdx,
+    deliveredAt: moment(deliveredAt).format('YYYY-MM-DD HH:mm:ss'),
+    cardNum: cardNum,
     totalPrice: totalPrice,
-    dinnerList: dinnerList
+    dinnerList: makeDinnerList
   }
   console.log(order);
   return order;
@@ -639,14 +459,17 @@ const makeOrder = (userIdx, dinnerList, totalPrice) =>
 
 const OrderEdit = () => {
   const cusTotalPrice = 101000; //단골인지
-  const nav = useNavigate();
+  const navigator = useNavigate();
   const location = useLocation();
+  const order = location.state.order;
   const orderIdx = location.state.orderIdx;
   const [cardNum, setCardNum] = useState('');
+  const recoilUser = useRecoilValue(userState);
+  const [user, setUser] = useState();
 
   const [totalPrice, setTotalPrice] = useState(0); // 총 주문 금액
   const realTotalPrice = totalPrice + (cusTotalPrice > 100000 ? -2000 : 0) + 3000 // 총 결제금액(배달비, 할인 금액 계산)
-  const [dinnerList, setDinnerList] = useState(JSON.parse(OrderDataJson).dinnerList);
+  const [dinnerList, setDinnerList] = useState(order.dinnerList);
   const [priceList, setPriceList] = useState([0]); // dinnerList에 있는 dinner들의 총 가격을 저장 및 업데이트하는 용도
   const inputCardNum = useCallback((event) => {
     setCardNum(event.target.value);
@@ -664,14 +487,28 @@ const OrderEdit = () => {
 
   useEffect(() => {
     const nextPriceList = dinnerList.map((dinner) => {
-      const dinnerTotalPrice = dinner.extraList.reduce((acc, item) => {
-        return acc + item.amount * extraInfo[item.extraNo - 1].price;
+      const dinnerTotalPrice = dinner.extraList.reduce((acc, item, index) => {
+        return acc + item.amount * extraInfo[index].price;
       }, 0) +
       dinner.dinnerPrice +
       (dinner.style === "심플" ? 0 : dinner.style === "그랜드" ? 1000 : 2000);
       return dinnerTotalPrice;
     })
     setPriceList(nextPriceList);
+
+  }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const responseUser = await axios.get(`users/${recoilUser.userIdx}`);
+        setUser(responseUser.data.result);
+      } catch (e) {
+  
+      }
+    };
+
+    fetchUser();
   }, []);
 
   return (
@@ -706,7 +543,7 @@ const OrderEdit = () => {
           <MembershipBox>
             회원님은
             <span style={{marginLeft: '5px', fontWeight: 'bold'}}>
-              {cusTotalPrice > 100000 ? "단골 고객" : "일반 고객"}
+              {user?.totalPrice > 100000 ? "단골 고객" : "일반 고객"}
             </span>
             입니다.
           </MembershipBox>
@@ -719,7 +556,7 @@ const OrderEdit = () => {
               </PayDetail>
               <PayDetail>
                 <div>단골할인</div>
-                <div style={{color: 'red'}}>{cusTotalPrice > 100000 ? "-2,000원" : "0원"}</div>
+                <div style={{color: 'red'}}>{user?.totalPrice > 100000 ? "-2,000원" : "0원"}</div>
               </PayDetail>
               <PayDetail>
                 <div>배달비</div>
@@ -731,13 +568,30 @@ const OrderEdit = () => {
               <div>총 결제금액</div>
               <div>{realTotalPrice.toLocaleString()}원</div>
             </TotalPrice>
-            <Button onClick={() => {
-              const order = makeOrder(1, dinnerList, realTotalPrice);
-              nav('/ordermodifycomplete', {
-                state: {
-                  order
+            <Button onClick={async () => {
+              if (realTotalPrice !== 0) {
+                if (cardNum === '') {
+                  alert('신용카드 번호를 입력하세요.');
+                  return;
                 }
-              });
+                const postOrder = makeOrder(user, order.deliveredAt, cardNum, dinnerList, realTotalPrice);
+                //order post
+                const responseDelete = await axios.delete(`/orders/${order.orderIdx}/delete`);
+                console.log(responseDelete);
+                const responsePost = await axios.post('/orders/order', postOrder);
+                //console.log(response);
+                if(responsePost.data.isSuccess){
+                  navigator('/ordermodifycomplete', {
+                    state: {
+                      postOrder,
+                      user
+                    }
+                  });
+                } else {
+                  alert('결제를 실패했습니다.')
+                  return;
+                }
+              }
             }
             }>결제하기</Button>
           </Box>
@@ -747,4 +601,4 @@ const OrderEdit = () => {
   );
 };
   
-  export default OrderEdit;
+export default OrderEdit;
