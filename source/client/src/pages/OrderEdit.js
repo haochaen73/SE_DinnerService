@@ -206,7 +206,6 @@ const Dinner = ({dinner, index, setDinnerList, setPriceList}) => {
   const [checkedStyle, setCheckedStyle] = useState(dinner.style);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [extraList, setExtraList] = useState(dinner.extraList);
-  const [amount, setAmount] = useState(1);
 
   const styleHandler = (e) => {
     setCheckedStyle(e.target.value);
@@ -261,7 +260,7 @@ const Dinner = ({dinner, index, setDinnerList, setPriceList}) => {
       nextPriceList[index] = nextTotalPrice;
       return nextPriceList;
     })
-  }, [extraList]);
+  }, [extraList, checkedStyle]);
 
 
   return (
@@ -458,27 +457,20 @@ const makeOrder = (user, deliveredAt, cardNum, dinnerList, totalPrice) =>
 }
 
 const OrderEdit = () => {
-  const cusTotalPrice = 101000; //단골인지
   const navigator = useNavigate();
   const location = useLocation();
   const order = location.state.order;
-  const orderIdx = location.state.orderIdx;
   const [cardNum, setCardNum] = useState('');
   const recoilUser = useRecoilValue(userState);
   const [user, setUser] = useState();
 
   const [totalPrice, setTotalPrice] = useState(0); // 총 주문 금액
-  const realTotalPrice = totalPrice + (cusTotalPrice > 100000 ? -2000 : 0) + 3000 // 총 결제금액(배달비, 할인 금액 계산)
+  const realTotalPrice = totalPrice + (user?.totalPrice > 100000 ? -2000 : 0) + 3000 // 총 결제금액(배달비, 할인 금액 계산)
   const [dinnerList, setDinnerList] = useState(order.dinnerList);
   const [priceList, setPriceList] = useState([0]); // dinnerList에 있는 dinner들의 총 가격을 저장 및 업데이트하는 용도
   const inputCardNum = useCallback((event) => {
     setCardNum(event.target.value);
   }, []);
-
-
-  const deleteDinner = () => {
-  
-  }
 
   useEffect(() => {
     const nextTotalPrice = priceList.reduce((acc, item) => acc + item);  
@@ -511,6 +503,32 @@ const OrderEdit = () => {
     fetchUser();
   }, []);
 
+  const clickPayment = async () => {
+    if (realTotalPrice !== 0) {
+      if (cardNum === '') {
+        alert('신용카드 번호를 입력하세요.');
+        return;
+      }
+      const postOrder = makeOrder(user, order.deliveredAt, cardNum, dinnerList, realTotalPrice);
+      //order post
+      const responseDelete = await axios.delete(`/orders/${order.orderIdx}/delete`);
+      console.log(responseDelete);
+      const responsePost = await axios.post('/orders/order', postOrder);
+      //console.log(response);
+      if(responsePost.data.isSuccess){
+        navigator('/ordermodifycomplete', {
+          state: {
+            postOrder,
+            user
+          }
+        });
+      } else {
+        alert('결제를 실패했습니다.')
+        return;
+      }
+    }
+  }
+  
   return (
     <div>
       <CartTextDiv>주문 변경</CartTextDiv>
@@ -520,9 +538,9 @@ const OrderEdit = () => {
             <div style={{display: 'grid', gridTemplateColumns: '1fr 2fr'}}>
               <BoxHeadSpan>주문 정보</BoxHeadSpan>
               <div>
-                {dinnerList ? dinnerList?.map((dinner, index) => {
+                {dinnerList?.map((dinner, index) => {
                   return <Dinner key={index} dinner={dinner} setDinnerList={setDinnerList} index={index} setPriceList={setPriceList}/>;
-                  }) : <div>장바구니가 비었습니다.</div>
+                  })
                 }
               </div>
             </div>
@@ -568,32 +586,7 @@ const OrderEdit = () => {
               <div>총 결제금액</div>
               <div>{realTotalPrice.toLocaleString()}원</div>
             </TotalPrice>
-            <Button onClick={async () => {
-              if (realTotalPrice !== 0) {
-                if (cardNum === '') {
-                  alert('신용카드 번호를 입력하세요.');
-                  return;
-                }
-                const postOrder = makeOrder(user, order.deliveredAt, cardNum, dinnerList, realTotalPrice);
-                //order post
-                const responseDelete = await axios.delete(`/orders/${order.orderIdx}/delete`);
-                console.log(responseDelete);
-                const responsePost = await axios.post('/orders/order', postOrder);
-                //console.log(response);
-                if(responsePost.data.isSuccess){
-                  navigator('/ordermodifycomplete', {
-                    state: {
-                      postOrder,
-                      user
-                    }
-                  });
-                } else {
-                  alert('결제를 실패했습니다.')
-                  return;
-                }
-              }
-            }
-            }>결제하기</Button>
+            <Button onClick={ () => clickPayment() }>결제하기</Button>
           </Box>
         </div>
       </CartContainer>

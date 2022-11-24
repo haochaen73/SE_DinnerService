@@ -48,52 +48,12 @@ const Container = styled.div`
   grid-template-columns: 1fr 2fr;
 
 `
-// text 받아서 고걸로 되게 해보자
-// const deleteOrder = async (orderIdx) => {
-//   try{
-//     const response = await axios.patch(`/orders/${orderIdx}/delete`)
-//     console.log(response)
-//     alert(response.data.result);
-//   } catch(e) {
-
-//   }
-// }
-
-// const startOrder = async (orderIdx) => {
-//   try{
-//     const response = await axios.patch(`/orders/${orderIdx}/start`)
-//     console.log(response)
-//     alert(response.data.result);
-//   } catch(e) {
-
-//   }
-// }
-
-// const completeOrder = async (orderIdx) => {
-//   try{
-//     const response = await axios.patch(`/orders/${orderIdx}/complete`)
-//     console.log(response)
-//     alert(response.data.result);
-//   } catch(e) {
-
-//   }
-// }
-
-// const deliverOrder = async (orderIdx) => {
-//   try{
-//     const response = await axios.patch(`/orders/${orderIdx}/deliver`)
-//     console.log(response)
-//     alert(response.data.result);
-//   } catch(e) {
-
-//   }
-// }
 
 const patchOrder = async (orderIdx, state) => {
   try{
     const response = await axios.patch(`/orders/${orderIdx}/${state}`);
     console.log(response)
-    //alert(response.data.result);
+    alert(response.data.result);
   } catch(e) {
 
   }
@@ -106,7 +66,7 @@ const OrderList = () => {
   const [orderListDone, setOrderListDone] = useState();
   const [orderDetail, setOrderDetail] = useState();
 
-  const clickOrder = useCallback((order) => {
+  const clickOrderDetail = useCallback((order) => {
     setOrderDetail(order);
   }, []);
 
@@ -191,21 +151,21 @@ const OrderList = () => {
         </Box>
         <TabPanel value={value} index={0}>
           {orderListAccept?.map((order) => {
-            return <OrderItem order={order} clickOrder={clickOrder}/>;
+            return <OrderItem order={order} clickOrder={clickOrderDetail}/>;
           })}
         </TabPanel>
         <TabPanel value={value} index={1}>
           {orderListPrepare?.map((order) => {
-              return <OrderItem order={order} clickOrder={clickOrder}/>;
+              return <OrderItem order={order} clickOrder={clickOrderDetail}/>;
           })}
         </TabPanel>
         <TabPanel value={value} index={2}>
           {orderListDone?.map((order) => {
-            return <OrderItem order={order} clickOrder={clickOrder}/>;
+            return <OrderItem order={order} clickOrder={clickOrderDetail}/>;
           })}
         </TabPanel>
       </Box>
-      {orderDetail ? <OrderDetail order={orderDetail} changeState={changeState} clickOrder={clickOrder}/> : null}
+      {orderDetail ? <OrderDetail order={orderDetail} changeState={changeState} clickOrder={clickOrderDetail}/> : null}
     </Container>
   );
 };
