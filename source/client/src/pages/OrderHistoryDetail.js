@@ -120,7 +120,7 @@ const OrderHistoryDetail = () => {
 
   const deleteOrder = async (orderIdx) => {
     try {
-      const response = await axios.patch(`orders/${orderIdx}/delete`);
+      const response = await axios.patch(`orders/${orderIdx}/cancel`);
       console.log(response);
     } catch (e) {
 
@@ -164,12 +164,13 @@ const OrderHistoryDetail = () => {
           <div style={{ fontSize: "15px", fontWeight: "400" }}>{order?.totalPrice.toLocaleString()}원</div>
         </div>
       </ContentDiv>
+      {order.state !== 1 ? <div style={{marginBottom: '100px'}}></div> : 
       <ButtonContainer>
         <Button onClick={() => {
           console.log(order);
           navigate('/orderedit', {
             state: {
-              orderIdx: order.orderIdx,
+              order,
             }
           });
         }}>주문 변경</Button>
@@ -218,7 +219,8 @@ const OrderHistoryDetail = () => {
             </div>
           </ModalContainer>
         </Modal>
-      </ButtonContainer>
+      </ButtonContainer>}
+      
     </MainDiv>
   );
 };

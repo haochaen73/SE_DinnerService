@@ -16,14 +16,28 @@ const MainDiv = styled.div`
 `
 
 const InputLayer = styled.div`
-	position: relative;
-	width: 100%;
+  width: 300px;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 `
+
+const StyledButton = styled.button`
+  height: 30px;
+  width: 60px;
+  border-radius: 5px;
+  margin-left: 15px;
+  border: 0px solid black;
+  color: white;
+  background: black;  
+  text-decoration: none;
+  color: white;
+  :hover{
+    background: #262626;
+    cursor: pointer;
+  }
+`;
 
 const ModifyPassword = () => {
 	const [passwordInfo, setPasswordInfo] = useState({
@@ -75,20 +89,22 @@ const ModifyPassword = () => {
     <MainDiv>
       <div style={{ fontWeight: 700, fontSize: 32 }}>비밀번호 변경</div>
       <InputLayer>
-        <div style={{ display: "flex", gap: 32 }}>
+        <div style={{ display: "flex", justifyContent: 'space-between', alignItems: 'center' }}>
           <Input
             placeholder="기존 비밀번호"
             type="password"
             name={"prevPassword"}
             value={passwordInfo.prevPassword}
             onChange={handleChangePassword}
+            style={{width: '80%'}}
           />
-          <Button
+          <StyledButton
             onClick={handleClickCheckEqualButton}
+
             //disabled={checkNotEmptySignUpInfoValue}
           >
-            무슨 문구
-          </Button>
+            확인
+          </StyledButton>
         </div>
         <Input
           placeholder="새 비밀번호"
@@ -96,6 +112,7 @@ const ModifyPassword = () => {
           name={"password1"}
           value={passwordInfo.password1}
           onChange={handleChangePassword}
+          style={{width: '100%'}}
         />
         <Input
           placeholder="비밀번호 재입력"
@@ -103,15 +120,17 @@ const ModifyPassword = () => {
           name={"password2"}
           value={passwordInfo.password2}
           onChange={handleChangePassword}
+          style={{width: '100%'}}
         />
       </InputLayer>
       <Button
         onClick={() => {
+          console.log(passwordInfo);
           if (!checkPrevPassword) {
             alert('기존 비밀번호부터 확인해 주세요.');
             return;
           }
-          if (!passwordCheck(passwordInfo.password1)) {
+          if (!passwordCheck(passwordInfo)) {
             alert(
               "비밀번호를 형식에 맞춰 입력해주세요.\n최소 8자 + 최소 한개의 영문자 + 최소 한개의 숫자 + 최소 한개의 특수 문자"
             );
