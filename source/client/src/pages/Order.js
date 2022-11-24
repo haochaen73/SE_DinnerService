@@ -245,7 +245,7 @@ const Order = () => {
   }, [modalIsOpen]);
 
   useEffect(() => {
-    const fetchDinner = async () => {
+    const listenDinner = async () => {
       try{
         if (value.includes("발렌타인 디너") || value.includes("발렌타인")) {
           stop(); // 마이크 off 
@@ -287,7 +287,7 @@ const Order = () => {
       } catch(e) {
       }
     }
-    fetchDinner();
+    listenDinner();
     console.log(dinner);
   }, [value]);
 

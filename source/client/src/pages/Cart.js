@@ -163,7 +163,7 @@ const makeOrder = (user, deliveredAt, cardNum, dinnerList, totalPrice) =>
     userIdx: user.userIdx,
     deliveredAt: moment(deliveredAt).format('YYYY-MM-DD HH:mm:ss'),
     cardNum: cardNum,
-    totalPrice: totalPrice,
+    totalPrice: user.totalPrice > 100000 ? (totalPrice - 2000) : totalPrice,
     dinnerList: makeDinnerList
   }
   console.log(order);
@@ -198,7 +198,6 @@ const Cart = () => {
       await setDinnerList(prevState => {
         return prevState.filter(dinner => cartIdx !== dinner.cartIdx)
       });
-      console.log(dinnerList);
       alert(response.data.result);
     } catch (e) {
 
@@ -207,11 +206,8 @@ const Cart = () => {
   
   const fetchCart = async () => {
     try {
-      console.log(recoilUser);
       const responseCart = await axios.get(`carts/${recoilUser.userIdx}`);
       const responseUser = await axios.get(`users/${recoilUser.userIdx}`);
-      console.log(responseCart.data.result);
-      console.log(responseUser.data.result);
       await setUser(responseUser.data.result);
       await setDinnerList(responseCart.data.result);
       const totalPrice = dinnerList.reduce((acc, obj) => {
@@ -233,9 +229,39 @@ const Cart = () => {
       return (acc += obj.dinnerPrice);
     }, 0);
     
-    setTotalPrice(user?.totalPrice > 100000 ? (totalPrice - 2000) : totalPrice);
+    setTotalPrice(totalPrice);
   }, [dinnerList])
 
+  const clickPayment = async () => {
+    if (totalPrice !== 0) {
+      if (startDate === 0) {
+        alert('날짜를 선택하세요.');
+        return;
+      }
+      if (cardNum === '') {
+        alert('신용카드 번호를 입력하세요.');
+        return;
+      }
+      const order = makeOrder(user, startDate, cardNum, dinnerList, totalPrice + 3000);
+      //order post
+      const response = await axios.post('/orders/order', order);
+      console.log(response);
+      if(response.data.isSuccess){
+        navigator('/ordercomplete', {
+          state: {
+            order,
+            user
+          }
+        });
+      } else {
+        alert('결제를 실패했습니다.')
+        return;
+      }
+    } else {
+      alert('장바구니 목록이 존재하지 않습니다.');
+      return;
+    }
+  }
 
   return (
     <div>
@@ -309,7 +335,7 @@ const Cart = () => {
             <div>
               <PayDetail>
                 <div>주문금액</div>
-                <div>{totalPrice === -2000 ? 0 : totalPrice?.toLocaleString()}원</div>
+                <div>{totalPrice?.toLocaleString()}원</div>
               </PayDetail>
               <PayDetail>
                 <div>단골할인</div>
@@ -323,39 +349,9 @@ const Cart = () => {
             <div style={{marginTop: '20px', borderBottom: '1px solid lightgray'}}></div>
             <TotalPrice>
               <div>총 결제금액</div>
-              <div>{totalPrice === 0 ? 0 : (totalPrice + 3000).toLocaleString()}원</div>
+              <div>{totalPrice === 0 ? 0 : user?.totalPrice > 100000 ? ((totalPrice - 2000) + 3000).toLocaleString() : (totalPrice + 3000).toLocaleString()}원</div>
             </TotalPrice>
-            <Button onClick={async () => {
-              if (totalPrice !== 0) {
-                if (startDate === 0) {
-                  alert('날짜를 선택하세요.');
-                  return;
-                }
-                if (cardNum === '') {
-                  alert('신용카드 번호를 입력하세요.');
-                  return;
-                }
-                const order = makeOrder(user, startDate, cardNum, dinnerList, totalPrice + 3000);
-                //order post
-                const response = await axios.post('/orders/order', order);
-                console.log(response);
-                if(response.data.isSuccess){
-                  navigator('/ordercomplete', {
-                    state: {
-                      order,
-                      user
-                    }
-                  });
-                } else {
-                  alert('결제를 실패했습니다.')
-                  return;
-                }
-              } else {
-                alert('장바구니 목록이 존재하지 않습니다.');
-                return;
-              }
-            }
-            }>결제하기</Button>
+            <Button onClick={ () => clickPayment() }>결제하기</Button>
           </Box>
         </div>
       </CartContainer>
