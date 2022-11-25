@@ -69,7 +69,7 @@ const Login = (props) => {
     } else {
       console.log("client");
       console.log({id, password});
-      const res = await axios.post('users/logIn', {id, password});
+      const res = await axios.post('http://3.35.178.117:8080/users/logIn', {id, password});
       console.log(res);
       if(res.data.isSuccess) {
         await setUserState({
