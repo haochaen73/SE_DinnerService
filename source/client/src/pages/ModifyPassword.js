@@ -60,7 +60,7 @@ const ModifyPassword = () => {
 	}
 
   const handleClickCheckEqualButton = async () => {
-    const res = await axios.post("users/password/equal", {
+    const res = await axios.post("http://3.35.178.117:8080/users/password/equal", {
       userIdx: me.userIdx,
       password: passwordInfo.prevPassword
     });
@@ -73,7 +73,7 @@ const ModifyPassword = () => {
   }
 
   const handleClickModifyButton = async () => {
-    const res = await axios.patch("users/modify/password", {
+    const res = await axios.patch("http://3.35.178.117:8080/users/modify/password", {
       userIdx: me.userIdx,
       ...passwordInfo
     });

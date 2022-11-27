@@ -185,7 +185,7 @@ const MenuItem = ({menu, dinner, resetDinner}) => {
     try {
       console.log(recoilUser.userIdx);
       const dinnerList = makeDinnerList(recoilUser.userIdx, menu.dinnerName, checkedStyle, 1, extraList);
-      const response = await axios.post('/carts/save', dinnerList);
+      const response = await axios.post('http://3.35.178.117:8080/carts/save', dinnerList);
       console.log(response);
     } catch (e) {
     }

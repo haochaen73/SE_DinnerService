@@ -252,7 +252,6 @@ const Dinner = ({dinner, index, setDinnerList, setPriceList}) => {
       extraList.reduce((acc, item, index) => {
         return acc + item.amount * extraInfo[index].price;
       }, 0) +
-      dinner.dinnerPrice +
       (checkedStyle === "심플" ? 0 : checkedStyle === "그랜드" ? 1000 : 2000);
       setDinnerItemTotalPrice(nextTotalPrice);
     setPriceList((prev) => {
@@ -482,7 +481,6 @@ const OrderEdit = () => {
       const dinnerTotalPrice = dinner.extraList.reduce((acc, item, index) => {
         return acc + item.amount * extraInfo[index].price;
       }, 0) +
-      dinner.dinnerPrice +
       (dinner.style === "심플" ? 0 : dinner.style === "그랜드" ? 1000 : 2000);
       return dinnerTotalPrice;
     })
@@ -493,7 +491,7 @@ const OrderEdit = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const responseUser = await axios.get(`users/${recoilUser.userIdx}`);
+        const responseUser = await axios.get(`http://3.35.178.117:8080/users/${recoilUser.userIdx}`);
         setUser(responseUser.data.result);
       } catch (e) {
   
@@ -511,9 +509,9 @@ const OrderEdit = () => {
       }
       const postOrder = makeOrder(user, order.deliveredAt, cardNum, dinnerList, realTotalPrice);
       //order post
-      const responseDelete = await axios.delete(`/orders/${order.orderIdx}/delete`);
+      const responseDelete = await axios.delete(`http://3.35.178.117:8080/orders/${order.orderIdx}/delete`);
       console.log(responseDelete);
-      const responsePost = await axios.post('/orders/order', postOrder);
+      const responsePost = await axios.post('http://3.35.178.117:8080/orders/order', postOrder);
       //console.log(response);
       if(responsePost.data.isSuccess){
         navigator('/ordermodifycomplete', {

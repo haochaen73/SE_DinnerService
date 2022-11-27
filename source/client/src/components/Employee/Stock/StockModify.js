@@ -99,7 +99,7 @@ const StockModify = () => {
 
   const getStocks = async () => {
     try {
-      const response = await axios.get('/stocks');
+      const response = await axios.get('http://3.35.178.117:8080/stocks');
       setGetAmount(response.data.result);
     } catch (e) {
 
@@ -113,7 +113,7 @@ const StockModify = () => {
   const patchStockAmount = async () => {
     try {
       console.log(stocks);
-      const response =  await axios.patch('/stocks/edit', {
+      const response =  await axios.patch('http://3.35.178.117:8080/stocks/edit', {
         amount1: stockAmount['amount1'] + getAmount['amount1'],
         amount2: stockAmount['amount2'] + getAmount['amount2'],
         amount3: stockAmount['amount3'] + getAmount['amount3'],

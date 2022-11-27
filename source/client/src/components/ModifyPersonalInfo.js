@@ -5,12 +5,9 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useRecoilValue } from 'recoil';
 import axios from "axios";
-import Button from './Button';
-import { flexbox } from '@mui/system';
 import { userState } from '../recoil/user';
 import { useNavigate } from 'react-router-dom';
 
@@ -91,14 +88,14 @@ const ModifyPersonalInfo = () => {
 
   useEffect(() => {
     (async() => {
-      const res = await axios.get(`/users/${me.userIdx}`)
+      const res = await axios.get(`http://3.35.178.117:8080/users/${me.userIdx}`)
       console.log(res.data.result);
       setPersonalInfo(res.data.result);
     })();
   }, []);
 
   const handleClickUpdateButton = async() => {
-    const res = await axios.patch('/users/modify', {
+    const res = await axios.patch('http://3.35.178.117:8080/users/modify', {
       userIdx: me.userIdx,
       name: personalInfo.name,
       email: personalInfo.email,

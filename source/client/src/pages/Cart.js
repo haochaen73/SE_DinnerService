@@ -194,7 +194,7 @@ const Cart = () => {
 
   const deleteDinner = async (cartIdx) => {
     try {
-      const response = await axios.delete(`carts/delete/${cartIdx}`);
+      const response = await axios.delete(`http://3.35.178.117:8080/carts/delete/${cartIdx}`);
       await setDinnerList(prevState => {
         return prevState.filter(dinner => cartIdx !== dinner.cartIdx)
       });
@@ -206,8 +206,8 @@ const Cart = () => {
   
   const fetchCart = async () => {
     try {
-      const responseCart = await axios.get(`carts/${recoilUser.userIdx}`);
-      const responseUser = await axios.get(`users/${recoilUser.userIdx}`);
+      const responseCart = await axios.get(`http://3.35.178.117:8080/carts/${recoilUser.userIdx}`);
+      const responseUser = await axios.get(`http://3.35.178.117:8080/users/${recoilUser.userIdx}`);
       await setUser(responseUser.data.result);
       await setDinnerList(responseCart.data.result);
       const totalPrice = dinnerList.reduce((acc, obj) => {
@@ -244,7 +244,7 @@ const Cart = () => {
       }
       const order = makeOrder(user, startDate, cardNum, dinnerList, totalPrice + 3000);
       //order post
-      const response = await axios.post('/orders/order', order);
+      const response = await axios.post('http://3.35.178.117:8080/orders/order', order);
       console.log(response);
       if(response.data.isSuccess){
         navigator('/ordercomplete', {

@@ -30,7 +30,7 @@ const OrderHistory = ({menu}) => {
 
   const fetchOrderList = async () => {
       try {
-        const responseOrderList = await axios.get(`orders/${recoilUser.userIdx} `);
+        const responseOrderList = await axios.get(`http://3.35.178.117:8080/orders/${recoilUser.userIdx} `);
         console.log(responseOrderList.data.result);
         await setOrders(responseOrderList.data.result);
       } catch (e) {

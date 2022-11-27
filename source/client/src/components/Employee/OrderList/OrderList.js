@@ -51,7 +51,7 @@ const Container = styled.div`
 
 const patchOrder = async (orderIdx, state) => {
   try{
-    const response = await axios.patch(`/orders/${orderIdx}/${state}`);
+    const response = await axios.patch(`http://3.35.178.117:8080/orders/${orderIdx}/${state}`);
     console.log(response)
     alert(response.data.result);
   } catch(e) {
@@ -76,7 +76,7 @@ const OrderList = () => {
 
   const fetchAccept = async () => {
       try {
-          const response = await axios.get('/orders/accept');
+          const response = await axios.get('http://3.35.178.117:8080/orders/accept');
           setOrderListAccept(response.data.result);
       } catch (e) {
       }
@@ -84,7 +84,7 @@ const OrderList = () => {
 
   const fetchPrepare = async () => {
     try {
-        const response = await axios.get('/orders/prepare');
+        const response = await axios.get('http://3.35.178.117:8080/orders/prepare');
         setOrderListPrepare(response.data.result);
     } catch (e) {
     }
@@ -92,7 +92,7 @@ const OrderList = () => {
 
   const fetchDone = async () => {
       try {
-          const response = await axios.get('/orders/done');
+          const response = await axios.get('http://3.35.178.117:8080/orders/done');
           setOrderListDone(response.data.result);
       } catch (e) {
       }

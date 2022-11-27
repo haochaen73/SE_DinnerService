@@ -120,7 +120,7 @@ const OrderHistoryDetail = () => {
 
   const deleteOrder = async (orderIdx) => {
     try {
-      const response = await axios.patch(`orders/${orderIdx}/cancel`);
+      const response = await axios.patch(`http://3.35.178.117:8080/orders/${orderIdx}/cancel`);
       console.log(response);
     } catch (e) {
 
@@ -129,7 +129,7 @@ const OrderHistoryDetail = () => {
 
   useEffect(() => {
     (async () => {
-      const result =  await axios.get(`/users/${recoilUser.userIdx}`);
+      const result =  await axios.get(`http://3.35.178.117:8080/users/${recoilUser.userIdx}`);
       console.log(result);
       setAddress(result?.data.result.address);
     })();

@@ -265,7 +265,7 @@ const Order = () => {
           setTimeout(() => {
             setDinner('프렌치 디너')
           }, 2000);
-        } else if (value.includes("잉글리시 디너") || value.includes("잉글리시")) {
+        } else if (value.includes("잉글리시 디너") || value.includes("잉글리시") || value.includes("잉글리쉬") || value.includes("잉글리쉬 디너")) {
           stop();
           await setTimeout(() => {
             setValue("");
