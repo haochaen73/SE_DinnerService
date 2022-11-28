@@ -10,69 +10,6 @@ import StockCheck from './StockCheck';
 import StockModify from './StockModify';
 import {useState} from 'react';
 
-const stocklist = [
-  {
-    extraNo : 1,
-    name : '와인 한 병',
-    price : 22000,
-    amount : 30
-  },
-  {
-    extraNo : 2,
-    name : '와인 한 잔',
-    price : 7000,
-    amount : 30
-  },
-  {
-    extraNo : 3,
-    name : '스테이크',
-    price : 30000,
-    amount : 30
-  },
-  {
-    extraNo : 4,
-    name : '커피 한 잔',
-    price : 4000,
-    amount : 30
-  },
-  {
-    extraNo : 5,
-    name : '커피 한 포트',
-    price : 9000,
-    amount : 30
-  },
-  {
-    extraNo : 6,
-    name : '샐러드',
-    price : 10000,
-    amount : 30
-  },
-  {
-    extraNo : 7,
-    name : '에그 스크램블',
-    price : 2000,
-    amount : 30
-  },
-  {
-    extraNo : 8,
-    name : '베이컨',
-    price : 1000,
-    amount : 30
-  },
-  {
-    extraNo : 9,
-    name : '샴페인',
-    price : 22000,
-    amount : 30
-  },
-  {
-    extraNo : 10,
-    name : '바게트 빵',
-    price : 2000,
-    amount : 30
-  }
-]
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -113,7 +50,6 @@ const Container = styled.div`
 `
 const Stock = () => {
   const [value, setValue] = useState(0);
-  const [stocks, setStocks] = useState(stocklist);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -142,7 +78,7 @@ const Stock = () => {
         </Box>
       </Box>
       <TabPanel value={value} index={0}>
-        <StockCheck stocks={stocks}/>
+        <StockCheck/>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <StockModify />

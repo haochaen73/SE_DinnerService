@@ -80,7 +80,7 @@ const StockCheck = () => {
   useEffect(() => {
     const fetchStocks = async () => {
       try {
-        const response = await axios.get('/stocks');
+        const response = await axios.get('http://3.35.178.117:8080/stocks');
         setStockAmount(response.data.result);
       } catch (e) {
 

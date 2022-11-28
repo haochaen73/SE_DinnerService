@@ -27,10 +27,12 @@ const Container = styled.div`
 function App() {
   
   return (
-    <Container>
-      <Reset />
+    <div>
+
+    <Reset />
       <BrowserRouter>
         <Header/>
+        <Container>
 				<Routes>
           <Route path="/" index element={<Login />}></Route>
           <Route path="/main" index element={<Main/>}></Route>
@@ -48,8 +50,9 @@ function App() {
           <Route path="/modify-password" index element={<ModifyPassword/>}></Route>
           <Route path="*" index element={<NotFound/>}></Route>
 				</Routes>
+        </Container>
 			</BrowserRouter>
-    </Container>
+    </div>
   );
 }
 

@@ -49,7 +49,7 @@ const SignupEmp = () => {
   };
 
   const handleClickSignupButton = async () => {
-    const res = await axios.post("employees/signup", signUpEmpInfo);
+    const res = await axios.post("http://3.35.178.117:8080/employees/signup", signUpEmpInfo);
     console.log(res);
     if (res.data.isSuccess) {
       alert("회원가입 성공");

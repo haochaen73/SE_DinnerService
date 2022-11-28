@@ -60,7 +60,7 @@ const ModifyPassword = () => {
 	}
 
   const handleClickCheckEqualButton = async () => {
-    const res = await axios.post("users/password/equal", {
+    const res = await axios.post("http://3.35.178.117:8080/users/password/equal", {
       userIdx: me.userIdx,
       password: passwordInfo.prevPassword
     });
@@ -72,8 +72,8 @@ const ModifyPassword = () => {
     }
   }
 
-  const handleClickSignupButton = async () => {
-    const res = await axios.patch("users/modify/password", {
+  const handleClickModifyButton = async () => {
+    const res = await axios.patch("http://3.35.178.117:8080/users/modify/password", {
       userIdx: me.userIdx,
       ...passwordInfo
     });
@@ -140,7 +140,7 @@ const ModifyPassword = () => {
             alert("비밀번호가 서로 다릅니다.");
             return;
           }
-          handleClickSignupButton();
+          handleClickModifyButton();
         }}
         //disabled={checkNotEmptySignUpInfoValue}
       >

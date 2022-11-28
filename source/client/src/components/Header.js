@@ -68,7 +68,6 @@ const Header = () => {
               return (
                 <LeftContentDiv>
                   <div style={{padding: '20px', fontWeight: 'bold'}}>{me?.name || '이수빈'}님</div>
-                  <StyledLink to='/' onClick={() => handleLogout()} style={{display: "flex", alignItems: "center", padding: '20px'}}>로그아웃</StyledLink>
                   <MemberDiv>
                     <StyledLink to='/mypage'>마이페이지</StyledLink>
                   </MemberDiv>
@@ -78,6 +77,7 @@ const Header = () => {
                   <MemberDiv>
                    <StyledLink to='/order'>주문하기</StyledLink>
                   </MemberDiv>
+                  <StyledLink to='/' onClick={() => handleLogout()} style={{display: "flex", alignItems: "center", padding: '20px'}}>로그아웃</StyledLink>
                 </LeftContentDiv>
                 );
             }

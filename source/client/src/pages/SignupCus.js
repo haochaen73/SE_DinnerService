@@ -59,7 +59,7 @@ const SignupCus = () => {
 	}
 
   const handleClickSignupButton = async () => {
-    const res = await axios.post("users/signup", signUpCusInfo);
+    const res = await axios.post("http://3.35.178.117:8080/users/signup", signUpCusInfo);
     if (res.data.isSuccess) {
       alert("회원가입 성공");
       navigate("/");
