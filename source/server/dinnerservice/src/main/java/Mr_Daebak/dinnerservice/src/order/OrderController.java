@@ -55,12 +55,6 @@ public class OrderController {
     @Transactional
     public BaseResponse<List<GetOrderRes>> getOrders(@PathVariable Integer userIdx) {
         try {
-//            //jwt에서 idx 추출.
-//            int userIdxByJwt = JwtService.getUserIdx();
-//            //userIdx와 접근한 유저가 같은지 확인
-//            if(userIdx != userIdxByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
             System.out.println("controller 시작");
             List<GetOrderRes> getOrdersRes= orderProvider.getOrders(userIdx);
             System.out.println("controller 끝");

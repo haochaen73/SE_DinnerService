@@ -36,7 +36,7 @@ public class OrderDao {
             System.out.println("getUserAddressRes 끝");
 
             System.out.println("create Order 시작");
-            String createOrderQuery = "insert into `order`(userIdx, deliveredAt, address, cardNum, totalPrice) values (?,?,?,?,?)";
+            String createOrderQuery = "insert into `order` (userIdx, deliveredAt, address, cardNum, totalPrice) values (?,?,?,?,?)";
             Object[] createOrderParams = new Object[]{postOrderReq.getUserIdx(), postOrderReq.getDeliveredAt(), address, postOrderReq.getCardNum(), postOrderReq.getTotalPrice()};
             this.jdbcTemplate.update(createOrderQuery, createOrderParams);
             System.out.println("create Order 끝");
